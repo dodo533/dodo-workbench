@@ -1608,6 +1608,7 @@ function clearAiChat(){
 
 // ===== v6 新增：多端同步（Firebase 同步码） =====
 let _syncTimer=null, _syncBusy=false, _syncListenerRef=null;
+let _createShowAll=false, _inspoShowAll=false, _archShowAll=false;
 function syncReady(){
   try{
     return typeof firebase!=='undefined' && !!firebase.database && !!S.sync && !!S.sync.config && !!S.sync.code;
@@ -1724,6 +1725,7 @@ function mergeRemoteData(remote){
   const page = S.page;
   S = merged;
   localStorage.setItem('dajiuwan_v5', JSON.stringify(S));
+  try{ ensureDefaults(); }catch(e){}
   if(page) go(page);
   toast('已同步其他设备的数据~');
 }
@@ -1784,14 +1786,16 @@ function go(page){
   if(t) t.classList.add('on');
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('on', n.dataset.page===page));
   document.getElementById('ttl').textContent = '呆啾丸 · ' + (PAGE_TITLES[page]||'首页');
-  if(page==='home') renderHome();
-  if(page==='courses'){ renderCourses(); renderCoursePlanTable(); }
-  if(page==='micro') renderMicro();
-  if(page==='know') renderKnow();
-  if(page==='dance') renderDance();
-  if(page==='body') renderBody();
-  if(page==='mood') renderMood();
-  if(page==='growth') renderGrowth();
+  try{
+    if(page==='home') renderHome();
+    if(page==='courses'){ renderCourses(); renderCoursePlanTable(); }
+    if(page==='micro') renderMicro();
+    if(page==='know') renderKnow();
+    if(page==='dance') renderDance();
+    if(page==='body') renderBody();
+    if(page==='mood') renderMood();
+    if(page==='growth') renderGrowth();
+  }catch(err){ showPageError(page, err); }
   if(page==='settings') renderSettings();
   if(window.innerWidth <= 760){
     document.getElementById('sidebar').classList.remove('open');
@@ -2604,11 +2608,13 @@ function renderCreations(){
   el.classList.toggle('mosaic', !!S.mosaic);
   const mb=document.getElementById('mosaicBtn'); if(mb) mb.textContent='🖼 马赛克模式：'+(S.mosaic?'开':'关');
   if(!S.creations||S.creations.length===0){ el.innerHTML='<div class="muted">还没有创作输出，完成创作后传上来吧~</div>'; return; }
-  el.innerHTML = S.creations.map((c,i)=>{
+  const creLimit = _createShowAll ? S.creations.length : Math.min(40, S.creations.length);
+  el.innerHTML = S.creations.slice(0, creLimit).map((c,i)=>{
     const idx = i;
     const html = '<div class="creation" onclick="openCreationView('+idx+')"><img src="'+c.img+'"><div class="ct">'+c.date+' · '+(S.courses.find(x=>x.id===c.course)?.name||'自由')+'</div><button class="del" onclick="event.stopPropagation();delCreation('+idx+')">×</button></div>';
     return html;
   }).reverse().join('');
+  if(!_createShowAll && S.creations.length>40){ el.innerHTML += '<button class="btn sm ghost" style="margin-top:8px;" onclick="_createShowAll=true;renderCreations()">查看全部还有 '+(S.creations.length-40)+' 张</button>'; }
 }
 function openCreationView(i){
   const c = S.creations[i]; if(!c) return;
@@ -2642,8 +2648,9 @@ function renderInspo(){
   const box = document.getElementById('inspoBox');
   const list = S.inspo[currentInspo]||[];
   if(list.length===0){ box.innerHTML='<div class="muted">这里还是空的，上传一张或写一句随手记吧~</div>'; return; }
+  const lim = _inspoShowAll ? list.length : Math.min(60, list.length);
   let html = '<div class="gallery">';
-  list.forEach((it,i)=>{
+  list.forEach((it,i)=>{ if(i>=lim) return;
     if(it.text){
       html += '<div class="memo-card">'+esc(it.text)+'<div class="muted" style="font-size:10px;margin-top:4px;">'+it.date+'</div></div>';
     } else if(it.link){
@@ -2653,6 +2660,7 @@ function renderInspo(){
     }
   });
   html += '</div>';
+  if(!_inspoShowAll && list.length>60) html += '<button class="btn sm ghost" style="margin-top:8px;" onclick="_inspoShowAll=true;renderInspo()">查看全部还有 '+(list.length-60)+' 条</button>';
   box.innerHTML = html;
 }
 function switchInspo(tab){ currentInspo=tab; const b1=document.getElementById('inspoTabMaterial'), b2=document.getElementById('inspoTabDream'); if(b1)b1.classList.toggle('ghost', tab!=='material'); if(b2)b2.classList.toggle('ghost', tab!=='dream'); renderInspo(); haptic(); }
@@ -2973,7 +2981,9 @@ function renderGrowth(){
     months[k][a.type].push(a);
   });
   let html='';
-  Object.keys(months).sort().reverse().forEach(m=>{
+  const monthKeys = Object.keys(months).sort().reverse();
+  const shownMonths = _archShowAll ? monthKeys : monthKeys.slice(0, 4);
+  shownMonths.forEach(m=>{
     html += '<div class="month-block"><div class="mh">'+m+'</div><div class="subcol">';
     ['day','week','month'].forEach(t=>{
       html += '<div class="sc"><b>'+(t==='day'?'每日':t==='week'?'每周':'每月')+'</b><div class="gallery">';
@@ -2984,6 +2994,8 @@ function renderGrowth(){
     });
     html += '</div></div>';
   });
+  const monthKeysAll = Object.keys(months).sort().reverse();
+  if(!_archShowAll && monthKeysAll.length>4) html += '<button class="btn sm ghost" style="margin-top:8px;" onclick="_archShowAll=true;renderGrowth()">查看更多还有 '+(monthKeysAll.length-4)+' 个月</button>';
   document.getElementById('monthBlocks').innerHTML = html||'<div class="empty-note">还没有手写记录，上传一张吧~</div>';
   renderMilestones();
   renderWeekReports();
@@ -3364,6 +3376,33 @@ function initAll(){
   renderDust();
   try{ startSyncListener(); }catch(e){}
 }
+
+function showPageError(page, err){
+  const panel = document.getElementById('p-'+page);
+  if(!panel) return;
+  const msg = (err && (err.message||err)) || '未知错误';
+  let bar = document.getElementById('pageErrBar');
+  if(!bar){
+    bar = document.createElement('div');
+    bar.id = 'pageErrBar';
+    bar.style.cssText = 'margin:0 0 12px;padding:10px 12px;border-radius:12px;background:rgba(255,120,120,0.16);border:1px solid rgba(255,120,120,0.5);color:#c05050;font-size:12px;line-height:1.6;white-space:pre-wrap;';
+  }
+  panel.prepend(bar);
+  bar.innerHTML = '⚠️ 这个板块加载出错了：<b>' + esc(msg) + '</b><br><span style="opacity:.75;">把上面这行文字发给我，我就能定位问题~</span>';
+}
+window.addEventListener('error', function(e){
+  try{
+    const msg = (e && e.message) ? e.message : String(e && e.error || e);
+    if(msg && !document.getElementById('globalErrBadge')){
+      const b = document.createElement('div');
+      b.id = 'globalErrBadge';
+      b.style.cssText = 'position:fixed;left:10px;bottom:10px;z-index:999;max-width:72vw;background:rgba(255,120,120,0.92);color:#fff;padding:8px 12px;border-radius:10px;font-size:11px;white-space:pre-wrap;box-shadow:0 6px 18px rgba(0,0,0,.25);';
+      b.textContent = '⚠️ ' + msg;
+      document.body.appendChild(b);
+      setTimeout(function(){ var x=document.getElementById('globalErrBadge'); if(x) x.remove(); }, 9000);
+    }
+  }catch(_){}
+});
 document.addEventListener('DOMContentLoaded', initAll);
 
 </script>
