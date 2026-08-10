@@ -1964,7 +1964,7 @@ function renderOverview(){
   const coursePct = totalCourse? Math.round(doneCourse/totalCourse*100):0;
   const dancePct = S.dance.goal? Math.min(100,Math.round(danceThis/S.dance.goal*100)):0;
   const box = document.getElementById('overviewTop'); if(!box) return;
-  let h = '<div class="prog-row"><span class="pr-k">📚 课程</span><div class="mini-prog big"><i style="width:'+coursePct+'%"></i></div><span class="pr-v">'+doneCourse+' / '+totalCourse+' 节</span></div>';
+  let h = '<div class="prog-row"><span class="pr-k">📚 课程</span><div class="mini-prog big"><i style="width:'+coursePct+'%"></i></div></div>';
   h += '<div class="prog-row"><span class="pr-k">💃 跳舞</span><div class="mini-prog big pink"><i style="width:'+dancePct+'%"></i></div></div>';
   box.innerHTML = h;
 }
