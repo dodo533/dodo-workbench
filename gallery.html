@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>呆啾丸 · 我的图库</title>
+<style>
+:root{--bg1:#FFF8FA;--bg2:#FFF0F5;--primary:#FFB7D0;--accent:#FFD6E5;--pink:#FF85AA;--text:#43303A;--sub:#7E5866;--panel:rgba(255,255,255,0.40);--card:rgba(255,255,255,0.20);--glass:rgba(255,255,255,0.10);--line:rgba(255,255,255,0.52);--shadow:0 14px 40px rgba(180,130,150,0.16);}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{margin:0;font-family:"SimSun","Songti SC","Noto Serif CJK SC","宋体",serif;font-weight:200;letter-spacing:0.02em;color:var(--text);background:var(--bg1);background-image:radial-gradient(1200px 600px at 10% -10%, var(--accent), transparent 60%),radial-gradient(1000px 500px at 110% 20%, var(--accent), transparent 55%);background-attachment:fixed;}
+body.night{background:#2a1a26;background-image:none;}
+body.night{--text:#fff;--sub:rgba(255,255,255,0.72);--panel:rgba(28,18,30,0.42);--card:rgba(28,18,30,0.25);--glass:rgba(255,255,255,0.08);--line:rgba(255,255,255,0.20);--shadow:0 14px 40px rgba(0,0,0,0.4);}
+body.night .card{background:rgba(28,18,30,0.5);}
+body.night .btn{background:rgba(255,255,255,0.08);color:#fff;border-color:rgba(255,255,255,0.22);}
+.wrap{max-width:1100px;margin:0 auto;padding:16px;}
+.top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+.top h1{font-size:18px;font-weight:300;margin:0;flex:1;}
+.top a{color:var(--pink);text-decoration:none;font-size:12.5px;background:var(--glass);border:1px solid var(--line);padding:6px 12px;border-radius:12px;}
+.top a:hover{background:var(--panel);}
+.card{background:linear-gradient(160deg,rgba(255,255,255,0.30),rgba(255,255,255,0.06));backdrop-filter:blur(10px) saturate(150%);-webkit-backdrop-filter:blur(10px) saturate(150%);border:1px solid rgba(255,255,255,0.55);border-radius:20px;padding:14px;box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,0.65);}
+.card h3{margin:0 0 10px;font-size:14px;font-weight:300;display:flex;align-items:center;gap:6px;}
+.tabs{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+.tab{background:var(--glass);border:1px solid var(--line);border-radius:10px;padding:6px 14px;font-size:12px;cursor:pointer;color:var(--text);font-family:inherit;font-weight:200;}
+.tab.on{background:var(--panel);color:var(--pink);border-color:var(--pink);}
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px;}
+.btn{background:linear-gradient(160deg,var(--bg2),var(--accent));color:var(--pink);border:1px solid rgba(255,255,255,0.7);border-radius:12px;padding:7px 14px;font-weight:200;font-size:12.5px;cursor:pointer;box-shadow:0 5px 14px rgba(180,130,150,0.14);font-family:inherit;}
+.btn:active{transform:scale(0.96);}
+.sync{font-size:11px;color:var(--sub);margin-left:auto;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
+.item{position:relative;border-radius:12px;overflow:hidden;background:var(--card);border:1px solid var(--line);cursor:zoom-in;aspect-ratio:1/1;}
+.item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .2s;}
+.item:hover img{transform:scale(1.06);}
+.item .tag{position:absolute;left:6px;top:6px;font-size:9.5px;background:rgba(0,0,0,0.45);color:#fff;padding:2px 8px;border-radius:10px;}
+.item .dt{position:absolute;left:6px;bottom:6px;font-size:9.5px;background:rgba(0,0,0,0.45);color:#fff;padding:2px 8px;border-radius:10px;}
+.item .del{position:absolute;right:6px;top:6px;width:22px;height:22px;border:none;border-radius:50%;background:rgba(0,0,0,0.5);color:#fff;font-size:12px;cursor:pointer;z-index:2;}
+.linkcard{position:relative;border-radius:12px;background:var(--glass);border:1px solid var(--line);padding:10px;display:flex;flex-direction:column;gap:4px;min-height:80px;}
+.linkcard a{color:var(--pink);font-size:11.5px;word-break:break-all;text-decoration:none;}
+.linkcard .dt{font-size:9.5px;color:var(--sub);}
+.empty{color:var(--sub);font-size:12px;text-align:center;padding:30px 0;}
+.lb{position:fixed;inset:0;background:rgba(20,15,18,0.82);display:none;align-items:center;justify-content:center;z-index:90;padding:20px;backdrop-filter:blur(6px);}
+.lb.on{display:flex;}
+.lb img{max-width:94vw;max-height:88vh;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.5);}
+.lb .x{position:fixed;top:16px;right:16px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);color:#fff;padding:8px 14px;border-radius:20px;font-size:12px;cursor:pointer;}
+@media(max-width:600px){.grid{grid-template-columns:repeat(3,1fr);gap:6px;}.wrap{padding:10px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <h1>🖼 呆啾丸 · 我的图库</h1>
+    <a href="index.html">← 返回工作台</a>
+  </div>
+  <div class="card">
+    <h3>🗂 图片集中存放处（素材 / 创作 / 成长记录都会自动汇总到这里）</h3>
+    <div class="tabs" id="tabs">
+      <button class="tab on" data-t="all">全部</button>
+      <button class="tab" data-t="material">🗂 素材</button>
+      <button class="tab" data-t="creation">🎨 创作</button>
+      <button class="tab" data-t="archive">🌱 成长记录</button>
+    </div>
+    <div class="tools">
+      <input type="file" accept="image/*" multiple id="up" style="display:none;">
+      <button class="btn" onclick="document.getElementById('up').click()">＋ 上传到素材库</button>
+      <button class="btn" onclick="syncNow()">🔄 同步最新</button>
+      <span class="sync" id="syncStatus">本地模式</span>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+</div>
+<div class="lb" id="lb"><button class="x" onclick="closeLb()">✕ 关闭</button><img id="lbImg" src="" alt=""></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+var S = {};
+try{ S = JSON.parse(localStorage.getItem('dajiuwan_v5')||'{}'); }catch(e){ S={}; }
+var cur = 'all';
+var _db = null, _busy = false;
+var THEMES = [
+  {name:'云朵白',bg1:'#f3fefa',bg2:'#e4fdf6',primary:'#8fdcc6',accent:'#c8f2e7',pink:'#5fc9ac',text:'#3f6557',sub:'#7fa89a'},
+  {name:'樱花粉',bg1:'#fff7fc',bg2:'#fee6fa',primary:'#f6abd3',accent:'#fbd7ee',pink:'#ec84bc',text:'#6d4a5e',sub:'#b18ba5'},
+  {name:'海盐蓝',bg1:'#f5f8ff',bg2:'#e3eeff',primary:'#9ab6ef',accent:'#cfdffb',pink:'#7b9ee6',text:'#46587a',sub:'#8aa1c9'},
+  {name:'抹茶绿',bg1:'#f8f6fd',bg2:'#e9defa',primary:'#b6a5e7',accent:'#dcd0f6',pink:'#9b85dd',text:'#5a5172',sub:'#9a91ba'}
+];
+function applyTheme(){
+  var t = THEMES[parseInt(S.theme)||0];
+  var r = document.documentElement.style;
+  ['bg1','bg2','primary','accent','pink','text','sub'].forEach(function(k){ r.setProperty('--'+k, t[k]); });
+  var wants = S.nightMode==='on' || (S.nightMode==='auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  document.body.classList.toggle('night', wants);
+  if(wants){
+    r.setProperty('--text','#fff'); r.setProperty('--sub','rgba(255,255,255,0.72)');
+    r.setProperty('--bg1','#2a1a26'); r.setProperty('--bg2','#351f30');
+    document.body.style.background='#2a1a26';
+  }
+}
+function syncReady(){ return typeof firebase!=='undefined' && !!firebase.database && !!S.sync && !!S.sync.config && !!S.sync.code; }
+function syncAppName(){ var h=0,s=(S.sync&&S.sync.config)||''; for(var i=0;i<s.length;i++) h=(h*31+s.charCodeAt(i))>>>0; return 'djw_'+h.toString(36)+((S.sync&&S.sync.code)||'x').replace(/[^A-Za-z0-9]/g,''); }
+function db(){
+  if(_db) return _db;
+  try{
+    var cfg = JSON.parse(S.sync.config);
+    var app = null;
+    try{ app = firebase.app(syncAppName()); }catch(e){ app = firebase.initializeApp(cfg, syncAppName()); }
+    _db = firebase.database(app);
+  }catch(e){ return null; }
+  return _db;
+}
+function pull(){
+  if(!syncReady()){ document.getElementById('syncStatus').textContent = '本地模式（未配置同步）'; return; }
+  document.getElementById('syncStatus').textContent = '同步中…';
+  try{
+    db().ref('dajiuwan/'+S.sync.code).once('value').then(function(snap){
+      var v = snap.val();
+      if(v && v._meta){
+        var rt = v._meta.updatedAt||0, lt = (S._meta&&S._meta.updatedAt)||0;
+        if(rt >= lt){ S = v; localStorage.setItem('dajiuwan_v5', JSON.stringify(S)); }
+        document.getElementById('syncStatus').textContent = '已同步 · '+new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'});
+      } else {
+        push();
+      }
+      render();
+    }).catch(function(e){ document.getElementById('syncStatus').textContent='拉取失败'; });
+  }catch(e){ document.getElementById('syncStatus').textContent='拉取失败'; }
+}
+function push(){
+  if(!syncReady()) return;
+  if(_busy) return;
+  _busy = true;
+  try{
+    var payload = JSON.parse(JSON.stringify(S));
+    if(payload.sync) delete payload.sync._pendingAt;
+    db().ref('dajiuwan/'+S.sync.code).set(payload)
+      .then(function(){ document.getElementById('syncStatus').textContent = '已同步'; })
+      .catch(function(){ document.getElementById('syncStatus').textContent='同步失败'; })
+      .finally(function(){ _busy=false; });
+  }catch(e){ _busy=false; document.getElementById('syncStatus').textContent='同步失败'; }
+}
+function syncNow(){ pull(); }
+function save(){
+  if(!S._meta) S._meta={};
+  S._meta.updatedAt = Date.now();
+  localStorage.setItem('dajiuwan_v5', JSON.stringify(S));
+  push();
+}
+function todayStr(){ var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function compressImage(file, maxW, cb){
+  var r = new FileReader();
+  r.onload = function(e){
+    var img = new Image();
+    img.onload = function(){
+      try{
+        var scale = Math.min(1, (maxW||1200)/img.width);
+        var w = Math.max(1, Math.round(img.width*scale)), h = Math.max(1, Math.round(img.height*scale));
+        var cv = document.createElement('canvas'); cv.width=w; cv.height=h;
+        cv.getContext('2d').drawImage(img,0,0,w,h);
+        cb(cv.toDataURL('image/jpeg', 0.8));
+      }catch(err){ cb(e.target.result); }
+    };
+    img.onerror = function(){ cb(e.target.result); };
+    img.src = e.target.result;
+  };
+  r.readAsDataURL(file);
+}
+function collect(){
+  var list = [];
+  (S.inspo&&S.inspo.material||[]).forEach(function(it,i){ if(it.img) list.push({type:'material', img:it.img, date:it.date, src:'inspo.material', i:i, tag:'素材'}); else if(it.link) list.push({type:'link', link:it.link, date:it.date, src:'inspo.material', i:i, tag:'素材·链接'}); });
+  (S.creations||[]).forEach(function(it,i){ if(it.img) list.push({type:'creation', img:it.img, date:it.date, src:'creations', i:i, tag:'创作'}); });
+  (S.archives||[]).forEach(function(it,i){ if(it.img) list.push({type:'archive', img:it.img, date:it.date, src:'archives', i:i, tag:it.type==='month'?'月':it.type==='week'?'周':'日'}); });
+  return list;
+}
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function render(){
+  var grid = document.getElementById('grid');
+  var list = collect();
+  if(cur==='material') list = list.filter(function(x){return x.type==='material'||x.type==='link';});
+  else if(cur==='creation') list = list.filter(function(x){return x.type==='creation';});
+  else if(cur==='archive') list = list.filter(function(x){return x.type==='archive';});
+  if(list.length===0){ grid.innerHTML = '<div class="empty">这里还没有图片，先上传一张吧~</div>'; return; }
+  var html = '';
+  list.forEach(function(it, k){
+    if(it.type==='link'){
+      html += '<div class="linkcard"><button class="del" onclick="delItem('+k+',event)">×</button><a href="'+esc(it.link)+'" target="_blank" rel="noopener">🔗 '+esc(it.link.length>40?it.link.slice(0,40)+'…':it.link)+'</a><span class="dt">'+esc(it.date||'')+'</span></div>';
+      return;
+    }
+    html += '<div class="item"><button class="del" onclick="delItem('+k+',event)">×</button><span class="tag">'+it.tag+'</span><img src="'+it.img+'" onclick="openLb('+k+')"><span class="dt">'+esc(it.date||'')+'</span></div>';
+  });
+  grid.innerHTML = html;
+  window.__list = list;
+}
+function openLb(k){ var it=window.__list[k]; if(it){ document.getElementById('lbImg').src=it.img; document.getElementById('lb').classList.add('on'); } }
+function closeLb(){ document.getElementById('lb').classList.remove('on'); }
+function delItem(k, ev){
+  ev.stopPropagation();
+  var it = window.__list[k]; if(!it) return;
+  if(!confirm('删除这张图片？')) return;
+  if(it.src==='inspo.material'){ S.inspo.material.splice(it.i,1); }
+  else if(it.src==='creations'){ S.creations.splice(it.i,1); }
+  else if(it.src==='archives'){ S.archives.splice(it.i,1); }
+  save(); render();
+}
+document.getElementById('up').addEventListener('change', function(){
+  var input = this;
+  Array.from(input.files).forEach(function(file){
+    compressImage(file, 1200, function(data){
+      if(!S.inspo) S.inspo={};
+      if(!S.inspo.material) S.inspo.material=[];
+      S.inspo.material.unshift({img:data, date:todayStr()});
+      save();
+      cur='material';
+      document.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('on', t.dataset.t===cur); });
+      render();
+    });
+  });
+  input.value='';
+});
+document.querySelectorAll('.tab').forEach(function(t){
+  t.addEventListener('click', function(){ cur=t.dataset.t; document.querySelectorAll('.tab').forEach(function(x){x.classList.toggle('on',x.dataset.t===cur);}); render(); });
+});
+document.getElementById('lb').addEventListener('click', function(e){ if(e.target.id==='lb') closeLb(); });
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeLb(); });
+applyTheme();
+render();
+pull();
+</script>
+</body>
+</html>

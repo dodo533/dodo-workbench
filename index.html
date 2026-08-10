@@ -317,7 +317,7 @@ input[type=file]{color:#5a5a5a;font-size:12px;}
 .modal-box .close{margin-top:10px;}
 
 /* night mode */
-body.night{--text:#FFF5FA;--sub:#E8C9D5;--panel:rgba(255,255,255,0.10);--card:rgba(255,255,255,0.14);--glass:rgba(255,255,255,0.07);--line:rgba(255,255,255,0.18);--shadow:0 8px 26px rgba(0,0,0,0.45);--pink:#FFC2DA;}
+body.night{--text:#ffffff;--sub:rgba(255,255,255,0.72);--panel:rgba(255,255,255,0.10);--card:rgba(255,255,255,0.14);--glass:rgba(255,255,255,0.07);--line:rgba(255,255,255,0.18);--shadow:0 8px 26px rgba(0,0,0,0.45);--pink:#FFC2DA;}
 body.night{background:#2E1F2B;}
 
 /* gentle mode (低谷) */
@@ -475,7 +475,7 @@ body.gentle .content>.panel>.grid2{opacity:.92;}
 .mini-prog.big.pink i{background:linear-gradient(90deg,#f9a8d4,#f472b6);}
 .cal-d.hi{color:var(--pink);}
 .cal-d.heat{background:var(--pink);color:#fff;box-shadow:0 0 0 2px var(--accent);}
-.lesson-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(22px,1fr));gap:5px;margin-top:6px;}
+.lesson-grid{display:flex;flex-direction:column;gap:6px;margin-top:8px;}
 .lesson-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px dashed var(--line);font-size:11.5px;color:var(--text);}
 .lesson-row:last-child{border-bottom:none;}
 .ls-dot{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line);background:var(--glass);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--sub);flex:0 0 22px;position:relative;}
@@ -551,6 +551,147 @@ table.tt td input:focus{background:var(--panel);border-radius:6px;}
 .img-viewer-box img{max-width:90vw;max-height:86vh;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.5);display:block;margin:0 auto;}
 .img-viewer-close{position:fixed;top:18px;right:18px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);color:#fff;padding:8px 14px;border-radius:20px;font-size:12px;cursor:pointer;font-family:inherit;}
 .img-viewer-close:hover{background:rgba(255,255,255,.32);}
+
+/* ===== v7 补充样式（布局 + 新组件）===== */
+
+/* 首页 · 星环放大（头像与月历中间） */
+.ring-hero{display:flex;align-items:center;justify-content:center;min-width:112px;}
+.ring-wrap-lg{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;text-align:center;}
+.ring-wrap-lg svg{display:block;}
+.ring-wrap-lg .ring-label{font-size:10px;color:var(--sub);line-height:1.45;max-width:116px;}
+
+/* 首页 · 合并卡片（罗盘+今日任务 / 计划+课程进度） */
+.mix-card{display:flex;flex-direction:column;}
+.mix-top,.mix-bottom{min-width:0;}
+.dashed-sep{height:0;border-top:1.5px dashed var(--line);margin:12px 0;}
+
+/* 今日任务 · 每行圆角框 */
+.plan-list{list-style:none;padding:0;display:flex;flex-direction:column;gap:8px;font-size:14px;}
+.plan-list li{margin:0;padding:10px 12px;border-radius:13px;background:var(--glass);border:1px solid var(--line);transition:.15s;}
+.plan-list li:hover{background:var(--panel);}
+.plan-list li label{font-size:14px;color:var(--text);margin:0;}
+.plan-list li.done{background:var(--panel);opacity:1;}
+.plan-list li.done label{text-decoration:line-through;opacity:.62;}
+
+/* 课程 · 圆环统计图 */
+.donut-wrap{display:flex;align-items:center;gap:14px;margin-top:10px;flex-wrap:wrap;}
+.donut-wrap svg{flex:0 0 auto;}
+.cd-legend-wrap{flex:1;min-width:130px;display:flex;flex-direction:column;gap:5px;}
+.cd-legend{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text);}
+.cd-dot{width:10px;height:10px;border-radius:50%;flex:0 0 10px;}
+
+/* 总课程计划表 */
+.cpt-line{display:flex;align-items:center;gap:6px;font-size:11.5px;margin:0;flex-wrap:wrap;}
+.li-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--pink);flex:0 0 7px;}
+.course-plan table td{font-size:11px;}
+
+/* 课程页 · 左右两栏 */
+.courses-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start;}
+.courses-left,.courses-right{min-width:0;}
+.courses-block h3{margin-top:2px;}
+@media(max-width:840px){.courses-grid{grid-template-columns:1fr;}}
+
+/* 知识点 · 每节直接输入 */
+.ls-no{flex:0 0 48px;font-size:11px;color:var(--sub);}
+.ls-note{flex:1;min-width:90px;font-size:11.5px;padding:6px 8px;margin:0;}
+.ls-done{flex:0 0 auto;margin:0;white-space:nowrap;}
+.ls-done.done{background:var(--pink);color:#fff;border-color:var(--pink);}
+
+/* 成长页 · 经验进度条 */
+.xp-bar{height:10px;border-radius:7px;background:var(--glass);overflow:hidden;margin-top:6px;border:1px solid var(--line);}
+.xp-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--pink),var(--primary));border-radius:7px;transition:width .4s;}
+
+/* 成长页 · 周报卡片 + 并排 */
+.growth-split{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start;}
+@media(max-width:840px){.growth-split{grid-template-columns:1fr;}}
+.wr-card{background:var(--glass);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin:8px 0;font-size:11.5px;color:var(--text);line-height:1.6;}
+.wr-card.cur{border-color:var(--pink);box-shadow:0 4px 14px rgba(255,133,170,0.18);}
+.wr-head{font-weight:400;color:var(--pink);font-size:12px;margin-bottom:5px;}
+
+/* 大爱心 + 弹跳 */
+.heart-layer{left:0;top:0;transform:none;width:100%;height:100%;}
+.heart-big{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);font-size:54px;animation:heartBig 1.55s ease-out forwards;pointer-events:none;z-index:8;text-shadow:0 4px 18px rgba(255,133,170,.55);}
+@keyframes heartBig{0%{opacity:0;transform:translate(-50%,-42%) scale(.4);}22%{opacity:1;transform:translate(-50%,-58%) scale(1.28);}48%{transform:translate(-50%,-66%) scale(1);}100%{opacity:0;transform:translate(-50%,-96%) scale(1.08);}}
+.mascot-wrap.bounce{animation:bounceAnim .62s ease;}
+@keyframes bounceAnim{0%,100%{transform:translateY(0) scale(1);}28%{transform:translateY(-15px) scale(1.08,0.94);}52%{transform:translateY(0) scale(0.96,1.06);}74%{transform:translateY(-6px) scale(1.02,0.98);}}
+
+/* 心情 / 状态 图标 */
+.mood-ic,.state-ic{display:inline-block;line-height:0;}
+.mood-ic img{width:54px;height:54px;object-fit:contain;}
+.state-ic img{width:28px;height:28px;object-fit:contain;}
+
+/* 等级说明弹窗 */
+.modal-mask{position:fixed;inset:0;background:rgba(45,28,38,0.45);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:80;align-items:center;justify-content:center;padding:16px;display:none;}
+.lv-pop{max-width:430px;width:100%;background:linear-gradient(160deg,rgba(255,255,255,0.62),rgba(255,255,255,0.28));backdrop-filter:blur(12px) saturate(150%);-webkit-backdrop-filter:blur(12px) saturate(150%);border:1px solid rgba(255,255,255,0.7);border-radius:22px;padding:18px;box-shadow:var(--shadow);}
+.lv-pop h3{margin:0 0 8px;font-size:15px;color:var(--pink);font-weight:300;}
+.lv-table{width:100%;border-collapse:collapse;font-size:11px;color:var(--text);}
+.lv-table th,.lv-table td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top;}
+.lv-table th{background:var(--glass);color:var(--sub);font-weight:300;}
+.lv-table td:first-child{white-space:nowrap;color:var(--pink);}
+
+/* 里程碑 · 已达成成就墙 */
+.ms-achieved{margin-bottom:10px;}
+.ms-ach-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+.ms-badge{font-size:10.5px;color:var(--pink);background:rgba(255,255,255,0.16);border:1px solid rgba(255,156,191,0.4);border-radius:16px;padding:3px 9px;}
+
+/* 跳舞页 · 分段 */
+.dance-sec{min-width:0;}
+.dance-sec h3{margin-top:2px;}
+
+/* 微创作 · 灵感便签（放大） */
+.inspo-note{background:linear-gradient(160deg,rgba(255,255,255,0.34),rgba(255,255,255,0.10));border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:14.5px;line-height:1.9;color:var(--text);margin-top:8px;}
+.inspo-note b{color:var(--pink);}
+.inspo-note .muted{font-size:11.5px;}
+
+/* 素材链接卡片 */
+.link-card a{color:var(--pink);text-decoration:none;word-break:break-all;font-size:12px;}
+.link-card a:hover{text-decoration:underline;}
+
+/* 复盘记录行 */
+.rv-line{font-size:12px;color:var(--text);margin:3px 0;}
+
+/* 快捷按钮图标 */
+.qbtn img{width:22px;height:22px;object-fit:contain;display:block;margin:0 auto 3px;}
+
+/* 按钮 · 白天模式贴合四色卡（浅色底 + 主题色文字） */
+.btn{background:linear-gradient(160deg,var(--bg2),var(--accent));color:var(--pink);border:1px solid rgba(255,255,255,0.7);border-radius:13px;padding:8px 14px;font-weight:300;font-size:12.5px;cursor:pointer;box-shadow:0 5px 14px rgba(180,130,150,0.14), inset 0 1px 0 rgba(255,255,255,0.6);transition:.15s;}
+.btn:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(180,130,150,0.22);}
+.btn:active{transform:scale(0.96);}
+.btn.ghost{background:var(--glass);color:var(--text);box-shadow:none;border:1px solid var(--line);}
+.btn.ghost:hover{background:var(--panel);transform:none;box-shadow:none;}
+.btn.on,.btn.ghost.on{background:var(--panel);color:var(--pink);border-color:var(--pink);box-shadow:0 4px 12px rgba(255,133,170,0.22);}
+
+/* 荧光笔打卡：半透明粉色盖在数字上（仅连续打卡点亮） */
+.cal-d.hi{color:var(--pink);}
+.cal-d.heat{background:rgba(255,133,170,0.32);color:var(--pink);font-weight:500;box-shadow:none;}
+
+/* ===== 夜间模式覆写 ===== */
+body.night{background:#2a1a26;background-image:none;}
+body.night .card,body.night .found-card,body.night .modal-box,body.night .haven-card,body.night .slime-box,body.night .wake-picker-box,body.night .lv-pop,body.night .slime-banner{background:rgba(28,18,30,0.5);}
+body.night .card::after,body.night .found-card::after,body.night .modal-box::after{display:none;}
+body.night .topbar,body.night #sidebar{background:rgba(28,18,30,0.42);}
+body.night h1,body.night h2,body.night h3,body.night h4,body.night h5,body.night b,body.night strong,
+body.night .card h3,body.night .found-name,body.night .course .ch .cn,body.night .today-head,
+body.night .mg-cell .mg-t,body.night .rev-sub,body.night .ms-cat .mc,body.night .mh,
+body.night .found-stage,body.night .wr-head,body.night .dance-sec h3,body.night .sw-title,
+body.night .hero-text h2,body.night .lv-pop h3,body.night .lvbadge .lvtxt,body.night .lvbadge .lvtxt .lvNum,
+body.night .xpNum,body.night .week-report b,body.night .dust-badge,body.night .tag,
+body.night .found-stats b,body.night .ov-item span,body.night .stepper span,body.night .mini-tree .mt-stage,
+body.night .rt .rt-stage,body.night .mood-edit,body.night .rev-line b,body.night .ms-badge,
+body.night .link-card a,body.night .lv-table td:first-child,body.night .inspo-note b,body.night .mood-opt.on small{color:#fff;}
+body.night .muted,body.night .av-name,body.night .side-foot,body.night .topbar .dt,body.night .cal-dow,
+body.night .state-opt small,body.night .mood-opt small,body.night .mg-m,body.night .month-block .mh,
+body.night .lvbadge .lvtxt .lvTitle,body.night .ring-label{color:rgba(255,255,255,0.72);}
+body.night .cal-d.hi,body.night .cal-d.heat{color:var(--pink);}
+body.night .btn{background:rgba(255,255,255,0.08);color:#fff;border-color:rgba(255,255,255,0.22);box-shadow:none;}
+body.night .btn:hover{background:rgba(255,255,255,0.14);}
+body.night .btn.ghost{background:rgba(255,255,255,0.05);color:#fff;}
+body.night .btn.on,body.night .btn.ghost.on{color:var(--pink);border-color:var(--pink);background:rgba(255,133,170,0.16);box-shadow:none;}
+body.night input,body.night textarea,body.night select{background:rgba(255,255,255,0.10);color:#fff;border-color:rgba(255,255,255,0.22);}
+body.night input::placeholder,body.night textarea::placeholder{color:rgba(255,255,255,0.4);}
+body.night .mood-opt.on,body.night .state-opt.on,body.night .day-chip.on,body.night .plan-tab.on,body.night .nav-item.on,body.night .mg-cell.on{color:var(--pink);}
+body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2px rgba(255,133,170,.35);}
+
 </style>
 </head>
 <body>
@@ -624,97 +765,93 @@ table.tt td input:focus{background:var(--panel);border-radius:6px;}
               <h2 id="heroTitle" onclick="editHomeNote()" title="点击编辑备注">今天也要对自己温柔一点~</h2>
               <div class="muted" id="heroSub">快速点点小啾啾，会冒小心心哦~</div>
             </div>
+            <div id="ringBox" class="ring-hero"></div>
             <div class="mini-cal">
               <div class="cal-head"><span class="muted" id="calTitle"></span></div>
               <div class="cal-grid cal-mini" id="calDow"></div>
               <div class="cal-grid cal-mini" id="calGrid" style="margin-top:2px;"></div>
               <div class="day-detail" id="dayDetail" style="display:none;"></div>
-              <div id="ringBox" style="margin-top:6px;"></div>
             </div>
           </div>
           <div class="quick-row">
-            <button class="qbtn" onclick="openWakePicker()">🌅 起床打卡</button>
-            <button class="qbtn" onclick="go('growth')">🌱 成长</button>
-            <button class="qbtn" onclick="go('courses')">📚 课程</button>
+            <button class="qbtn" onclick="openWakePicker()"><img id="qicWake" src="" alt="">起床打卡</button>
+            <button class="qbtn" onclick="go('growth')"><img id="qicGrowth" src="" alt="">成长</button>
+            <button class="qbtn" onclick="go('courses')"><img id="qicCourse" src="" alt="">课程</button>
           </div>
         </div>
 
         <div class="home-cols">
-          <div class="card compass-card">
-            <h3>🧭 状态罗盘</h3>
-            <div class="mood-row" id="moodRow"></div>
-            <div class="compass" id="compass"></div>
-            <div id="medBox"></div>
+          <div class="card mix-card">
+            <div class="mix-top">
+              <h3>🧭 状态罗盘</h3>
+              <div class="mood-row" id="moodRow"></div>
+              <div class="compass" id="compass"></div>
+              <div id="medBox"></div>
+            </div>
+            <div class="dashed-sep"></div>
+            <div class="mix-bottom">
+              <h3>✅ 今日任务</h3>
+              <div id="homePlan"></div>
+            </div>
           </div>
-          <div class="card plan-card">
+          <div class="card mix-card">
             <h3>📋 我的计划（年 / 月 / 周）</h3>
             <div id="homePlanPreview"></div>
-          </div>
-        </div>
-
-        <div class="home-cols">
-          <div class="card today-card">
-            <h3>✅ 今日任务</h3>
-            <div id="homePlan"></div>
-          </div>
-          <div class="card prog-card">
+            <div class="dashed-sep"></div>
             <h3>📊 课程进度</h3>
             <div id="overviewTop"></div>
+            <div id="courseDonut"></div>
           </div>
         </div>
-
-        <div class="wake-picker modal-mask" id="wakePicker" style="display:none;">
-          <div class="wake-picker-box">
-            <h3>🌅 几点起床？</h3>
-            <div class="wake-opts" id="wakeOpts"></div>
-            <div class="row" style="margin-top:8px;align-items:center;">
-              <input type="time" id="wakeCustom" style="flex:1;">
-              <button class="btn sm" onclick="pickWakeTime()">确定</button>
-              <button class="btn sm ghost" onclick="closeWakePicker()">取消</button>
-            </div>
-          </div>
-        </div>
-      </section>
+</section>
 
       <section class="panel" id="p-courses">
-        <div class="card">
-          <h3><img src="data:image/png;base64,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"> 课程合集</h3>
-          <p class="muted">总课程计划会自动安排每日进度，完成所有课程后对应知识树分支会点亮。</p>
-          <div class="row">
-            <button class="btn" onclick="showCourseForm()">＋ 添加课程</button>
-          </div>
-          <div id="courseFormBox" style="display:none;margin-top:10px;padding:10px;background:var(--glass);border-radius:12px;">
-            <div class="row">
-              <div><input id="newCname" placeholder="课程名"></div>
-              <div><input type="number" id="newCtotal" placeholder="总节数"></div>
+        <div class="courses-grid">
+          <div class="card courses-left">
+            <div class="courses-block">
+              <h3>📋 总课程计划表</h3>
+              <div id="coursePlanTable"></div>
             </div>
-            <label>关联根基分支</label>
-            <select id="newCbranch"><option value="">不关联</option><option value="造型-人体">造型 · 人体</option><option value="造型-头像">造型 · 头像</option><option value="光色-黑白灰">光色 · 黑白灰</option><option value="光色-配色">光色 · 配色</option><option value="光色-氛围">光色 · 氛围</option><option value="创作-叙事">创作 · 叙事</option><option value="创作-构图">创作 · 构图</option><option value="质感-材质">质感 · 材质</option><option value="质感-构成">质感 · 构成</option><option value="质感-技法">质感 · 技法</option></select>
-            <button class="btn sm" onclick="addCourseFromForm()">添加</button>
+            <div class="dashed-sep"></div>
+            <div class="courses-block">
+              <h3>📚 课程合集</h3>
+              <p class="muted">手动添加课程，点开可填写总节数 / 已完成 / 当前第几节 / 待补，以及每节知识点。</p>
+              <div class="row">
+                <button class="btn" onclick="showCourseForm()">＋ 添加课程</button>
+              </div>
+              <div id="courseFormBox" style="display:none;margin-top:10px;padding:10px;background:var(--glass);border-radius:12px;">
+                <div class="row">
+                  <div><input id="newCname" placeholder="课程名"></div>
+                  <div><input type="number" id="newCtotal" placeholder="总节数"></div>
+                </div>
+                <label>关联根基分支</label>
+                <select id="newCbranch"><option value="">不关联</option></select>
+                <button class="btn sm" onclick="addCourseFromForm()">添加</button>
+              </div>
+              <div id="courseStats" style="margin-top:12px;"></div>
+              <div id="courseList"></div>
+            </div>
           </div>
-          <div id="courseStats" style="margin-top:12px;"></div>
-          <div id="courseList"></div>
-        </div>
-        <div class="card pressure">
-          <h3>📋 总课程计划表</h3>
-          <div id="coursePlanTable"></div>
-        </div>
-        <div class="card">
-          <h3>🌟 未来想报课程</h3>
-          <p class="muted">想学但还没开始的，先收在这里~</p>
-          <div class="row">
-            <input id="futureName" placeholder="课程名（如：角色设计进阶）">
-            <button class="btn sm" onclick="addFutureCourse()">＋ 收下</button>
+          <div class="card courses-right">
+            <div class="courses-block">
+              <h3>🌟 未来想报课程</h3>
+              <p class="muted">想学但还没开始的，先收在这里~</p>
+              <div class="row">
+                <input id="futureName" placeholder="课程名（如：角色设计进阶）">
+                <button class="btn sm" onclick="addFutureCourse()">＋ 收下</button>
+              </div>
+              <div id="futureList"></div>
+            </div>
+            <div class="dashed-sep"></div>
+            <div class="courses-block release-section">
+              <h3>🕊️ 已释怀 · 放生仪式</h3>
+              <p class="muted">超过 7 天未完成的任务/课程/计划会温柔地提醒到这里。放生不扣分，反而获得 1 颗断舍离星尘；收进来随时可以「回归」，永不清除。</p>
+              <div class="dust-badge" id="dustBadge">✨ 断舍离星尘 0</div>
+              <div id="releasedList"></div>
+            </div>
           </div>
-          <div id="futureList"></div>
         </div>
-        <div class="card release-section">
-          <h3>🕊️ 已释怀 · 放生仪式</h3>
-          <p class="muted">超过 7 天未完成的任务/课程/计划会温柔地提醒到这里。放生不扣分，反而获得 1 颗断舍离星尘；收进来随时可以「回归」，永不清除。</p>
-          <div class="dust-badge" id="dustBadge">✨ 断舍离星尘 0</div>
-          <div id="releasedList"></div>
-        </div>
-      </section>
+      
 
       <section class="panel" id="p-micro">
         <div class="card">
@@ -744,25 +881,21 @@ table.tt td input:focus{background:var(--panel);border-radius:6px;}
           </div>
         </div>
         <div class="card">
-          <h3>🖼 素材与梦境</h3>
+          <h3>🗂 素材与灵感</h3>
           <div class="row" style="gap:6px;">
             <button class="btn sm ghost" id="inspoTabMaterial" onclick="switchInspo('material')">🗂 素材</button>
-            <button class="btn sm ghost" id="inspoTabDream" onclick="switchInspo('dream')">🌙 梦境 / 随手记</button>
+            <button class="btn sm ghost" id="inspoTabDream" onclick="switchInspo('dream')">💭 随手记</button>
           </div>
-          <div class="row" style="margin-top:8px;">
+          <div class="row" style="margin-top:8px;flex-wrap:wrap;">
             <input type="file" accept="image/*" multiple id="inspoUp" style="display:none;" onchange="uploadInspo(this)">
-            <button class="btn sm" onclick="document.getElementById('inspoUp').click()">＋ 上传</button>
-            <input id="inspoText" placeholder="写一句随手记…">
+            <button class="btn sm" onclick="document.getElementById('inspoUp').click()">＋ 上传图片</button>
+            <a href="gallery.html" class="btn sm" style="text-decoration:none;">📂 我的图库（新页面）</a>
+            <input id="inspoLink" placeholder="贴素材链接（小红书/网盘/图库网址）…" style="flex:1;min-width:180px;">
+            <button class="btn sm ghost" onclick="addInspoLink()">＋ 存链接</button>
+            <input id="inspoText" placeholder="写一句随手记…" style="flex:1;min-width:180px;">
             <button class="btn sm ghost" onclick="addInspoText()">记下</button>
           </div>
           <div id="inspoBox" style="margin-top:8px;"></div>
-        </div>
-        <div class="card">
-          <h3>🌙 梦境灵感萃取 & 色块平铺</h3>
-          <div id="havenDream" class="muted" style="min-height:44px;padding:8px 0;">点击下面按钮，萃一个梦~</div>
-          <div class="row"><button class="btn sm" onclick="extractDream()">🌙 萃取灵感</button></div>
-          <div class="swatch-row" id="havenSwatches"></div>
-          <div class="row" style="margin-top:10px;"><button class="btn sm ghost" onclick="rollSwatches()">🎲 换一组色块</button></div>
         </div>
       </section>
 
@@ -805,10 +938,18 @@ table.tt td input:focus{background:var(--panel);border-radius:6px;}
             </div>
           </div>
         </div>
-        <div class="card">
-          <h3>🏆 里程碑</h3>
-          <p class="muted">达成条件后自动点亮，不用手动打卡~</p>
-          <div id="msList"></div>
+        <div class="growth-split">
+          <div class="card">
+            <h3>📊 每周周报</h3>
+            <p class="muted">每周自动生成小结，不用你写~</p>
+            <div class="row"><button class="btn sm" onclick="genWeekReport()">📊 生成本周周报</button></div>
+            <div id="weekReportBox" style="margin-top:8px;"></div>
+          </div>
+          <div class="card">
+            <h3>🏆 里程碑</h3>
+            <p class="muted">达成条件后自动点亮，不用手动打卡~</p>
+            <div id="msList"></div>
+          </div>
         </div>
       </section>
 
@@ -1096,8 +1237,19 @@ function migrateFound(){
   const map = {
     '造型-抓型':'造型-人体','造型-透视':'造型-头像','结构-人体':'造型-人体','结构-头像':'造型-头像',
     '光影-黑白灰':'光色-黑白灰','色彩-配色':'光色-配色','色彩-氛围':'光色-氛围',
-    '光影':'光色-黑白灰','色彩':'光色-配色'
+    '光影':'光色-黑白灰','色彩':'光色-配色',
+    '创作-叙事':'创作-构图叙事','创作-构图':'创作-构图叙事'
   };
+  // 质感-构成 已删除：把它的数据并入 质感-材质
+  if(S.found['质感-构成']){
+    const t = S.found['质感-材质'] || {works:0,days:{},light:false};
+    t.works = (t.works||0) + (S.found['质感-构成'].works||0);
+    if(!t.days) t.days={};
+    Object.assign(t.days, S.found['质感-构成'].days||{});
+    t.light = t.light || !!S.found['质感-构成'].light;
+    S.found['质感-材质'] = t;
+    delete S.found['质感-构成'];
+  }
   Object.keys(map).forEach(k=>{
     if(S.found[k]){
       const t = S.found[map[k]] || {works:0,days:{},light:false};
@@ -1124,10 +1276,16 @@ function addXp(n){
   save(); updateLevelUI();
 }
 function levelInfo(lv){
-  const stages = [{max:10,name:'基础夯实期'},{max:30,name:'技法熟练期'},{max:50,name:'创作成熟期'},{max:70,name:'高阶提升期'},{max:100,name:'全能顶尖期'}];
+  const stages = [
+    {max:10,name:'绘画基础夯实期',goal:'可独立完成完整单人原创稿件'},
+    {max:30,name:'技法熟练期',goal:'绘画失误极少，画面完整度稳定'},
+    {max:50,name:'创作成熟期',goal:'拥有稳定绘画风格，完整作品质量统一'},
+    {max:70,name:'高阶提升期',goal:'作品辨识度高'},
+    {max:100,name:'全能顶尖期',goal:'绘画综合能力完全成熟，达到职业入门水平'}
+  ];
   const titles = ['涂鸦小鸡','铅笔宝宝','线条萌芽','速写幼苗','色彩学徒','结构新手','透视探索者','人体练习生','头像见习生','光影感知者','素描小能手','色调学徒','造型新星','动态捕捉者','比例达人','明暗掌控者','配色练习生','构图入门者','人体进阶者','头像塑造者','创作新手','sketch大师预备','色彩魔法师','光影织梦者','结构建筑师','透视导航员','人体工程师','头像雕刻家','故事讲述者','视觉诗人','技法熟练者','风格探索者','情绪表达者','角色设计师','场景绘手','色彩指挥官','光影导演','结构专家','透视大师','人体解剖师','头像肖像家','全能画手','顶尖创作者'];
-  let st; for(const s of stages){ if(lv <= s.max){ st = s.name; break; } }
-  return {stage:st||'全能顶尖期', title:titles[Math.min(lv-1, titles.length-1)]||'未知等级'};
+  let st, sg; for(const s of stages){ if(lv <= s.max){ st = s.name; sg = s.goal; break; } }
+  return {stage:st||'全能顶尖期', goal:sg||'', title:titles[Math.min(lv-1, titles.length-1)]||'未知等级'};
 }
 function lvTitle(lv){ return levelInfo(lv).title; }
 function updateLevelUI(){
@@ -1141,10 +1299,10 @@ function updateLevelUI(){
 const FOUNDATIONS = [
   {k:'造型', icon:'✏️', sub:['人体','头像']},
   {k:'光色', icon:'🌗', sub:['黑白灰','配色','氛围']},
-  {k:'创作', icon:'🖼️', sub:['叙事','构图']},
-  {k:'质感', icon:'🧩', sub:['材质','构成','技法']}
+  {k:'创作', icon:'🖼️', sub:['构图叙事']},
+  {k:'质感', icon:'🧩', sub:['材质','技法']}
 ];
-const FOUND_ALIAS = {'结构-人体':'造型-人体','结构-头像':'造型-头像','人体':'造型-人体','头像':'造型-头像','抓型':'造型-人体','透视':'造型-头像','素描':'光色-黑白灰','光影':'光色-黑白灰','黑白灰':'光色-黑白灰','配色':'光色-配色','氛围':'光色-氛围','色彩':'光色-配色','材质':'质感-材质','构成':'质感-构成','技法':'质感-技法','叙事':'创作-叙事','构图':'创作-构图'};
+const FOUND_ALIAS = {'结构-人体':'造型-人体','结构-头像':'造型-头像','人体':'造型-人体','头像':'造型-头像','抓型':'造型-人体','透视':'造型-头像','素描':'光色-黑白灰','光影':'光色-黑白灰','黑白灰':'光色-黑白灰','配色':'光色-配色','氛围':'光色-氛围','色彩':'光色-配色','材质':'质感-材质','技法':'质感-技法','叙事':'创作-构图叙事','构图':'创作-构图叙事','构图叙事':'创作-构图叙事'};
 function foundKey(k){
   if(!k) return null;
   k = String(k).trim();
@@ -1391,37 +1549,8 @@ function closeSlimeOverlay(){
   if(m) m.classList.remove('on');
 }
 function enterHaven(){ closeSlimeOverlay(); go('micro'); }
-const DREAM_POOL = ['一个在云朵上画画的下午','雨后的窗台与一杯热牛奶','迷路的蜗牛背着彩虹壳','深夜便利店的暖黄色灯光','会发光的蘑菇小人','很久以前的一封没寄出的信','海浪把心事冲成贝壳','一只猫在画布上踩出脚印','月亮背面藏着的花园','旧照片里模糊的笑容'];
-function renderHaven(){
-  const box = document.getElementById('havenInner');
-  if(!box) return;
-  box.innerHTML =
-    '<div class="haven-wrap">'+
-      '<div class="haven-card"><h3>🌙 梦境灵感萃取</h3><p class="muted">从潜意识里捞一个小灵感。不评判，不执行，收下就好。</p>'+
-        '<div id="havenDream" class="muted" style="min-height:44px;padding:8px 0;">点击下面按钮，萃一个梦~</div>'+
-        '<div class="row"><button class="btn sm" onclick="extractDream()">🌙 萃取灵感</button></div>'+
-      '</div>'+
-      '<div class="haven-card"><h3>🟥 色块平铺练习</h3><p class="muted">随便点几个色块，喜欢的颜色点一下就能复制。不需要画完，铺开就是练习。</p>'+
-        '<div class="swatch-row" id="havenSwatches"></div>'+
-        '<div class="row" style="margin-top:10px;"><button class="btn sm ghost" onclick="rollSwatches()">🎲 换一组色块</button></div>'+
-      '</div>'+
-    '</div>';
-  rollSwatches();
-}
-function extractDream(){
-  const t = DREAM_POOL[Math.floor(Math.random()*DREAM_POOL.length)];
-  const el = document.getElementById('havenDream');
-  if(el) el.textContent = '✨ '+t;
-  haptic();
-}
-function rollSwatches(){
-  const box = document.getElementById('havenSwatches');
-  if(!box) return;
-  const pastel = ()=>{ const h=Math.floor(Math.random()*360); return 'hsl('+h+',72%,82%)'; };
-  const list = [];
-  for(let i=0;i<8;i++) list.push(pastel());
-  box.innerHTML = list.map(c=>'<div class="swatch" style="background:'+c+';" data-c="'+c+'" onclick="copyColor(this.dataset.c)" title="'+c+'"></div>').join('');
-}
+
+
 function copyColor(c){
   if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(c).catch(()=>{});
   toast('已复制色值 '+c);
@@ -1707,7 +1836,28 @@ function applyTheme(){
 function applyNight(){
   const wants = S.nightMode==='on' || (S.nightMode==='auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
   document.body.classList.toggle('night', wants);
-  document.getElementById('nightMode').value = S.nightMode;
+  const r = document.documentElement.style;
+  const t = THEMES[parseInt(S.theme)||0];
+  if(wants){
+    r.setProperty('--text','#ffffff');
+    r.setProperty('--sub','rgba(255,255,255,0.72)');
+    r.setProperty('--panel','rgba(28,18,30,0.42)');
+    r.setProperty('--card','rgba(28,18,30,0.25)');
+    r.setProperty('--glass','rgba(255,255,255,0.08)');
+    r.setProperty('--line','rgba(255,255,255,0.20)');
+    r.setProperty('--shadow','0 14px 40px rgba(0,0,0,0.4)');
+    r.setProperty('--bg1','#2a1a26');
+    r.setProperty('--bg2','#351f30');
+  } else {
+    r.setProperty('--text', t.text);
+    r.setProperty('--sub', t.sub);
+    r.setProperty('--panel','rgba(255,255,255,0.40)');
+    r.setProperty('--card','rgba(255,255,255,0.20)');
+    r.setProperty('--glass','rgba(255,255,255,0.10)');
+    r.setProperty('--line','rgba(255,255,255,0.52)');
+    r.setProperty('--shadow','0 14px 40px rgba(180,130,150,0.16)');
+  }
+  const nm=document.getElementById('nightMode'); if(nm) nm.value=S.nightMode;
 }
 function setNight(v){ S.nightMode=v; save(); applyNight(); haptic(); }
 function applyBg(){
@@ -1739,12 +1889,14 @@ function renderHome(){
   if(!mascot._heartBound){
     mascot._heartBound=true;
     let h0=0,hc=0;
-    const tap=()=>{ const n=Date.now(); if(n-h0<1400) hc++; else hc=1; h0=n; if(hc>=3){ hc=0; spawnHearts(mascot); haptic(); } };
+    const tap=()=>{ const n=Date.now(); if(n-h0<1400) hc++; else hc=1; h0=n; if(hc>=3){ hc=0; bigHeartBounce(mascot); haptic(); } };
     mascot.addEventListener('click', tap);
     mascot.addEventListener('touchend', tap, {passive:true});
   }
   document.getElementById('avImg').src = S.customAvatar || IMG.mascot1;
   document.getElementById('statusIc').src = d.checkin ? IMG.statusHead2 : IMG.statusHead1;
+  const qw=document.getElementById('qicWake'), qg=document.getElementById('qicGrowth'), qc=document.getElementById('qicCourse');
+  if(qw) qw.src = IMG.navWake; if(qg) qg.src = IMG.navGrowth; if(qc) qc.src = IMG.navCourse;
   showBubble(randomBubble());
   renderCompass();
   renderHomePlan();
@@ -1753,21 +1905,25 @@ function renderHome(){
   renderCalendar();
   renderRing();
   renderOverview();
+  renderCourseDonut();
   renderHomePlanPreview();
   updateLevelUI();
 }
-function spawnHearts(mascot){
+function spawnHearts(mascot){ bigHeartBounce(mascot); }
+function bigHeartBounce(mascot){
   const layer = document.getElementById('heartLayer');
-  if(!layer) return;
-  const emojis = ['❤️','💗','💖','💕','✨'];
-  for(let i=0;i<5;i++){
+  if(layer){
     const sp = document.createElement('span');
-    sp.className='heart-pop';
-    sp.textContent = emojis[Math.floor(Math.random()*emojis.length)];
-    sp.style.left = (20+Math.random()*60)+'%';
-    sp.style.animationDelay = (i*0.12)+'s';
+    sp.className='heart-big';
+    sp.textContent='❤️';
     layer.appendChild(sp);
     setTimeout(()=>sp.remove(), 1700);
+  }
+  if(mascot){
+    mascot.classList.remove('bounce');
+    void mascot.offsetWidth;
+    mascot.classList.add('bounce');
+    setTimeout(()=>mascot.classList.remove('bounce'), 650);
   }
 }
 function showBubble(text){
@@ -1818,12 +1974,12 @@ function randomBubble(){
 function renderCompass(){
   const d = ensureToday();
   const box = document.getElementById('compass');
-  const icons = {high:'⚡', normal:'😊', low:'🔋', down:'🌙'};
+  const ic = {high:'stateHigh', normal:'stateNormal', low:'stateLow', down:'stateDown'};
   let html='';
   for(const k of ['high','normal','low','down']){
     const on = d.state===k ? ' on':'';
     html += '<div class="state-opt'+on+'" onclick="setState(\''+k+'\')">';
-    html += '<span class="state-ic-emoji">'+icons[k]+'</span><small>'+STATE_MAP[k]+'</small></div>';
+    html += '<span class="state-ic"><img src="'+IMG[ic[k]]+'" alt=""></span><small>'+STATE_MAP[k]+'</small></div>';
   }
   box.innerHTML = html;
 }
@@ -1897,7 +2053,7 @@ function renderMoodRow(){
   MOODS.forEach((m,i)=>{
     const on = d.mood===m.k?' on':'';
     html += '<div class="mood-opt'+on+'" onclick="setMood(\''+m.k+'\')">';
-    html += '<span class="state-ic-emoji">'+(MOOD_EMOJI[m.k]||'')+'</span><small>'+m.n+'</small></div>';
+    html += '<span class="mood-ic"><img src="'+IMG['mood'+m.k[0].toUpperCase()+m.k.slice(1)]+'" alt=""></span><small>'+m.n+'</small></div>';
   });
   document.getElementById('moodRow').innerHTML = html;
 }
@@ -1931,20 +2087,37 @@ function renderCalendar(){
 }
 function renderRing(){
   const box = document.getElementById('ringBox'); if(!box) return;
-  const total = FOUNDATIONS.reduce((a,b)=>a+rootWorks(b),0);
-  const stage = foundStage(total);
-  const bounds = stage==='萌芽'?80:(stage==='展叶'?80:0);
-  const base = stage==='萌芽'?0:(stage==='展叶'?80:160);
-  const pct = bounds>0 ? Math.min(100, Math.round((total-base)/bounds*100)) : 100;
-  const R = 26, C = 2*Math.PI*R;
+  const info = levelInfo(S.level);
+  const pct = Math.max(0, Math.min(100, Math.round(((S.xp||0)%100)/100*100)));
+  const R = 32, C = 2*Math.PI*R;
   const off = C*(1-pct/100);
-  const label = stage==='开花' ? '四根基已满级 🌸' : (stage==='萌芽'?'再 '+Math.max(0,80-total)+' 枝芽 → 展叶':'再 '+Math.max(0,160-total)+' 枝芽 → 开花');
-  box.innerHTML = '<div class="ring-wrap"><svg width="74" height="74" viewBox="0 0 74 74">'+
-    '<circle cx="37" cy="37" r="'+R+'" fill="none" stroke="rgba(150,150,150,0.18)" stroke-width="7"/>'+
-    '<circle cx="37" cy="37" r="'+R+'" fill="none" stroke="var(--pink)" stroke-width="7" stroke-linecap="round" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'" transform="rotate(-90 37 37)"/>'+
-    '<text x="37" y="33" text-anchor="middle" font-size="11" fill="var(--text)">'+stage+'</text>'+
-    '<text x="37" y="47" text-anchor="middle" font-size="8" fill="var(--sub)">'+total+'🌱</text>'+
-    '</svg><div class="ring-label">'+label+'</div></div>';
+  box.innerHTML = '<div class="ring-wrap-lg" onclick="showLevelInfo()" title="点击查看等级说明">'+
+    '<svg width="100" height="100" viewBox="0 0 100 100">'+
+    '<circle cx="50" cy="50" r="'+R+'" fill="none" stroke="rgba(150,150,150,0.18)" stroke-width="8"/>'+
+    '<circle cx="50" cy="50" r="'+R+'" fill="none" stroke="var(--pink)" stroke-width="8" stroke-linecap="round" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'" transform="rotate(-90 50 50)"/>'+
+    '<text x="50" y="46" text-anchor="middle" font-size="18" font-weight="700" fill="var(--text)">Lv'+S.level+'</text>'+
+    '<text x="50" y="63" text-anchor="middle" font-size="9.5" fill="var(--sub)">'+info.stage.slice(0,5)+'</text>'+
+    '</svg>'+
+    '<div class="ring-label">'+info.title+' · '+S.xp+'/100</div></div>';
+}
+function closeLvPop(){ const m=document.querySelector('.lv-pop'); if(m) m.closest('.modal-mask').remove(); }
+function showLevelInfo(){
+  const rows = [
+    ['Lv1–10','0–1000 经验','绘画基础夯实期','可独立完成完整单人原创稿件'],
+    ['Lv11–30','1001–3000 经验','技法熟练期','绘画失误极少，画面完整度稳定'],
+    ['Lv31–50','3001–5000 经验','创作成熟期','拥有稳定绘画风格，完整作品质量统一'],
+    ['Lv51–70','5001–7000 经验','高阶提升期','作品辨识度高'],
+    ['Lv71–100','7001–10000 经验','全能顶尖期','绘画综合能力完全成熟，达到职业入门水平']
+  ];
+  const cur = levelInfo(S.level);
+  let h = '<div class="modal-mask" onclick="this.remove()" style="display:flex;"><div class="lv-pop" onclick="event.stopPropagation()">';
+  h += '<h3>⭐ 等级制度 · 当前 Lv'+S.level+'（'+cur.stage+'）</h3>';
+  h += '<p class="muted" style="font-size:11px;margin:4px 0 10px;">每级 100 经验，经验来自课程、创作、打卡。</p>';
+  h += '<table class="lv-table"><tr><th>等级</th><th>经验</th><th>阶段</th><th>达标要求</th></tr>';
+  rows.forEach(r=>{ h += '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td></tr>'; });
+  h += '</table><div class="row" style="margin-top:10px;"><button class="btn sm" onclick="closeLvPop()">知道了</button></div>';
+  h += '</div></div>';
+  document.body.insertAdjacentHTML('beforeend', h);
 }
 function showDayDetail(ds){
   const d = S.days[ds]; const el = document.getElementById('dayDetail');
@@ -1957,6 +2130,39 @@ function showDayDetail(ds){
   if(d.microCount) html += '· 创作 '+d.microCount+'张 ';
   el.innerHTML = html; el.style.display='block';
 }
+
+const COURSE_COLORS = ['#8fdcc6','#f6abd3','#9ab6ef','#f6c177','#b6a5e7','#8fd0e8','#f2a7a7','#a8d8a0'];
+function renderCourseDonut(){
+  const box = document.getElementById('courseDonut'); if(!box) return;
+  const courses = S.courses||[];
+  if(courses.length===0){ box.innerHTML='<div class="muted" style="font-size:11px;margin-top:8px;">添加课程后，这里会显示各课程的学习占比~</div>'; return; }
+  const total = courses.reduce((a,c)=>a+Math.max(0,(c.current||0)),0);
+  const R=40, C=2*Math.PI*R;
+  let acc=0, segs='';
+  courses.forEach((c,i)=>{
+    const v = Math.max(0,(c.current||0));
+    if(total>0 && v>0){
+      const frac = v/total;
+      const a0 = acc*C, a1 = (acc+frac)*C;
+      segs += '<circle cx="50" cy="50" r="'+R+'" fill="none" stroke="'+COURSE_COLORS[i%COURSE_COLORS.length]+'" stroke-width="14" stroke-dasharray="'+a1.toFixed(1)+' '+C.toFixed(1)+'" stroke-dashoffset="'+(-a0).toFixed(1)+'" transform="rotate(-90 50 50)"/>';
+      acc += frac;
+    }
+  });
+  let legend = courses.map((c,i)=>{
+    const v = Math.max(0,(c.current||0));
+    const pct = total>0?Math.round(v/total*100):0;
+    return '<div class="cd-legend"><span class="cd-dot" style="background:'+COURSE_COLORS[i%COURSE_COLORS.length]+'"></span>'+esc(c.name)+' <span class="muted">'+pct+'%</span></div>';
+  }).join('');
+  box.innerHTML = '<div class="donut-wrap"><svg width="118" height="118" viewBox="0 0 100 100">'+
+    '<circle cx="50" cy="50" r="'+R+'" fill="none" stroke="rgba(150,150,150,0.15)" stroke-width="14"/>'+
+    segs+
+    '<text x="50" y="47" text-anchor="middle" font-size="13" font-weight="700" fill="var(--text)">'+(total||0)+'</text>'+
+    '<text x="50" y="60" text-anchor="middle" font-size="8" fill="var(--sub)">已完成节</text>'+
+    '</svg><div class="cd-legend-wrap">'+legend+'</div></div>';
+}
+
+
+
 function renderOverview(){
   const totalCourse = S.courses.reduce((a,c)=>a+(c.total||0),0);
   const doneCourse = S.courses.reduce((a,c)=>a+(c.current||0),0);
@@ -1973,13 +2179,13 @@ function renderHomePlanPreview(){
   if(!box) return;
   if(!S.planTab) S.planTab='week';
   const now = new Date();
-  const weekNo = isoWeek(now);
+  const weekNo = monthWeekNum(now);
   let h = '<div class="plan-tabs">';
   [['year','年'],['month','月'],['week','周'],['report','周报']].forEach(t=>{
     h += '<button class="btn sm ghost'+(S.planTab===t[0]?' on':'')+'" onclick="setPlanTab(\''+t[0]+'\')">'+t[1]+'</button>';
   });
   h += '</div>';
-  h += '<div class="muted" style="font-size:11px;margin:6px 0;">当前：'+now.getFullYear()+'年'+(now.getMonth()+1)+'月 · 第'+weekNo+'周</div>';
+  h += '<div class="muted" style="font-size:11px;margin:6px 0;">当前：'+now.getFullYear()+'年'+(now.getMonth()+1)+'月 · 第'+weekNo+'周（周一起始）</div>';
   if(S.planTab==='year') h += planYearHtml();
   else if(S.planTab==='month'){ h += planMonthHtml(); }
   else if(S.planTab==='week') h += planWeekHtml();
@@ -1994,6 +2200,12 @@ function isoWeek(d){
   date.setUTCDate(date.getUTCDate() + 4 - dayNum);
   const yearStart = new Date(Date.UTC(date.getUTCFullYear(),0,1));
   return Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+}
+function monthWeekNum(d){
+  const y=d.getFullYear(), m=d.getMonth();
+  const first=new Date(y,m,1);
+  const firstMon = (first.getDay()+6)%7; // 周一=0
+  return Math.floor((d.getDate()-1+firstMon)/7)+1;
 }
 function setPlanTab(t){ S.planTab=t; save(); renderHomePlanPreview(); haptic(); }
 function planYearHtml(){
@@ -2059,6 +2271,7 @@ function genWeekReport(){
   S.weekReports.unshift({week:weekKey, ts:Date.now(), html});
   if(S.weekReports.length>52) S.weekReports.length=52;
   save(); renderHomePlanPreview(); renderReleased();
+  renderWeekReports();
 }
 function releasePlanItem(scope, key){
   let label='', text='';
@@ -2140,12 +2353,9 @@ function renderCourses(){
     html += '<div class="pbar"><i style="width:'+pct+'%"></i></div>';
     html += '<div class="course-body" id="cb-'+idx+'" style="display:none;"><div class="course-form">';
     html += '<label>课程名</label><input id="cname-'+idx+'" value="'+esc(c.name)+'">';
-    html += '<div class="row"><div><label>总节数</label><input type="number" id="ctotal-'+idx+'" value="'+(c.total||0)+'"></div><div><label>已完成</label><input type="number" id="ccur-'+idx+'" value="'+(c.current||0)+'"></div><div><label>当前第几节</label><input type="number" id="cnow-'+idx+'" value="'+(c.now||c.current||1)+'"></div></div>';
+    html += '<div class="row"><div><label>总节数</label><input type="number" id="ctotal-'+idx+'" value="'+(c.total||0)+'"></div><div><label>已完成</label><input type="number" id="ccur-'+idx+'" value="'+(c.current||0)+'"></div><div><label>当前第几节</label><input type="number" id="cnow-'+idx+'" value="'+(c.now||c.current||1)+'"></div><div><label>待补</label><input type="number" id="ctodo-'+idx+'" value="'+(c.todo!=null?c.todo:Math.max(0,(c.total||0)-(c.current||0)))+'" placeholder="手动填"></div></div>';
     html += '<label>关联根基分支</label><select id="cbranch-'+idx+'"><option value="">不关联</option>'+knowOptions(c.branch)+'</select>';
-    html += '<label>🖼 图片入口链接（图片存你自己的相册/网盘/APP，这里放链接，点一下跳过去看）</label>';
-    html += '<div class="row"><input id="clink-'+idx+'" placeholder="https://… 粘贴你的图片 APP 链接" value="'+esc(c.link||'')+'"><button class="btn sm ghost" onclick="saveCourseLink('+idx+')">保存链接</button></div>';
-    if(c.link) html += '<div class="row" style="margin-top:6px;"><button class="btn sm" onclick="openCourseLink('+idx+')">📷 打开图片（跳转 APP）</button></div>';
-    html += '<label>📌 知识点小点（点圆点，给这一节写一句总结）</label>';
+    html += '<label>📌 知识点（每节直接输入，离开输入框自动保存）</label>';
     html += lessonDotsStr(c, idx);
     html += '<div class="row"><button class="btn sm" onclick="saveCourseInline('+idx+')">保存</button>'+
       (stalled
@@ -2174,15 +2384,23 @@ function lessonDotsStr(c, idx){
   let h = '<div class="lesson-grid">';
   for(let n=1;n<=total;n++){
     const done = n <= (c.current||0);
-    const hasNote = c.kpts && c.kpts[''+n];
+    const note = (c.kpts && c.kpts[''+n]) || '';
     h += '<div class="lesson-row">';
     h += '<span class="ls-no">第'+n+'节</span>';
-    h += '<span class="ls-dot'+(hasNote?' on':'')+'" title="'+(hasNote?esc(hasNote):'点这里记这一节的知识点')+'" onclick="editLessonNote('+idx+','+n+')">'+(hasNote?'●':'○')+'</span>';
+    h += '<input class="ls-note" placeholder="知识点，直接输入自动保存" value="'+esc(note)+'" onchange="saveKpInline('+idx+','+n+',this.value)">';
     h += '<button class="btn sm ghost ls-done'+(done?' done':'')+'" onclick="completeLesson('+idx+','+n+')">'+(done?'✓ 已完成':'✓ 完成此节')+'</button>';
     h += '</div>';
   }
   h += '</div>';
   return h;
+}
+function saveKpInline(idx, n, val){
+  const c = S.courses[idx]; if(!c) return;
+  if(!c.kpts) c.kpts = {};
+  const v = (val||'').trim();
+  if(v==='') delete c.kpts[''+n]; else c.kpts[''+n]=v;
+  c.updatedAt = Date.now(); save();
+  toast('第'+n+'节知识点已保存~');
 }
 function completeLesson(idx, n){
   const c = S.courses[idx]; if(!c) return;
@@ -2198,26 +2416,7 @@ function completeLesson(idx, n){
   toast('第'+n+'节完成，进度 +1'+(branchName?'，「'+branchName+'」根基 +1 枝芽~':'~'));
   showPraise('course');
 }
-function editLessonNote(idx, n){
-  const c = S.courses[idx]; if(!c) return;
-  if(!c.kpts) c.kpts = {};
-  const cur = c.kpts[''+n]||'';
-  const t = prompt('第'+n+'节 知识点总结：', cur);
-  if(t===null) return;
-  if(t.trim()==='') delete c.kpts[''+n]; else c.kpts[''+n]=t.trim();
-  c.updatedAt = Date.now();
-  save(); renderCourses(); toast('第'+n+'节知识点已保存~');
-}
-function saveCourseLink(idx){
-  const c = S.courses[idx]; if(!c) return;
-  c.link = document.getElementById('clink-'+idx).value.trim();
-  c.updatedAt = Date.now();
-  save(); renderCourses(); toast('图片入口链接已保存~');
-}
-function openCourseLink(idx){
-  const c = S.courses[idx]; if(!c || !c.link) return;
-  window.open(c.link, '_blank');
-}
+
 function renderFutureCourses(){
   const box = document.getElementById('futureList');
   if(!box) return;
@@ -2246,19 +2445,16 @@ function knowOptions(selected){
 function renderCoursePlanTable(){
   const total = S.courses.reduce((a,c)=>a+(c.total||0),0);
   const done = S.courses.reduce((a,c)=>a+(c.current||0),0);
-  const remain = total - done;
-  const cap = getStateCapacity();
-  const estDays = cap.course>0 ? Math.ceil(remain/cap.course) : '-';
+  const remain = S.courses.reduce((a,c)=>a+(c.todo!=null?c.todo:Math.max(0,(c.total||0)-(c.current||0))),0);
   let html = '<div class="course-plan">';
-  html += '<p><b>总课程：</b>'+S.courses.length+' 门 · '+done+'/'+total+' 节 · 剩余 '+remain+' 节</p>';
-  html += '<p><b>当前状态每日建议：</b>跟画 '+cap.course+' 节 · 创作 '+cap.create+' 张 · 跳舞 '+cap.dance+' 次</p>';
-  html += '<p><b>预计完成全部课程：</b>'+(estDays==='-'?'—':('约 '+estDays+' 天后'))+'</p>';
-  html += '<p><b>今日推荐课程：</b>'+dailyCourseSuggestion()+'</p>';
+  html += '<p class="cpt-line"><span class="li-dot"></span><b>总课程：</b>'+S.courses.length+' 门 · 已完成 '+done+' / '+total+' 节 · 待补 '+remain+' 节</p>';
   html += '</div>';
-  html += '<table style="width:100%;font-size:11px;margin-top:8px;border-collapse:collapse;">';
-  html += '<tr style="color:var(--sub);"><td>课程</td><td>进度</td><td>待补</td><td>关联分支</td></tr>';
+  html += '<table style="width:100%;font-size:11.5px;margin-top:8px;border-collapse:collapse;">';
+  html += '<tr style="color:var(--sub);"><td style="width:14px;"></td><td>课程</td><td style="width:34%;">进度</td><td>待补</td><td>关联分支</td></tr>';
   S.courses.forEach(c=>{
-    html += '<tr><td>'+c.name+'</td><td>'+c.current+'/'+c.total+'</td><td>'+(c.total-c.current)+'</td><td>'+(c.branch||'—')+'</td></tr>';
+    const cpct = Math.min(100, Math.round(((c.current||0)/Math.max(1,c.total||1))*100));
+    const todo = c.todo!=null ? c.todo : Math.max(0,(c.total||0)-(c.current||0));
+    html += '<tr><td><span class="li-dot"></span></td><td>'+esc(c.name)+'</td><td><div class="mini-prog"><i style="width:'+cpct+'%"></i></div></td><td>'+todo+'</td><td>'+(c.branch||'—')+'</td></tr>';
   });
   html += '</table>';
   document.getElementById('coursePlanTable').innerHTML = html;
@@ -2301,6 +2497,7 @@ function saveCourseInline(idx){
   c.total = parseInt(document.getElementById('ctotal-'+idx).value)||c.total||0;
   c.current = Math.min(parseInt(document.getElementById('ccur-'+idx).value)||0, c.total||0);
   c.now = parseInt(document.getElementById('cnow-'+idx).value)||c.current||1;
+  c.todo = parseInt(document.getElementById('ctodo-'+idx).value)||0;
   c.branch = document.getElementById('cbranch-'+idx).value;
   c.updatedAt = Date.now();
   save(); renderCourses(); renderCoursePlanTable(); checkKnowAutoLight(); checkMilestones();
@@ -2352,10 +2549,26 @@ function startUpTimer(){
   _upTmr = setInterval(()=>{ _upSec++; el.textContent = '⏱ 正计时 ' + fmtTime(_upSec); }, 1000);
   toast('正计时开始~');
 }
+const INSPO_WORDS = {
+  '绘画/技法':['速写','线稿','厚涂','水彩','半厚涂','赛璐璐','平涂','光影','明暗','透视','构图','色彩构成','冷暖对比','笔触','留白','剪影','负空间','景深','空气透视','固有色','环境光','反光','高光','投影','边缘光','材质表现','质感','肌理','晕染','叠色'],
+  '色彩/氛围':['奶油色','莫兰迪','马卡龙','糖果色','暗黑风','赛博朋克','蒸汽波','和风','国风','敦煌色','青绿','鎏金','月光','黄昏','黎明','雨夜','雪景','霓虹','烛光','薄雾','极光','星空','深海','森林','沙漠','极简','华丽','复古','未来感','童话感'],
+  '情绪/状态':['孤独','温柔','倔强','期待','怀念','迷茫','治愈','勇气','平静','悸动','依恋','疏离','自由','束缚','生长','枯萎','漂泊','归途','守望','心动','释怀','执念','勇气','柔软','锋利','安静','喧闹','空灵','梦幻','慵懒'],
+  'OC/人设':['银发少女','黑皮少年','猫耳','兽人','精灵','人鱼','天使','恶魔','机械义体','魔法师','剑士','骑士','公主','吸血鬼','狼人','幽灵','人偶','玩偶','巫师','占卜师','医生','军人','学生','歌姬','舞者','厨师','旅行者','守卫','贵族','流浪者'],
+  '世界观/场景':['云端城堡','海底城市','废弃游乐园','蒸汽列车','漂浮岛','森林小屋','图书馆','美术馆','天文台','温室花园','雨巷','天台','窗边','巷口','车站','灯塔','桥洞','山顶','峡谷','熔岩','冰川','沙丘','竹林','枫林','星舰','异世界','平行时空','梦中花园','地下酒馆','市集'],
+  '剧情/冲突':['重逢','离别','约定','背叛','守护','牺牲','觉醒','蜕变','救赎','复仇','迷路','寻找','逃跑','追逐','错过','告白','争吵','和好','秘密','真相','试炼','抉择','告别','相遇','契约','诅咒','觉醒','挣扎','妥协','突破'],
+  '道具/元素':['旧怀表','羽毛笔','玻璃瓶','风铃','油纸伞','面具','王冠','十字架','水晶球','塔罗牌','铃铛','贝壳','蜡烛','钥匙','齿轮','纸飞机','千纸鹤','烟花','萤火虫','蝴蝶','白鸽','黑猫','独角兽','龙','狐狸','鲸鱼','向日葵','蒲公英','玫瑰','四叶草']
+};
 function rollInspiration(){
-  const words = ['樱花','雨天','毛茸茸','伸懒腰','发光','旧书店','泡泡','围巾','午后','影子','奶茶','星星','窗帘','角落','倒影'];
-  const a=words[Math.floor(Math.random()*words.length)], b=words[Math.floor(Math.random()*words.length)], c=words[Math.floor(Math.random()*words.length)];
-  document.getElementById('inspResult').innerHTML = '灵感便签：'+a+' + '+b+' + '+c+' ~';
+  const cats = Object.keys(INSPO_WORDS);
+  const a = cats[Math.floor(Math.random()*cats.length)];
+  const b = cats[Math.floor(Math.random()*cats.length)];
+  const w1 = INSPO_WORDS[a][Math.floor(Math.random()*INSPO_WORDS[a].length)];
+  const w2 = INSPO_WORDS[b][Math.floor(Math.random()*INSPO_WORDS[b].length)];
+  const w3 = INSPO_WORDS[cats[Math.floor(Math.random()*cats.length)]][Math.floor(Math.random()*INSPO_WORDS[cats[Math.floor(Math.random()*cats.length)]].length)];
+  const el = document.getElementById('inspResult');
+  if(el){
+    el.innerHTML = '<div class="inspo-note"><b>💡 灵感便签</b>（'+a+' × '+b+'）<br>'+w1+' + '+w2+' + '+w3+'<br><span class="muted" style="font-size:10.5px;">点击上方「💡 灵感便签」可再抽一组</span></div>';
+  }
   haptic();
 }
 function startTimer(){
@@ -2373,9 +2586,8 @@ function fmtTime(s){ const m=Math.floor(s/60); const sec=s%60; return m+':'+(sec
 function saveCreation(input){
   const f = input.files[0]; if(!f) return;
   const cid = document.getElementById('microCourse').value;
-  const r = new FileReader();
-  r.onload = e=>{
-    S.creations.push({id:'c'+Date.now()+'_'+Math.floor(Math.random()*1e6), date:todayStr(), img:e.target.result, course:cid, title:'', tags:''});
+  compressImage(f, 1400, data=>{
+    S.creations.push({id:'c'+Date.now()+'_'+Math.floor(Math.random()*1e6), date:todayStr(), img:data, course:cid, title:'', tags:''});
     const d = ensureToday(); d.microCount = (d.microCount||0)+1;
     addXp(3);
     const c = S.courses.find(x=>x.id===cid);
@@ -2383,8 +2595,7 @@ function saveCreation(input){
     save(); renderCreations(); renderOverview(); checkMilestones();
     toast('创作 +3 经验，已收录~');
     showPraise('creation');
-  };
-  r.readAsDataURL(f);
+  });
   input.value='';
 }
 function renderCreations(){
@@ -2433,7 +2644,9 @@ function renderInspo(){
   let html = '<div class="gallery">';
   list.forEach((it,i)=>{
     if(it.text){
-      html += '<div class="memo-card">'+it.text+'<div class="muted" style="font-size:10px;margin-top:4px;">'+it.date+'</div></div>';
+      html += '<div class="memo-card">'+esc(it.text)+'<div class="muted" style="font-size:10px;margin-top:4px;">'+it.date+'</div></div>';
+    } else if(it.link){
+      html += '<div class="memo-card link-card"><a href="'+esc(it.link)+'" target="_blank" rel="noopener">🔗 '+esc(it.link.length>48?it.link.slice(0,48)+'…':it.link)+'</a><div class="muted" style="font-size:10px;margin-top:4px;">'+it.date+'</div><button class="del" onclick="delInspo(\''+currentInspo+'\','+i+')">×</button></div>';
     } else {
       html += '<div class="g"><img src="'+it.img+'"><button class="del" onclick="delInspo(\''+currentInspo+'\','+i+')">×</button></div>';
     }
@@ -2442,13 +2655,42 @@ function renderInspo(){
   box.innerHTML = html;
 }
 function switchInspo(tab){ currentInspo=tab; const b1=document.getElementById('inspoTabMaterial'), b2=document.getElementById('inspoTabDream'); if(b1)b1.classList.toggle('ghost', tab!=='material'); if(b2)b2.classList.toggle('ghost', tab!=='dream'); renderInspo(); haptic(); }
+
+function compressImage(file, maxW, cb){
+  const r = new FileReader();
+  r.onload = e=>{
+    const img = new Image();
+    img.onload = ()=>{
+      try{
+        const scale = Math.min(1, (maxW||1200) / img.width);
+        const w = Math.max(1, Math.round(img.width*scale)), h = Math.max(1, Math.round(img.height*scale));
+        const cv = document.createElement('canvas'); cv.width=w; cv.height=h;
+        cv.getContext('2d').drawImage(img,0,0,w,h);
+        cb(cv.toDataURL('image/jpeg', 0.8));
+      }catch(err){ cb(e.target.result); }
+    };
+    img.onerror = ()=>{ cb(e.target.result); };
+    img.src = e.target.result;
+  };
+  r.readAsDataURL(file);
+}
+
 function uploadInspo(input){
   Array.from(input.files).forEach(file=>{
-    const r = new FileReader();
-    r.onload = e=>{ S.inspo[currentInspo].push({img:e.target.result, date:todayStr()}); save(); renderInspo(); };
-    r.readAsDataURL(file);
+    compressImage(file, 1200, data=>{
+      if(!S.inspo[currentInspo]) S.inspo[currentInspo]=[];
+      S.inspo[currentInspo].push({img:data, date:todayStr()}); save(); renderInspo();
+    });
   });
   input.value='';
+}
+function addInspoLink(){
+  const t = document.getElementById('inspoLink').value.trim();
+  if(!t){ toast('先粘贴一个链接~'); return; }
+  if(!S.inspo.material) S.inspo.material=[];
+  S.inspo.material.unshift({link:t, date:todayStr()});
+  document.getElementById('inspoLink').value='';
+  save(); renderInspo(); toast('素材链接已收藏~');
 }
 function addInspoText(){
   const inp = document.getElementById('inspoText');
@@ -2501,25 +2743,27 @@ function renderDance(){
   const goal = S.dance.goal||4;
   const att = (S.dance.week||[]).length;
   const pct = goal? Math.min(100, Math.round(att/goal*100)):0;
-  let html = '<div class="dance-card">';
-  html += '<div class="card"><h3>🎯 本周目标（次）</h3>';
-  html += '<div class="row"><input type="range" id="danceGoal" min="0" max="12" value="'+goal+'" oninput="document.getElementById(\'dgv\').textContent=this.value"><span id="dgv">'+goal+'</span></div>';
+  let html = '<div class="card dance-card">';
+  html += '<div class="dance-sec"><h3>🎯 本周目标（次）</h3>';
+  html += '<div class="row"><input type="range" id="danceGoal" min="0" max="12" value="'+goal+'" oninput="dgv.textContent=this.value"><span id="dgv">'+goal+'</span></div>';
   html += '<div class="mini-prog big pink"><i style="width:'+pct+'%"></i></div>';
   html += '<div class="muted" style="margin-top:6px;">本周已去 <b>'+att+'</b> / '+goal+' 次</div>';
   html += '<button class="btn sm" style="margin-top:6px;" onclick="saveDanceGoal()">保存目标</button></div>';
-  html += '<div class="card"><h3>📅 本周出勤</h3><div class="week-row">';
+  html += '<div class="dashed-sep"></div>';
+  html += '<div class="dance-sec"><h3>📅 本周出勤</h3><div class="week-row">';
   WEEK_DAYS.forEach((d,i)=>{
     const on = (S.dance.week||[]).includes(i)?' on':'';
     html += '<div class="day-chip'+on+'" onclick="toggleDanceDay('+i+')">'+d+'</div>';
   });
   html += '</div>';
   html += '<div class="muted" style="font-size:10.5px;margin-top:6px;">点上面的周几打卡，每天第一次会生成一条小曲线~</div>';
-  html += '<div class="attend-line" id="attendChart"></div>';
-  html += '</div>';
-  html += '<div class="card"><h3>🫂 没去跳舞时，老师问起</h3>';
+  html += '<div class="attend-line" id="attendChart"></div></div>';
+  html += '<div class="dashed-sep"></div>';
+  html += '<div class="dance-sec"><h3>🫂 没去跳舞时，老师问起</h3>';
   html += '<div class="comfort-box">'+danceComfort()+'</div>';
   html += '<p class="muted" style="margin-top:6px;font-size:10.5px;">换一句安慰语：<button class="btn sm ghost" onclick="renderDance()">换一句</button></p></div>';
-  html += '<div class="card"><h3>📋 课表（自己填）</h3>';
+  html += '<div class="dashed-sep"></div>';
+  html += '<div class="dance-sec"><h3>📋 课表（自己填）</h3>';
   html += '<div class="table-wrap"><table class="tt"><thead><tr><th>时间</th>'+WEEK_DAYS.map(d=>'<th>'+d+'</th>').join('')+'</tr></thead><tbody>';
   const rows = S.dance.schedule||[];
   if(rows.length===0){ html += '<tr><td colspan="8" class="muted" style="padding:10px;">还没有课表，点下面「添加一行」开始填~</td></tr>'; }
@@ -2536,7 +2780,6 @@ function renderDance(){
   document.getElementById('danceBox').innerHTML = html;
   renderAttendChart();
 }
-
 function saveDanceGoal(){ S.dance.goal=parseInt(document.getElementById('danceGoal').value)||4; save(); renderDance(); toast('目标保存啦~'); }
 function toggleDanceDay(i){
   haptic();
@@ -2720,7 +2963,8 @@ function savePlanText(type){
 // ===== growth =====
 function renderGrowth(){
   document.getElementById('growthLv').innerHTML = '<div class="lvbadge"><img class="lvimg" src="'+IMG.lvIcon+'"><div class="lvtxt"><span class="lvNum">Lv'+S.level+'</span><small class="lvTitle">'+lvTitle(S.level)+'</small><small class="lvStage">'+levelInfo(S.level).stage+'</small></div></div>';
-  document.getElementById('xpInfo').innerHTML = '经验 <span class="xpNum">'+S.xp+'</span> / 100 · 创作 +3 · 跟画 +5';
+  const xpPct = Math.max(0, Math.min(100, (S.xp||0)));
+  document.getElementById('xpInfo').innerHTML = '经验 <span class="xpNum">'+S.xp+'</span> / 100 · 创作 +3 · 跟画 +5<div class="xp-bar"><i style="width:'+xpPct+'%"></i></div>';
   const months={};
   S.archives.forEach(a=>{
     const k=a.month||a.date.slice(0,7);
@@ -2741,12 +2985,27 @@ function renderGrowth(){
   });
   document.getElementById('monthBlocks').innerHTML = html||'<div class="empty-note">还没有手写记录，上传一张吧~</div>';
   renderMilestones();
+  renderWeekReports();
+}
+function renderWeekReports(){
+  const box = document.getElementById('weekReportBox'); if(!box) return;
+  if(!S.weekReports || S.weekReports.length===0){ box.innerHTML='<div class="muted" style="font-size:11px;margin-top:6px;">还没有周报，点上面按钮生成~</div>'; return; }
+  box.innerHTML = S.weekReports.map((w,i)=>{
+    const wk = w.week || '';
+    return '<div class="wr-card'+(i===0?' cur':'')+'"><div class="wr-head">'+wk+'</div>'+w.html+'</div>';
+  }).join('');
 }
 function renderMilestones(){
   const el = document.getElementById('msList'); if(!el) return;
   checkMilestones();
   const cats = ['日常生活','技能','创作'];
+  const achieved = MILESTONES.filter(m=>S.ms[m.id]);
   let html = '';
+  if(achieved.length>0){
+    html += '<div class="ms-achieved"><div class="mc">🏆 已达成成就（'+achieved.length+' / '+MILESTONES.length+'）</div><div class="ms-ach-list">';
+    achieved.forEach(m=>{ html += '<span class="ms-badge">★ '+m.text+'</span>'; });
+    html += '</div></div>';
+  }
   cats.forEach(cat=>{
     html += '<div class="ms-cat"><div class="mc">'+cat+'</div>';
     MILESTONES.filter(m=>m.cat===cat).forEach(m=>{
@@ -2766,9 +3025,9 @@ function uploadArchive(input){
   const type = document.getElementById('archType').value;
   const month = new Date().toISOString().slice(0,7);
   Array.from(input.files).forEach(file=>{
-    const r = new FileReader();
-    r.onload = e=>{ S.archives.push({date:todayStr(),type:type,month:month,img:e.target.result}); save(); renderGrowth(); };
-    r.readAsDataURL(file);
+    compressImage(file, 1200, data=>{
+      S.archives.push({date:todayStr(),type:type,month:month,img:data}); save(); renderGrowth();
+    });
   });
   input.value='';
 }
@@ -3107,6 +3366,18 @@ function initAll(){
 document.addEventListener('DOMContentLoaded', initAll);
 
 </script>
+
+<div class="wake-picker" id="wakePicker" style="display:none;">
+  <div class="wake-picker-box">
+    <h3>🌅 今天几点醒的呀？</h3>
+    <div class="wake-opts" id="wakeOpts"></div>
+    <div class="row" style="margin-top:10px;align-items:center;">
+      <input type="time" id="wakeCustom" style="flex:1;min-width:90px;">
+      <button class="btn sm" onclick="pickWakeTime()">自定义</button>
+      <button class="btn sm ghost" onclick="closeWakePicker()">取消</button>
+    </div>
+  </div>
+</div>
 <button id="sosBtn" class="sos-btn" onclick="sosMessage()" style="display:none;">🆘 一键求救</button>
 </body>
 </html>
