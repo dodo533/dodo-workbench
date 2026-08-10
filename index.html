@@ -1776,6 +1776,7 @@ function syncNow(){
 const PAGE_TITLES = {home:'首页',courses:'课程',micro:'微创作',know:'知识树',dance:'跳舞',body:'身体',mood:'情绪日记',growth:'成长',settings:'设置'};
 function go(page){
   haptic();
+  if(!document.getElementById('p-'+page)) page='home'; // 已删除页面回退首页
   if(page==='courses' && isSlime()){ showSlimeOverlay(); return; }
   S.page = page; save();
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
