@@ -1006,10 +1006,11 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
           <div class="row">
             <button class="btn sm" onclick="saveSyncConfig()">保存并连接</button>
             <button class="btn sm ghost" onclick="syncNow()">立即同步</button>
+            <button class="btn sm ghost" onclick="forcePushLocal()">⬆️ 本机覆盖云端</button>
             <button class="btn sm ghost" onclick="disconnectSync()">断开</button>
           </div>
           <p class="sync-status" id="syncStatus">未连接</p>
-          <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-11-v5</b></p>
+          <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-11-v6</b></p>
           <label>数据</label>
           <div class="row">
             <button class="btn ghost" onclick="exportData()">导出</button>
@@ -1203,7 +1204,7 @@ function load(){
   }catch(e){S={};}
 }
 
-const APP_VERSION = '2026-08-11-v5';
+const APP_VERSION = '2026-08-11-v6';
 // 深度消毒：同步合并/旧版本/损坏数据进入后，把每个用到的字段修复成正确类型，防止任意一处 undefined 崩溃
 function deepSanitize(){
   if(!S || typeof S!=='object' || Array.isArray(S)) S={};
@@ -1923,6 +1924,22 @@ function syncNow(){
   if(!syncReady()){ toast('还没配置同步~'); updateSyncStatus('未连接','err'); return; }
   updateSyncStatus('同步中…');
   pullFromServer();
+}
+function forcePushLocal(){
+  if(!syncReady()){ toast('还没配置同步~'); updateSyncStatus('未连接','err'); return; }
+  if(_syncBusy){ toast('上一条同步还没完成，稍等 1 秒再点~'); return; }
+  if(!confirm('确定用本机数据覆盖云端吗？\n云端将被替换成这台设备的内容，其他设备拉取后会与它一致。')) return;
+  try{
+    // 先断开接收，避免云端旧数据把本机覆盖
+    if(_syncListenerRef){ try{ _syncListenerRef.off(); }catch(e){} _syncListenerRef=null; }
+    if(!S._meta) S._meta={};
+    S._meta.updatedAt = Date.now();
+    if(S.sync) S.sync._pendingAt = 0;
+    localStorage.setItem('dajiuwan_v5', JSON.stringify(S));
+    pushToServer();
+    updateSyncStatus('已用本机覆盖云端 · 请到其他设备点「立即同步」');
+    toast('已用本机数据覆盖云端 🎉');
+  }catch(e){ toast('操作失败：'+(e&&e.message||e)); }
 }
 
 // ===== navigation =====
