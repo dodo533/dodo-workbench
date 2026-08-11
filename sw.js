@@ -1,6 +1,6 @@
 ﻿/* 呆啾丸 · Service Worker（PWA 离线可用 + 内部自动更新） */
-const CACHE = 'dajiuwan-v9-20260813';
-const ASSETS = ['./', './index.html', './gallery.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
+const CACHE = 'dajiuwan-v10-20260814';
+const ASSETS = ['./', './index.html', './gallery.html', './manifest.webmanifest', './icons.js', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', function(e){
   e.waitUntil(
@@ -45,4 +45,5 @@ self.addEventListener('fetch', function(e){
     })
   );
 });
+
 
