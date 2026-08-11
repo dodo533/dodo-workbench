@@ -11,7 +11,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-192.png">
 <script src="icons.js" defer></script>
-<title>呆啾丸 · 绘画自律工作台 v10</title>
+<title>呆啾丸 · 绘画自律工作台 v11</title>
 <style>
 
 :root{
@@ -1063,7 +1063,7 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
             <button class="btn sm ghost" onclick="disconnectSync()">断开</button>
           </div>
           <p class="sync-status" id="syncStatus">未连接</p>
-          <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-14-v10</b></p>
+          <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-15-v11</b></p>
           <label>数据</label>
           <div class="row">
             <button class="btn ghost" onclick="exportData()">导出</button>
@@ -1274,7 +1274,7 @@ function load(){
   }catch(e){S={};}
 }
 
-const APP_VERSION = '2026-08-14-v10';
+const APP_VERSION = '2026-08-15-v11';
 // 深度消毒：同步合并/旧版本/损坏数据进入后，把每个用到的字段修复成正确类型，防止任意一处 undefined 崩溃
 function deepSanitize(){
   if(!S || typeof S!=='object' || Array.isArray(S)) S={};
@@ -1501,6 +1501,7 @@ function migrateFound(){
 }
 function ensureToday(){
   const d = todayStr();
+  if(!S.days) S.days = {};
   if(!S.days[d]) S.days[d] = {state:'normal',mood:'',meds:[],checkin:false,courseCount:0,microCount:0,wake:'',done:{}};
   return S.days[d];
 }
@@ -1774,7 +1775,7 @@ function isSlime(){
   const y = new Date(); y.setDate(y.getDate()-1);
   const ys = y.toLocaleDateString('sv-SE');
   const low = s=>(s==='low'||s==='down');
-  return !!(S.days[d] && low(S.days[d].state) && S.days[ys] && low(S.days[ys].state));
+  return !!((S.days||{})[d] && low((S.days||{})[d].state) && (S.days||{})[ys] && low((S.days||{})[ys].state));
 }
 function showSlimeOverlay(){
   haptic();
@@ -3589,6 +3590,7 @@ function renderMs(){
   document.getElementById('msList').innerHTML = html;
 }
 function checkMilestones(){
+  try{
   const today = todayStr();
   const monthStart = today.slice(0,8)+'01';
   const monthDays = Object.keys(S.days).filter(k=>k>=monthStart && k<=today && k.startsWith(today.slice(0,7)));
@@ -3608,7 +3610,7 @@ function checkMilestones(){
   }
   S.ms.sleep24 = earlyStreak >= 7;
   // water7: any 7 days with cups>0 in current month
-  const waterDays = monthDays.filter(k=>S.days[k].waterCups>0).length;
+  const waterDays = monthDays.filter(k=>{ const dd=S.days[k]; return dd && dd.waterCups>0; }).length;
   S.ms.water7 = waterDays >= 7;
   const finished = S.courses.filter(c=>(c.total||0)>0 && (c.current||0)>=(c.total||0));
   S.ms.course1 = finished.length > 0;
@@ -3625,6 +3627,7 @@ function checkMilestones(){
   S.ms.create50 = S.creations.length >= 50;
   S.ms.create100 = S.creations.length >= 100;
   save();
+  }catch(e){ /* 里程碑只是荣誉展示，异常不应导致页面报错 */ }
 }
 
 // ===== 白噪音（Web Audio 本地合成，无外部文件）=====
