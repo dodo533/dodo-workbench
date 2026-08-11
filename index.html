@@ -999,6 +999,7 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
             <button class="btn sm ghost" onclick="disconnectSync()">断开</button>
           </div>
           <p class="sync-status" id="syncStatus">未连接</p>
+          <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-11-v4</b></p>
           <label>数据</label>
           <div class="row">
             <button class="btn ghost" onclick="exportData()">导出</button>
@@ -1191,7 +1192,122 @@ function load(){
     S = JSON.parse(localStorage.getItem('dajiuwan_v5')||'{}');
   }catch(e){S={};}
 }
+
+const APP_VERSION = '2026-08-11-v4';
+// 深度消毒：同步合并/旧版本/损坏数据进入后，把每个用到的字段修复成正确类型，防止任意一处 undefined 崩溃
+function deepSanitize(){
+  if(!S || typeof S!=='object' || Array.isArray(S)) S={};
+  // ---- 数组字段 ----
+  ['courses','futureCourses','archives','creations','memos','reviews','aiChat','released','bodyLog','courseLog','weekReports'].forEach(function(k){
+    if(!Array.isArray(S[k])) S[k]=[];
+  });
+  if(!Array.isArray(S.meds)) S.meds=[{name:'复合维生素B',done:false},{name:'护肝片',done:false}];
+  // ---- 普通对象字段 ----
+  ['refs','know','moodDiary','diet','ms','_meta'].forEach(function(k){
+    if(!S[k]||typeof S[k]!=='object'||Array.isArray(S[k])) S[k]={};
+  });
+  // ---- 字典对象字段 ----
+  ['days','found','monthPlan','yearPlan'].forEach(function(k){
+    if(!S[k]||typeof S[k]!=='object'||Array.isArray(S[k])) S[k]={};
+  });
+  // ---- 标量字段 ----
+  if(typeof S.level!=='number'||S.level<1) S.level=1;
+  if(typeof S.xp!=='number'||S.xp<0) S.xp=0;
+  if(typeof S.streak!=='number'||S.streak<0) S.streak=0;
+  if(typeof S.dust!=='number'||S.dust<0) S.dust=0;
+  if(typeof S.mosaic!=='boolean') S.mosaic=false;
+  if(typeof S.firstVisit!=='boolean') S.firstVisit=false;
+  var VALID_PAGES=['home','courses','micro','know','dance','body','mood','growth','settings'];
+  if(typeof S.page!=='string' || VALID_PAGES.indexOf(S.page)<0) S.page='home';
+  ['homeNote','theme','nightMode','bg','blur','lastCheckin','customBg','customAvatar','bodyNote','planTab'].forEach(function(k){
+    if(typeof S[k]!=='string') S[k]='';
+  });
+  // ---- 深层：dance ----
+  if(!S.dance||typeof S.dance!=='object'||Array.isArray(S.dance)) S.dance={goal:4,week:[],weeks:{},schedule:[]};
+  if(typeof S.dance.goal!=='number') S.dance.goal=4;
+  if(!Array.isArray(S.dance.week)) S.dance.week=[];
+  if(!S.dance.weeks||typeof S.dance.weeks!=='object'||Array.isArray(S.dance.weeks)) S.dance.weeks={};
+  Object.keys(S.dance.weeks).forEach(function(wk){ if(!Array.isArray(S.dance.weeks[wk])) S.dance.weeks[wk]=[]; });
+  if(!Array.isArray(S.dance.schedule)) S.dance.schedule=[];
+  // ---- 深层：sleep / wake / water ----
+  if(!S.sleep||typeof S.sleep!=='object'||Array.isArray(S.sleep)) S.sleep={done:false,time:'',earlyCount:0,earliest:'',lastDate:''};
+  if(typeof S.sleep.done!=='boolean') S.sleep.done=!!S.sleep.done;
+  if(typeof S.sleep.time!=='string') S.sleep.time='';
+  if(typeof S.sleep.earlyCount!=='number') S.sleep.earlyCount=0;
+  if(typeof S.sleep.earliest!=='string') S.sleep.earliest='';
+  if(typeof S.sleep.lastDate!=='string') S.sleep.lastDate='';
+  if(!S.wake||typeof S.wake!=='object'||Array.isArray(S.wake)) S.wake={time:'',earlyCount:0,count:0,lastDate:''};
+  if(typeof S.wake.time!=='string') S.wake.time='';
+  if(typeof S.wake.earlyCount!=='number') S.wake.earlyCount=0;
+  if(typeof S.wake.count!=='number') S.wake.count=0;
+  if(typeof S.wake.lastDate!=='string') S.wake.lastDate='';
+  if(!S.water||typeof S.water!=='object'||Array.isArray(S.water)) S.water={cups:0};
+  if(typeof S.water.cups!=='number') S.water.cups=0;
+  // ---- 深层：days（每天的打卡记录） ----
+  var DAY_DEF={state:'normal',mood:'',meds:[],checkin:false,courseCount:0,microCount:0,wake:'',done:{},waterCups:0};
+  Object.keys(S.days).forEach(function(d){
+    var e=S.days[d];
+    if(!e||typeof e!=='object'||Array.isArray(e)){ S.days[d]=Object.assign({},DAY_DEF); return; }
+    if(typeof e.state!=='string') e.state='normal';
+    if(typeof e.mood!=='string') e.mood='';
+    if(!Array.isArray(e.meds)) e.meds=[];
+    if(typeof e.checkin!=='boolean') e.checkin=!!e.checkin;
+    if(typeof e.courseCount!=='number') e.courseCount=0;
+    if(typeof e.microCount!=='number') e.microCount=0;
+    if(typeof e.wake!=='string') e.wake='';
+    if(!e.done||typeof e.done!=='object'||Array.isArray(e.done)) e.done={};
+    if(typeof e.waterCups!=='number') e.waterCups=0;
+  });
+  // ---- 深层：found（四大根基每分支） ----
+  Object.keys(S.found).forEach(function(k){
+    var f=S.found[k];
+    if(!f||typeof f!=='object'||Array.isArray(f)){ S.found[k]={works:0,light:false,days:{}}; return; }
+    if(typeof f.works!=='number') f.works=0;
+    if(typeof f.light!=='boolean') f.light=!!f.light;
+    if(!f.days||typeof f.days!=='object'||Array.isArray(f.days)) f.days={};
+  });
+  // ---- 深层：monthPlan（每月 goal + 每日字符串） ----
+  Object.keys(S.monthPlan).forEach(function(m){
+    var mp=S.monthPlan[m];
+    if(!mp||typeof mp!=='object'||Array.isArray(mp)){ S.monthPlan[m]={goal:'',days:{}}; return; }
+    if(typeof mp.goal!=='string') mp.goal='';
+    if(!mp.days||typeof mp.days!=='object'||Array.isArray(mp.days)) mp.days={};
+    Object.keys(mp.days).forEach(function(d){ if(typeof mp.days[d]!=='string') mp.days[d]=String(mp.days[d]||''); });
+  });
+  // ---- 深层：yearPlan ----
+  if(typeof S.yearPlan.goal!=='string') S.yearPlan.goal='';
+  if(!S.yearPlan.months||typeof S.yearPlan.months!=='object'||Array.isArray(S.yearPlan.months)) S.yearPlan.months={};
+  Object.keys(S.yearPlan.months).forEach(function(m){ if(typeof S.yearPlan.months[m]!=='string') S.yearPlan.months[m]=String(S.yearPlan.months[m]||''); });
+  // ---- 深层：moodDiary / diet（每天条目） ----
+  Object.keys(S.moodDiary).forEach(function(d){
+    var e=S.moodDiary[d];
+    if(!e||typeof e!=='object'||Array.isArray(e)){ S.moodDiary[d]={mood:'',text:''}; return; }
+    if(typeof e.mood!=='string') e.mood='';
+    if(typeof e.text!=='string') e.text=String(e.text||'');
+  });
+  Object.keys(S.diet).forEach(function(d){
+    var e=S.diet[d];
+    if(!e||typeof e!=='object'||Array.isArray(e)){ S.diet[d]={breakfast:'',lunch:'',dinner:'',snack:'',water:0,note:''}; return; }
+    ['breakfast','lunch','dinner','snack','note'].forEach(function(k){ if(typeof e[k]!=='string') e[k]=String(e[k]||''); });
+    if(typeof e.water!=='number') e.water=0;
+  });
+  // ---- 深层：sync / ai ----
+  if(!S.sync||typeof S.sync!=='object'||Array.isArray(S.sync)) S.sync={config:'',code:'',deviceId:'',lastSync:0};
+  if(typeof S.sync.config!=='string') S.sync.config='';
+  if(typeof S.sync.code!=='string') S.sync.code='';
+  if(typeof S.sync.deviceId!=='string') S.sync.deviceId='';
+  if(typeof S.sync.lastSync!=='number') S.sync.lastSync=0;
+  if(!S.ai||typeof S.ai!=='object'||Array.isArray(S.ai)) S.ai={endpoint:'https://api.deepseek.com/v1/chat/completions',key:'',model:'deepseek-chat'};
+  if(typeof S.ai.endpoint!=='string') S.ai.endpoint='https://api.deepseek.com/v1/chat/completions';
+  if(typeof S.ai.key!=='string') S.ai.key='';
+  if(typeof S.ai.model!=='string') S.ai.model='deepseek-chat';
+  // ---- 深层：inspo ----
+  if(!S.inspo||typeof S.inspo!=='object'||Array.isArray(S.inspo)) S.inspo={material:[],dream:[]};
+  if(!Array.isArray(S.inspo.material)) S.inspo.material=[];
+  if(!Array.isArray(S.inspo.dream)) S.inspo.dream=[];
+}
 function ensureDefaults(){
+  deepSanitize();
   if(!S.level) S.level=1;
   if(!S.xp) S.xp=0;
   if(!S.homeNote) S.homeNote='今天也要对自己温柔一点~';
