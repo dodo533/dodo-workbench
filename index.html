@@ -582,7 +582,7 @@ table.tt td input:focus{background:var(--panel);border-radius:6px;}
 /* ===== v7 补充样式（布局 + 新组件）===== */
 
 /* 首页 · 星环放大（头像与月历中间） */
-.ring-hero{display:flex;align-items:center;justify-content:center;min-width:172px;}
+.ring-hero{display:flex;align-items:center;justify-content:center;margin-left:auto;padding-right:4px;}
 .ring-wrap-lg{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;text-align:center;}
 .ring-wrap-lg svg{display:block;}
 .ring-wrap-lg .ring-label{font-size:10.5px;color:var(--sub);line-height:1.45;max-width:168px;}
@@ -607,13 +607,19 @@ table.tt td input:focus{background:var(--panel);border-radius:6px;}
 .cd-legend{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text);}
 .cd-dot{width:10px;height:10px;border-radius:50%;flex:0 0 10px;}
 
-/* 我的计划：年月周选择 + 自动分行 */
+/* 我的计划：简洁年月周 + 行内目标编辑 */
 .plan-time{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:8px;}
 .plan-time select{flex:0 0 auto;width:auto;min-width:64px;padding:5px 8px;margin:0;}
-.plan-time span{font-size:11px;color:var(--sub);}
-.goal-lines{display:flex;flex-direction:column;gap:4px;margin:6px 0;}
-.gl-item{font-size:12px;color:var(--text);background:var(--glass);border-radius:8px;padding:5px 9px;border:1px dashed var(--line);}
-.lucky-card{background:linear-gradient(160deg,rgba(255,255,255,0.4),rgba(255,255,255,0.12));border:1px solid var(--line);border-radius:14px;padding:14px 16px;font-size:13px;color:var(--text);line-height:1.7;box-shadow:var(--shadow);margin-top:6px;}
+.pt-w{font-size:12px;color:var(--text);white-space:nowrap;}
+.pt-cur{font-size:11px;margin:6px 0 0;}
+.goal-edit{display:flex;flex-direction:column;gap:5px;margin:6px 0;}
+.ge-row{display:flex;align-items:center;gap:7px;}
+.ge-no{flex:0 0 20px;font-size:12px;color:var(--pink);text-align:right;}
+.ge-input{flex:1;min-width:0;padding:7px 9px;border-radius:10px;border:1px dashed var(--line);background:rgba(255,255,255,0.16);color:var(--text);font-size:12.5px;}
+.ge-input:focus{border-color:var(--pink);border-style:solid;outline:none;background:rgba(255,255,255,0.28);}
+.ge-del{flex:0 0 auto;width:22px;height:22px;border-radius:50%;border:none;background:transparent;color:var(--sub);font-size:13px;cursor:pointer;opacity:.5;}
+.ge-del:hover{color:var(--pink);opacity:1;background:var(--glass);}
+.ge-add{margin-top:2px;}
 /* 总课程计划表 */
 .cpt-line{display:flex;align-items:center;gap:6px;font-size:11.5px;margin:0;flex-wrap:wrap;}
 .li-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--pink);flex:0 0 7px;}
@@ -843,7 +849,7 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
             </div>
           </div>
           <div class="card mix-card">
-            <h3>📋 我的计划（年 / 月 / 周）</h3>
+            <h3>📋 我的计划</h3>
             <div id="homePlanPreview"></div>
             <div class="dashed-sep"></div>
             <h3>📊 课程进度</h3>
@@ -927,12 +933,6 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
             </div>
             <div class="judge-note" id="judgeNote" style="display:none;"></div>
           </div>
-        </div>
-        <div class="card">
-          <h3>🎲 今日小幸运</h3>
-          <p class="muted">画画累了来抽一张，给小啾啾一点小甜头~</p>
-          <button class="btn" onclick="rollLucky()">🍀 抽今日小幸运</button>
-          <div id="luckyBox" style="margin-top:10px;"></div>
         </div>
         <div class="card">
           <h3>🗂 灵感与素材</h3>
@@ -1062,13 +1062,24 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
             <button class="btn sm ghost" onclick="disconnectSync()">断开</button>
           </div>
           <p class="sync-status" id="syncStatus">未连接</p>
-          <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-12-v8</b></p>
+          <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-13-v9</b></p>
           <label>数据</label>
           <div class="row">
             <button class="btn ghost" onclick="exportData()">导出</button>
             <button class="btn ghost" onclick="document.getElementById('imIn').click()">导入</button>
             <input type="file" id="imIn" style="display:none;" onchange="importData(this)">
           </div>
+        </div>
+        <div class="card">
+          <h3>🎧 白噪音 · 专注</h3>
+          <p class="muted">雨声 / 海浪 / 篝火 / 棕色噪音，全部本地生成，不用联网~</p>
+          <div class="row" id="noiseBtns" style="flex-wrap:wrap;">
+            <button class="btn sm ghost" data-noise="rain" onclick="toggleNoise('rain',this)">🌧 雨声</button>
+            <button class="btn sm ghost" data-noise="wave" onclick="toggleNoise('wave',this)">🌊 海浪</button>
+            <button class="btn sm ghost" data-noise="fire" onclick="toggleNoise('fire',this)">🔥 篝火</button>
+            <button class="btn sm ghost" data-noise="brown" onclick="toggleNoise('brown',this)">🤎 棕色噪音</button>
+          </div>
+          <div id="noiseStatus" class="muted" style="font-size:11px;margin-top:6px;">未播放</div>
         </div>
       </section>
 
@@ -1176,7 +1187,7 @@ const MILESTONES = [
   {id:'release1',cat:'日常生活',text:'第一次放生，收获断舍离星尘'},
   {id:'course1',cat:'技能',text:'完整学完一门课程（任意）'},
   {id:'know1',cat:'技能',text:'任一根基长出第一片叶子'},
-  {id:'master1',cat:'技能',text:'任一根基开出花（枝芽≥30）'},
+  {id:'master1',cat:'技能',text:'任一根基满 160 枝芽（开花）'},
   {id:'create10',cat:'创作',text:'累计创作 10 张'},
   {id:'create50',cat:'创作',text:'累计创作 50 张'},
   {id:'create100',cat:'创作',text:'累计创作 100 张'},
@@ -1256,7 +1267,7 @@ function load(){
   }catch(e){S={};}
 }
 
-const APP_VERSION = '2026-08-12-v8';
+const APP_VERSION = '2026-08-13-v9';
 // 深度消毒：同步合并/旧版本/损坏数据进入后，把每个用到的字段修复成正确类型，防止任意一处 undefined 崩溃
 function deepSanitize(){
   if(!S || typeof S!=='object' || Array.isArray(S)) S={};
@@ -2355,12 +2366,12 @@ function renderRing(){
   const box = document.getElementById('ringBox'); if(!box) return;
   const info = levelInfo(S.level);
   const pct = Math.max(0, Math.min(100, Math.round(((S.xp||0)%100)/100*100)));
-  const R = 54, C = 2*Math.PI*R;
+  const R = 45, C = 2*Math.PI*R;
   const off = C*(1-pct/100);
   box.innerHTML = '<div class="ring-wrap-lg" onclick="showLevelInfo()" title="点击查看等级说明">'+
-    '<svg width="168" height="168" viewBox="0 0 100 100">'+
-    '<circle cx="50" cy="50" r="'+R+'" fill="none" stroke="rgba(150,150,150,0.18)" stroke-width="10"/>'+
-    '<circle cx="50" cy="50" r="'+R+'" fill="none" stroke="var(--pink)" stroke-width="10" stroke-linecap="round" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'" transform="rotate(-90 50 50)"/>'+
+    '<svg width="186" height="186" viewBox="0 0 100 100">'+
+    '<circle cx="50" cy="50" r="'+R+'" fill="none" stroke="rgba(255,133,170,0.14)" stroke-width="8"/>'+
+    '<circle cx="50" cy="50" r="'+R+'" fill="none" stroke="var(--pink)" stroke-width="8" stroke-linecap="round" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'" transform="rotate(-90 50 50)"/>'+
     '<text x="50" y="45" text-anchor="middle" font-size="17" font-weight="700" fill="var(--text)">Lv'+S.level+'</text>'+
     '<text x="50" y="61" text-anchor="middle" font-size="9" fill="var(--sub)">'+info.stage.slice(0,5)+'</text>'+
     '</svg>'+
@@ -2451,12 +2462,14 @@ function renderHomePlanPreview(){
   });
   h += '</div>';
   h += '<div class="plan-time">';
-  h += '<select id="planSelY" onchange="savePlanSel()">'+planYearOptions()+'</select><span>年</span>';
-  h += '<select id="planSelM" onchange="savePlanSel()">'+planMonthOptions()+'</select><span>月</span>';
-  h += '<select id="planSelW" onchange="savePlanSel()">'+planWeekOptions()+'</select><span>周</span>';
-  h += '<button class="btn sm ghost" onclick="planGoToday()">回到本周</button>';
+  h += '<select id="planSelY" onchange="savePlanSel()">'+planYearOptions()+'</select>';
+  h += '<select id="planSelM" onchange="savePlanSel()">'+planMonthOptions()+'</select>';
+  h += '<button class="btn sm ghost" onclick="planShift(-1)">‹</button>';
+  h += '<span class="pt-w">第'+S.planSel.w+'周</span>';
+  h += '<button class="btn sm ghost" onclick="planShift(1)">›</button>';
+  h += '<button class="btn sm ghost" onclick="planGoToday()">本周</button>';
   h += '</div>';
-  h += '<div class="muted" style="font-size:11px;margin:6px 0 0;">当前：'+S.planSel.y+'年'+S.planSel.m+'月 · 第'+S.planSel.w+'周（周一起始）</div>';
+  h += '<div class="muted pt-cur">当前：'+S.planSel.y+'年'+S.planSel.m+'月 · 第'+S.planSel.w+'周（周一起始）</div>';
   if(S.planTab==='year') h += planYearHtml();
   else if(S.planTab==='month'){ h += planMonthHtml(); }
   else if(S.planTab==='week') h += planWeekHtml();
@@ -2498,11 +2511,20 @@ function planMonthOptions(){
   for(let i=1;i<=12;i++) o += '<option value="'+i+'"'+(i===m?' selected':'')+'>'+i+'</option>';
   return o;
 }
-function planWeekOptions(){
-  const w = S.planSel.w||1;
-  let o='';
-  for(let i=1;i<=6;i++) o += '<option value="'+i+'"'+(i===w?' selected':'')+'>第'+i+'周</option>';
-  return o;
+function monthWeeks(y,m){
+  const first=new Date(y,m-1,1);
+  const days=new Date(y,m,0).getDate();
+  const firstMon=(first.getDay()+6)%7;
+  return Math.floor((days-1+firstMon)/7)+1;
+}
+function planShift(dir){
+  ensurePlanSel();
+  let y=S.planSel.y, m=S.planSel.m, w=S.planSel.w+dir;
+  const wkNum = monthWeeks(y,m);
+  if(w<1){ m--; if(m<1){ m=12; y--; } w = monthWeeks(y,m); }
+  else if(w>wkNum){ m++; if(m>12){ m=1; y++; } w = 1; }
+  S.planSel = {y:y, m:m, w:w};
+  save(); renderHomePlanPreview(); haptic();
 }
 function savePlanSel(){
   ensurePlanSel();
@@ -2531,20 +2553,50 @@ function getWeekPlan(){
   if(typeof S.weekPlans[key].goal!=='string') S.weekPlans[key].goal='';
   return S.weekPlans[key];
 }
-function goalLinesHtml(text){
-  if(!text) return '';
-  return (''+text).split('\n').map(function(l,i){ l=l.trim(); if(!l) return ''; return '<span class="gl-item">'+(i+1)+'. '+esc(l)+'</span>'; }).join('');
+function goalEditHtml(text, mode){
+  const lines = (''+(text||'')).split('\n');
+  let h = '<div class="goal-edit">';
+  lines.forEach(function(l,i){
+    h += '<div class="ge-row"><span class="ge-no">'+(i+1)+'</span><input class="ge-input" value="'+esc(l)+'" oninput="geSet(\''+mode+'\','+i+',this.value)"><button class="ge-del" title="删除这一行" onclick="geDel(\''+mode+'\','+i+')">×</button></div>';
+  });
+  h += '<button class="btn sm ghost ge-add" onclick="geAdd(\''+mode+'\')">＋ 添加一行</button>';
+  h += '</div>';
+  return h;
 }
-function syncGoalLines(srcId, dstId){
-  const src=document.getElementById(srcId), dst=document.getElementById(dstId);
-  if(!src||!dst) return;
-  dst.innerHTML = goalLinesHtml(src.value);
+function gePlan(mode){
+  if(mode==='year') return getYearPlan(S.planSel.y);
+  if(mode==='month'){ const k=S.planSel.y+'-'+String(S.planSel.m).padStart(2,'0'); return getMonthPlan(k); }
+  return getWeekPlan();
+}
+function geSave(mode, arr){
+  gePlan(mode).goal = arr.join('\n');
+  save();
+}
+function geSet(mode, i, v){
+  const p = gePlan(mode);
+  const arr = (''+(p.goal||'')).split('\n');
+  arr[i] = v;
+  geSave(mode, arr);
+}
+function geAdd(mode){
+  const p = gePlan(mode);
+  const arr = (''+(p.goal||'')).split('\n');
+  arr.push('');
+  geSave(mode, arr);
+  renderHomePlanPreview(); haptic();
+}
+function geDel(mode, i){
+  const p = gePlan(mode);
+  const arr = (''+(p.goal||'')).split('\n');
+  arr.splice(i,1);
+  while(arr.length && arr[arr.length-1]==='') arr.pop();
+  geSave(mode, arr);
+  renderHomePlanPreview(); haptic();
 }
 function planYearHtml(){
   const yp = getYearPlan(S.planSel.y);
-  let h = '<label>'+S.planSel.y+'年总方向（一行一个目标，自动分行）</label><textarea id="yearGoal" rows="2" oninput="syncGoalLines(\'yearGoal\',\'yearGoalLines\')">'+esc(yp.goal||'')+'</textarea>';
-  h += '<div class="goal-lines" id="yearGoalLines">'+goalLinesHtml(yp.goal)+'</div>';
-  h += '<div class="row"><button class="btn sm" onclick="saveYearGoal()">保存年目标</button></div>';
+  let h = '<label>'+S.planSel.y+'年总方向（点行内直接编辑，自动编号）</label>';
+  h += goalEditHtml(yp.goal,'year');
   h += '<div class="grid12">';
   for(let m=1;m<=12;m++){
     const g = (yp.months||{})[m]||'';
@@ -2556,17 +2608,15 @@ function planYearHtml(){
 function planMonthHtml(){
   const mkey = S.planSel.y+'-'+String(S.planSel.m).padStart(2,'0');
   const mp = getMonthPlan(mkey);
-  let h = '<label>'+S.planSel.y+'年'+S.planSel.m+'月目标（一行一个目标，自动分行）</label><textarea id="monthGoal" rows="2" oninput="syncGoalLines(\'monthGoal\',\'monthGoalLines\')">'+esc(mp.goal||'')+'</textarea>';
-  h += '<div class="goal-lines" id="monthGoalLines">'+goalLinesHtml(mp.goal)+'</div>';
-  h += '<div class="row"><button class="btn sm" onclick="saveMonthGoal()">保存月目标</button></div>';
+  let h = '<label>'+S.planSel.y+'年'+S.planSel.m+'月目标</label>';
+  h += goalEditHtml(mp.goal,'month');
   h += '<div class="cal-grid" id="monthCal" style="margin-top:6px;"></div>';
   return h;
 }
 function planWeekHtml(){
   const wp = getWeekPlan();
-  let h = '<label>'+S.planSel.y+'年'+S.planSel.m+'月 第'+S.planSel.w+'周主线（一行一个目标，自动分行）</label><textarea id="weekGoal" rows="2" oninput="syncGoalLines(\'weekGoal\',\'weekGoalLines\')">'+esc(wp.goal||'')+'</textarea>';
-  h += '<div class="goal-lines" id="weekGoalLines">'+goalLinesHtml(wp.goal)+'</div>';
-  h += '<div class="row"><button class="btn sm" onclick="saveWeekPlan()">保存周主线</button></div>';
+  let h = '<label>'+S.planSel.y+'年'+S.planSel.m+'月 第'+S.planSel.w+'周主线</label>';
+  h += goalEditHtml(wp.goal,'week');
   return h;
 }
 function renderHomeMonthCal(){
@@ -2895,7 +2945,7 @@ function saveCourseInline(idx){
 function deleteCourse(idx){
   if(!confirm('确定删除这门课吗？')) return;
   const del=S.courses[idx]; if(del&&del.id) tombstone('course', del.id);
-  S.courses.splice(idx,1); save(); renderCourses(); renderCoursePlanTable();
+  S.courses.splice(idx,1); save(); renderCourses(); renderCoursePlanTable(); checkMilestones();
 }
 // ===== micro / creation =====
 function renderMicro(){
@@ -2966,12 +3016,15 @@ function saveCreation(input){
   const f = input.files[0]; if(!f) return;
   const cid = document.getElementById('microCourse').value;
   compressImage(f, 1400, data=>{
-    S.creations.push({id:'c'+Date.now()+'_'+Math.floor(Math.random()*1e6), date:todayStr(), img:data, course:cid, title:'', tags:''});
+    const c = S.courses.find(x=>x.id===cid);
+    const branches = new Set();
+    if(c && c.branch && foundKey(c.branch)) branches.add(foundKey(c.branch));
+    Object.keys(S.found||{}).forEach(k=>{ if(Array.isArray(S.found[k].courses) && S.found[k].courses.indexOf(cid)>=0) branches.add(k); });
+    S.creations.push({id:'c'+Date.now()+'_'+Math.floor(Math.random()*1e6), date:todayStr(), img:data, course:cid, title:'', tags:'', branch:Array.from(branches)});
+    branches.forEach(k=>addFoundWork(k,1));
     const d = ensureToday(); d.microCount = (d.microCount||0)+1;
     addXp(3);
-    const c = S.courses.find(x=>x.id===cid);
-    if(c && c.branch) addFoundWork(c.branch, 1);
-    save(); renderCreations(); renderOverview(); checkMilestones();
+    save(); renderCreations(); renderOverview(); renderKnow(); checkMilestones();
     toast('创作 +3 经验，已收录~');
     showPraise('creation');
   });
@@ -3014,7 +3067,27 @@ function closeCreationView(){
   if(v) v.classList.remove('on');
 }
 function delCreation(i){
-  if(confirm('确定删除这张创作吗？')){ const del=S.creations[i]; if(del&&del.id) tombstone('creation', del.id); S.creations.splice(i,1); save(); renderCreations(); checkMilestones(); haptic(); }
+  if(!confirm('确定删除这张创作吗？删除后对应枝芽会自动 -1，经验 -3。')) return;
+  const del = S.creations[i];
+  if(!del) return;
+  if(del.id) tombstone('creation', del.id);
+  S.creations.splice(i,1);
+  const ds = del.date || todayStr();
+  const d = S.days[ds];
+  if(d && (d.microCount||0)>0) d.microCount--;
+  (del.branch||[]).forEach(function(k){
+    const key = foundKey(k);
+    if(!key) return;
+    const f = getFound(key);
+    f.works = Math.max(0,(f.works||0)-1);
+    if(f.days[ds]) f.days[ds] = Math.max(0,(f.days[ds]||0)-1);
+    if((f.works||0) < 1) f.light = false;
+  });
+  addXp(-3);
+  checkKnowAutoLight();
+  save(); renderCreations(); renderOverview(); renderKnow(); checkMilestones();
+  toast('已删除创作，枝芽 -1~');
+  haptic();
 }
 
 // ===== inspo =====
@@ -3084,27 +3157,6 @@ function addInspoText(){
   toast('记下啦~');
 }
 function delInspo(tab,idx){ S.inspo[tab].splice(idx,1); save(); renderInspo(); }
-const LUCKY_POOL = [
-  '🎨 今天适合画一张「只有色块」的小稿，不追求好看，只求手感~',
-  '☕ 画之前先喝口水、吃口东西，状态会更好哦~',
-  '🖌️ 试着只用 15 分钟画一张速写，小啾啾陪你~',
-  '🎵 放一首喜欢的歌再开始，心情会松一点~',
-  '✨ 今天不一定要画完，打开画布就已经很棒了~',
-  '🧩 挑一门课补 1 节，积少成多~',
-  '🌙 如果今天很累，允许自己早点睡，明天再画~',
-  '📷 去图库翻一张喜欢的图，临摹一小块~',
-  '🍰 完成今天的打卡后，给自己一个小奖励~',
-  '💡 画得卡住时，试试把画面倒过来看~'
-];
-function rollLucky(){
-  haptic();
-  const d = new Date();
-  const idx = (d.getHours()*67 + d.getMinutes()*13 + d.getDate()*7 + Math.floor(Math.random()*100)) % LUCKY_POOL.length;
-  const box = document.getElementById('luckyBox');
-  if(box) box.innerHTML = '<div class="lucky-card">'+LUCKY_POOL[idx]+'</div>';
-  showPraise('lucky');
-}
-
 // ===== knowledge tree =====
 function renderKnow(){
   const box = document.getElementById('foundGrid');
@@ -3122,7 +3174,7 @@ function renderKnow(){
         return '<label class="kc-link'+(on?' on':'')+'"><input type="checkbox"'+on+' onchange="toggleFoundCourse(\''+b.k+'-'+leaf+'\',\''+c.id+'\',this.checked)"> '+esc(c.name)+'</label>';
       }).join('');
       return '<div class="found-leaf">'+
-        '<div class="fl-head"><b>'+leaf+'</b> · 枝芽 '+(f.works||0)+'<span class="fl-btn" onclick="toggleFoundLinks(\''+b.k+'-'+leaf+'\')">🔗 关联课程</span></div>'+
+        '<div class="fl-head"><b>'+leaf+'</b> · 枝芽 '+(f.works||0)+'<span class="fl-btn" title="+1 枝芽" onclick="addFoundBranchLeaf(\''+b.k+'-'+leaf+'\')">＋</span><span class="fl-btn" title="-1 枝芽" onclick="delFoundBranchLeaf(\''+b.k+'-'+leaf+'\')">－</span><span class="fl-btn" onclick="toggleFoundLinks(\''+b.k+'-'+leaf+'\')">🔗 关联课程</span></div>'+
         '<div class="fl-links" id="fl-'+b.k+'-'+leaf+'" style="display:none;">'+
         (S.courses.length? cb : '<span class="muted">还没有课程，先去课程页添加~</span>')+
         (linkedNames? '<div class="muted fl-done">已关联：'+linkedNames+'</div>':'')+
@@ -3150,6 +3202,23 @@ function toggleFoundCourse(key, courseId, on){
   if(on && i<0) f.courses.push(courseId);
   if(!on && i>-1) f.courses.splice(i,1);
   save(); renderKnow(); toast(on? '已关联课程~':'已取消关联~');
+}
+function addFoundBranchLeaf(key){
+  haptic();
+  addFoundWork(key, 1);
+  checkKnowAutoLight(); save(); renderKnow(); checkMilestones();
+  toast(key+' +1 枝芽~');
+}
+function delFoundBranchLeaf(key){
+  const f = getFound(key);
+  if((f.works||0) <= 0){ toast('这个分支还没有枝芽~'); return; }
+  if(!confirm('要减去「'+key+'」的 1 枝芽吗？')) return;
+  f.works = Math.max(0,(f.works||0)-1);
+  const d = todayStr();
+  if(f.days[d]) f.days[d] = Math.max(0,(f.days[d]||0)-1);
+  if((f.works||0) < 1) f.light = false;
+  checkKnowAutoLight(); save(); renderKnow(); checkMilestones();
+  toast('已减去 1 枝芽~');
 }
 
 
@@ -3459,7 +3528,7 @@ function renderMilestones(){
   const achieved = MILESTONES.filter(m=>S.ms[m.id]);
   let html = '';
   if(achieved.length>0){
-    html += '<div class="ms-achieved"><div class="mc">🏆 已达成成就（'+achieved.length+' / '+MILESTONES.length+'）</div><div class="ms-ach-list">';
+    html += '<div class="ms-achieved"><div class="mc">🏆 已达成成就（'+achieved.length+'）</div><div class="ms-ach-list">';
     achieved.forEach(m=>{
       let tx=m.text;
       if(m.id==='course1' && S.ms.course1){ const dc=S.courses.filter(c=>(c.total||0)>0 && (c.current||0)>=(c.total||0)).length; tx='已完成 '+dc+' 门课程 · 下一目标：第 '+(dc+1)+' 门'; }
@@ -3469,12 +3538,13 @@ function renderMilestones(){
   }
   const doneCount = S.courses.filter(c=>(c.total||0)>0 && (c.current||0)>=(c.total||0)).length;
   cats.forEach(cat=>{
-    html += '<div class="ms-cat"><div class="mc">'+cat+'</div>';
-    MILESTONES.filter(m=>m.cat===cat).forEach(m=>{
-      const on = S.ms[m.id] ? ' on' : '';
+    const pending = MILESTONES.filter(m=>m.cat===cat && !S.ms[m.id]);
+    if(!pending.length) return;
+    html += '<div class="ms-cat"><div class="mc">'+cat+' · 待完成</div>';
+    pending.forEach(m=>{
       let tx = m.text;
-      if(m.id==='course1' && on) tx = '已完成 '+doneCount+' 门课程 · 下一目标：第 '+(doneCount+1)+' 门';
-      html += '<div class="ms-item'+on+'"><div class="ms-ic">'+(S.ms[m.id]?'★':'○')+'</div><div class="ms-tx">'+tx+'</div></div>';
+      if(m.id==='course1') tx = '已学完 '+doneCount+' 门 · 下一目标：第 '+(doneCount+1)+' 门';
+      html += '<div class="ms-item"><div class="ms-ic">○</div><div class="ms-tx">'+tx+'</div></div>';
     });
     html += '</div>';
   });
@@ -3515,9 +3585,10 @@ function checkMilestones(){
   const today = todayStr();
   const monthStart = today.slice(0,8)+'01';
   const monthDays = Object.keys(S.days).filter(k=>k>=monthStart && k<=today && k.startsWith(today.slice(0,7)));
-  if(S.streak >= 7) S.ms.streak7=true;
-  if(S.streak >= 30) S.ms.streak30=true;
-  if(S.streak >= 100) S.ms.streak100=true;
+  // 可回退型成就：条件不满足时自动取消（早睡 / 枝芽 / 作品 / 喝水等）
+  S.ms.streak7  = S.streak >= 7;
+  S.ms.streak30 = S.streak >= 30;
+  S.ms.streak100= S.streak >= 100;
   if(S.wake.earlyCount > 0) S.ms.earlybird=true;
   let earlyStreak=0;
   const ed=new Date();
@@ -3528,22 +3599,81 @@ function checkMilestones(){
     else break;
     ed.setDate(ed.getDate()-1);
   }
-  if(earlyStreak>=7) S.ms.sleep24=true;
+  S.ms.sleep24 = earlyStreak >= 7;
   // water7: any 7 days with cups>0 in current month
   const waterDays = monthDays.filter(k=>S.days[k].waterCups>0).length;
-  if(waterDays >= 7) S.ms.water7=true;
+  S.ms.water7 = waterDays >= 7;
   const finished = S.courses.filter(c=>(c.total||0)>0 && (c.current||0)>=(c.total||0));
-  if(finished.length > 0) S.ms.course1=true;
-  const lit = Object.values(S.found||{}).some(n=>n.light);
-  if(lit) S.ms.know1=true;
-  const mastered = Object.values(S.found||{}).some(n=>(n.works||0)>=30);
-  if(mastered) S.ms.master1=true;
+  S.ms.course1 = finished.length > 0;
+  let anyLeaf=false, anyBloom=false;
+  Object.values(S.found||{}).forEach(n=>{
+    if((n.works||0)>=1) anyLeaf=true;
+    if((n.works||0)>=160) anyBloom=true;
+  });
+  S.ms.know1 = anyLeaf;
+  S.ms.master1 = anyBloom;
   if((S.dust||0)>=1) S.ms.release1=true;
-  if(S.creations.length >= 1) S.ms.firstcreation=true;
-  if(S.creations.length >= 10) S.ms.create10=true;
-  if(S.creations.length >= 50) S.ms.create50=true;
-  if(S.creations.length >= 100) S.ms.create100=true;
+  S.ms.firstcreation = S.creations.length >= 1;
+  S.ms.create10 = S.creations.length >= 10;
+  S.ms.create50 = S.creations.length >= 50;
+  S.ms.create100 = S.creations.length >= 100;
   save();
+}
+
+// ===== 白噪音（Web Audio 本地合成，无外部文件）=====
+let _noiseCtx=null, _noiseSrc=null, _noiseType=null;
+function noiseCtx(){
+  if(!_noiseCtx){
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if(!AC){ toast('当前浏览器不支持音频~'); return null; }
+    _noiseCtx = new AC();
+  }
+  if(_noiseCtx.state === 'suspended') _noiseCtx.resume();
+  return _noiseCtx;
+}
+function toggleNoise(type, btn){
+  const ctx = noiseCtx(); if(!ctx) return;
+  if(_noiseType===type && _noiseSrc){ stopNoise(); return; }
+  if(_noiseSrc) stopNoise();
+  const len = 2*ctx.sampleRate;
+  const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+  const data = buf.getChannelData(0);
+  let lastOut=0, brown=0;
+  for(let i=0;i<len;i++){
+    const white = Math.random()*2-1;
+    if(type==='rain'){
+      lastOut = (white*0.55 + lastOut*0.45);
+      data[i] = lastOut + (Math.random()<0.002 ? 0.7*Math.random() : 0);
+    } else if(type==='wave'){
+      brown = (white + brown*0.97)*0.97;
+      const swell = 0.55 + 0.45*Math.sin(2*Math.PI*(i/ctx.sampleRate)*0.09);
+      data[i] = brown*0.4*swell;
+    } else if(type==='fire'){
+      lastOut = (white - lastOut*0.75)*0.6;
+      data[i] = lastOut + (Math.random()<0.012 ? (Math.random()*0.8-0.4) : 0);
+    } else {
+      brown = (white + brown*0.95)*0.95;
+      data[i] = brown*0.5;
+    }
+  }
+  const src = ctx.createBufferSource();
+  src.buffer = buf; src.loop = true;
+  const gain = ctx.createGain(); gain.gain.value = 0.45;
+  src.connect(gain); gain.connect(ctx.destination);
+  src.start();
+  _noiseSrc = src; _noiseType = type;
+  document.querySelectorAll('#noiseBtns button').forEach(function(b){ b.classList.remove('on'); });
+  if(btn) btn.classList.add('on');
+  const st = document.getElementById('noiseStatus');
+  if(st) st.textContent = {rain:'🌧 雨声播放中',wave:'🌊 海浪播放中',fire:'🔥 篝火播放中',brown:'🤎 棕色噪音播放中'}[type];
+  toast('已开始播放~');
+}
+function stopNoise(){
+  try{ if(_noiseSrc) _noiseSrc.stop(); }catch(e){}
+  _noiseSrc=null; _noiseType=null;
+  document.querySelectorAll('#noiseBtns button').forEach(function(b){ b.classList.remove('on'); });
+  const st = document.getElementById('noiseStatus');
+  if(st) st.textContent='未播放';
 }
 
 // ===== settings / data =====
