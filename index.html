@@ -1182,10 +1182,10 @@ function toast(msg){
 }
 function save(){
   if(!S._meta) S._meta={};
-  S._meta.updatedAt=Date.now();
+  if(!_applyingRemote) S._meta.updatedAt=Date.now();
   if(!S._meta.deviceId) S._meta.deviceId='d_'+Math.random().toString(36).slice(2,10);
   localStorage.setItem('dajiuwan_v5', JSON.stringify(S));
-  scheduleSyncPush();
+  if(!_applyingRemote) scheduleSyncPush();
 }
 function load(){
   try{
@@ -1743,7 +1743,7 @@ function clearAiChat(){
 }
 
 // ===== v6 新增：多端同步（Firebase 同步码） =====
-let _syncTimer=null, _syncBusy=false, _syncListenerRef=null;
+let _syncTimer=null, _syncBusy=false, _syncListenerRef=null, _applyingRemote=false;
 let _createShowAll=false, _inspoShowAll=false, _archShowAll=false;
 function syncReady(){
   try{
@@ -1847,7 +1847,7 @@ function mergeRemoteData(remote){
   if(!remote || !remote._meta) return;
   const rt = remote._meta.updatedAt||0;
   const lt = (S._meta&&S._meta.updatedAt)||0;
-  if(rt < lt) return;
+  if(rt <= lt) return;
   const pending = (S.sync&&S.sync._pendingAt)||0;
   if(pending > rt){ pushToServer(); return; }
   const merged = JSON.parse(JSON.stringify(remote));
@@ -1860,9 +1860,14 @@ function mergeRemoteData(remote){
   merged._meta.deviceId = S._meta.deviceId;
   const page = S.page;
   S = merged;
-  localStorage.setItem('dajiuwan_v5', JSON.stringify(S));
-  try{ ensureDefaults(); }catch(e){}
-  if(page) go(page);
+  _applyingRemote = true;
+  try{
+    localStorage.setItem('dajiuwan_v5', JSON.stringify(S));
+    try{ ensureDefaults(); }catch(e){}
+    if(page) go(page);
+  } finally {
+    _applyingRemote = false;
+  }
   toast('已同步其他设备的数据~');
 }
 function genSyncCode(){
