@@ -1203,10 +1203,11 @@ function ensureDefaults(){
   if(!Array.isArray(S.futureCourses)) S.futureCourses=[];
   if(!S.refs||typeof S.refs!=='object') S.refs={};
   if(!S.know||typeof S.know!=='object') S.know={};
-  if(!S.dance) S.dance={goal:4,week:[]};
-  if(!S.dance.weeks) S.dance.weeks={};
-  if(!S.dance.schedule) S.dance.schedule=[];
-  if(!S.meds) S.meds=[{name:'复合维生素B',done:false},{name:'护肝片',done:false}];
+  if(!S.dance||typeof S.dance!=='object') S.dance={goal:4,week:[]};
+  if(!Array.isArray(S.dance.week)) S.dance.week=[];
+  if(!S.dance.weeks||typeof S.dance.weeks!=='object') S.dance.weeks={};
+  if(!Array.isArray(S.dance.schedule)) S.dance.schedule=[];
+  if(!Array.isArray(S.meds)) S.meds=[{name:'复合维生素B',done:false},{name:'护肝片',done:false}];
   if(!S.bodyNote) S.bodyNote='';
   if(!S.sleep||typeof S.sleep!=='object') S.sleep={done:false,time:'',earlyCount:0,earliest:'',lastDate:''};
   if(!S.water||typeof S.water!=='object') S.water={cups:0};
@@ -1234,13 +1235,13 @@ function ensureDefaults(){
   if(!S.customBg) S.customBg='';
   if(!S.customAvatar) S.customAvatar='';
   if(!S.found) S.found={};
-  if(!S.released) S.released=[];
+  if(!Array.isArray(S.released)) S.released=[];
   if(!S.dust) S.dust=0;
   if(!S.mosaic) S.mosaic=false;
   if(!S.courseLog) S.courseLog=[];
-  if(!S.weekReports) S.weekReports=[];
+  if(!Array.isArray(S.weekReports)) S.weekReports=[];
   if(!S.planTab) S.planTab='week';
-  if(!S.bodyLog) S.bodyLog=[];
+  if(!Array.isArray(S.bodyLog)) S.bodyLog=[];
   if(!S.judgeAsked||typeof S.judgeAsked!=='object') S.judgeAsked={};
   if(!S.sync||typeof S.sync!=='object') S.sync={config:'',code:'',deviceId:'',lastSync:0};
   if(!S.sync.deviceId) S.sync.deviceId='d_'+Math.random().toString(36).slice(2,10);
@@ -1444,7 +1445,7 @@ function renderMiniTrees(){
 // ===== v6 新增：放生仪式（可回归） =====
 function newReleaseId(){ return 'r'+Date.now()+'_'+Math.floor(Math.random()*1e5); }
 function addReleased(rec){
-  if(!S.released) S.released=[];
+  if(!Array.isArray(S.released)) S.released=[];
   rec.id = rec.id || newReleaseId();
   rec.status = 'released';
   rec.releasedAt = Date.now();
@@ -2256,7 +2257,7 @@ function planWeekHtml(){
   return h;
 }
 function planReportHtml(){
-  if(!S.weekReports) S.weekReports=[];
+  if(!Array.isArray(S.weekReports)) S.weekReports=[];
   const latest = S.weekReports[0];
   let h = '<p class="muted">每周自动生成小结，不用你写~</p>';
   h += '<div class="row"><button class="btn sm" onclick="genWeekReport()">📊 生成本周周报</button></div>';
@@ -2266,7 +2267,7 @@ function planReportHtml(){
 }
 function ensureWeekReport(){
   const wk = new Date().getFullYear()+'-W'+isoWeek(new Date());
-  if(!S.weekReports) S.weekReports=[];
+  if(!Array.isArray(S.weekReports)) S.weekReports=[];
   if(!S.weekReports.length || S.weekReports[0].week!==wk) genWeekReport();
 }
 function genWeekReport(){
@@ -2291,7 +2292,7 @@ function genWeekReport(){
     '<div class="wr-row">📚 完成课程 '+courseDone+' 节</div>'+
     '<div class="wr-row">💧 喝水记录 '+water+' 天</div>'+
     (moods.length? '<div class="wr-row">🎭 心情：'+moods.join(' · ')+'</div>':'');
-  if(!S.weekReports) S.weekReports=[];
+  if(!Array.isArray(S.weekReports)) S.weekReports=[];
   S.weekReports.unshift({week:weekKey, ts:Date.now(), html});
   if(S.weekReports.length>52) S.weekReports.length=52;
   save(); renderHomePlanPreview(); renderReleased();
@@ -2811,8 +2812,9 @@ function renderDance(){
 function saveDanceGoal(){ S.dance.goal=parseInt(document.getElementById('danceGoal').value)||4; save(); renderDance(); toast('目标保存啦~'); }
 function toggleDanceDay(i){
   haptic();
-  if(!S.dance) S.dance={goal:4,week:[]};
-  if(!S.dance.weeks) S.dance.weeks={};
+  if(!S.dance||typeof S.dance!=='object') S.dance={goal:4,week:[]};
+  if(!Array.isArray(S.dance.week)) S.dance.week=[];
+  if(!S.dance.weeks||typeof S.dance.weeks!=='object') S.dance.weeks={};
   const idx = S.dance.week.indexOf(i);
   if(idx>-1) S.dance.week.splice(idx,1); else S.dance.week.push(i);
   S.dance.weeks[weekKey()] = S.dance.week.slice();
@@ -2892,7 +2894,7 @@ function delMed(i){ S.meds.splice(i,1); const d=ensureToday(); d.meds=S.meds.map
 function saveBody(){
   const t = document.getElementById('bodyNote').value.trim();
   if(!t){ toast('写点什么再保存吧~'); return; }
-  if(!S.bodyLog) S.bodyLog=[];
+  if(!Array.isArray(S.bodyLog)) S.bodyLog=[];
   S.bodyLog.push({date:todayStr(), text:t, ts:Date.now()});
   S.bodyNote = t;
   save(); renderBody(); renderHome(); toast('身体记录已保存~');
