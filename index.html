@@ -191,9 +191,11 @@ label{font-size:11.5px;color:var(--sub);font-weight:300;display:block;margin-top
 
 /* courses */
 .course{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:12px;margin-bottom:10px;}
-.course .ch{display:flex;align-items:center;gap:8px;cursor:pointer;}
+.course .ch{display:flex;align-items:center;gap:8px;cursor:pointer;flex-wrap:wrap;}
 .course .ch .chev{margin-left:auto;transition:transform .2s;color:var(--sub);font-size:11px;}
 .course.open .ch .chev{transform:rotate(90deg);}
+.course .ch .course-actions{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto;}
+.course .ch .course-actions .btn{font-size:10px;padding:3px 8px;margin:0;white-space:nowrap;}
 .future-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 10px;background:var(--glass);border-radius:12px;margin-top:6px;font-size:12px;color:var(--text);}
 .future-item .del{width:22px;height:22px;flex:0 0 22px;}
 .course .ch .ci{width:22px;height:22px;}
@@ -597,6 +599,14 @@ table.tt td input:focus{background:var(--panel);border-radius:6px;}
 .ls-done{flex:0 0 auto;margin:0;white-space:nowrap;}
 .ls-done.done{background:var(--pink);color:#fff;border-color:var(--pink);}
 
+/* 知识点 · 折叠小结 */
+.kpts-fold{margin-top:8px;border:1px dashed var(--line);border-radius:10px;}
+.kpts-head{display:flex;align-items:center;gap:6px;padding:7px 10px;cursor:pointer;font-size:12px;color:var(--text);}
+.kpts-head .kpts-sum{font-size:10.5px;color:var(--sub);}
+.kpts-head .chev{margin-left:auto;transition:transform .2s;color:var(--sub);font-size:11px;}
+.kpts-head.open .chev{transform:rotate(90deg);}
+.kpts-body{padding:2px 10px 8px;border-top:1px dashed var(--line);}
+
 /* 成长页 · 经验进度条 */
 .xp-bar{height:10px;border-radius:7px;background:var(--glass);overflow:hidden;margin-top:6px;border:1px solid var(--line);}
 .xp-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--pink),var(--primary));border-radius:7px;transition:width .4s;}
@@ -999,7 +1009,7 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
             <button class="btn sm ghost" onclick="disconnectSync()">断开</button>
           </div>
           <p class="sync-status" id="syncStatus">未连接</p>
-          <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-11-v4</b></p>
+          <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-11-v5</b></p>
           <label>数据</label>
           <div class="row">
             <button class="btn ghost" onclick="exportData()">导出</button>
@@ -1193,7 +1203,7 @@ function load(){
   }catch(e){S={};}
 }
 
-const APP_VERSION = '2026-08-11-v4';
+const APP_VERSION = '2026-08-11-v5';
 // 深度消毒：同步合并/旧版本/损坏数据进入后，把每个用到的字段修复成正确类型，防止任意一处 undefined 崩溃
 function deepSanitize(){
   if(!S || typeof S!=='object' || Array.isArray(S)) S={};
@@ -2389,6 +2399,7 @@ function planReportHtml(){
 function ensureWeekReport(){
   const wk = new Date().getFullYear()+'-W'+isoWeek(new Date());
   if(!Array.isArray(S.weekReports)) S.weekReports=[];
+  if(_applyingRemote) return; // 同步合并渲染时不要自动生成周报
   if(!S.weekReports.length || S.weekReports[0].week!==wk) genWeekReport();
 }
 function genWeekReport(){
@@ -2414,7 +2425,9 @@ function genWeekReport(){
     '<div class="wr-row">💧 喝水记录 '+water+' 天</div>'+
     (moods.length? '<div class="wr-row">🎭 心情：'+moods.join(' · ')+'</div>':'');
   if(!Array.isArray(S.weekReports)) S.weekReports=[];
-  S.weekReports.unshift({week:weekKey, ts:Date.now(), html});
+  const wkIdx = S.weekReports.findIndex(w=>w && w.week===weekKey);
+  if(wkIdx>=0){ S.weekReports[wkIdx] = {week:weekKey, ts:Date.now(), html}; }
+  else S.weekReports.unshift({week:weekKey, ts:Date.now(), html});
   if(S.weekReports.length>52) S.weekReports.length=52;
   save(); renderHomePlanPreview(); renderReleased();
   renderWeekReports();
@@ -2495,7 +2508,12 @@ function renderCourses(){
     const pct = Math.min(100, Math.round(((c.current||0)/Math.max(1,c.total||1))*100));
     const stalled = isCourseStalled(c);
     html += '<div class="course" id="course-'+idx+'">';
-    html += '<div class="ch" onclick="toggleCourse('+idx+')"><span class="cn">📚 '+esc(c.name)+'</span><span class="meta">已完 '+c.current+'/'+c.total+' · 待补 '+remain+' · 当前第 '+(c.now||1)+' 节</span><span class="chev">▸</span></div>';
+    html += '<div class="ch" onclick="toggleCourse('+idx+')"><span class="cn">📚 '+esc(c.name)+'</span><span class="meta">已完 '+c.current+'/'+c.total+' · 待补 '+remain+' · 当前第 '+(c.now||1)+' 节</span><span class="course-actions">'+
+      '<button class="btn sm" onclick="event.stopPropagation();saveCourseInline('+idx+')">💾 保存</button>'+
+      (stalled
+        ? '<button class="btn sm ghost" onclick="event.stopPropagation();releaseCourse('+idx+')">🕊️ 放生</button>'
+        : '<button class="btn sm ghost" onclick="event.stopPropagation();deleteCourse('+idx+')">🗑️ 删除</button><button class="btn sm ghost" onclick="event.stopPropagation();releaseCourse('+idx+')">🕊️ 放生</button>')+
+      '</span><span class="chev">▸</span></div>';
     html += '<div class="pbar"><i style="width:'+pct+'%"></i></div>';
     html += '<div class="course-body" id="cb-'+idx+'" style="display:none;"><div class="course-form">';
     html += '<label>课程名</label><input id="cname-'+idx+'" value="'+esc(c.name)+'">';
@@ -2503,11 +2521,6 @@ function renderCourses(){
     html += '<label>关联根基分支</label><select id="cbranch-'+idx+'"><option value="">不关联</option>'+knowOptions(c.branch)+'</select>';
     html += '<label>📌 知识点（每节直接输入，离开输入框自动保存）</label>';
     html += lessonDotsStr(c, idx);
-    html += '<div class="row"><button class="btn sm" onclick="saveCourseInline('+idx+')">保存</button>'+
-      (stalled
-        ? '<button class="btn sm ghost" onclick="releaseCourse('+idx+')">🕊️ 放生仪式</button>'
-        : '<button class="btn sm ghost" onclick="deleteCourse('+idx+')">删除</button><button class="btn sm ghost" onclick="releaseCourse('+idx+')">🕊️ 放生仪式</button>')+
-      '</div>';
     if(stalled) html += '<div class="stale-note">这门课搁置超过 7 天没学了，编辑里不提供「删除」，试试温柔的「放生仪式」吧~ 放生不扣分，还能随时回归。</div>';
     html += '</div>';
     html += '</div></div>';
@@ -2527,18 +2540,31 @@ function toggleCourse(idx){
 }
 function lessonDotsStr(c, idx){
   const total = Math.max(1, c.total||1);
-  let h = '<div class="lesson-grid">';
+  const kp = (c.kpts && typeof c.kpts==='object') ? c.kpts : {};
+  let filled = 0;
+  for(const k in kp){ if(kp[k] && String(kp[k]).trim()) filled++; }
+  let h = '<div class="kpts-fold"><div class="kpts-head" onclick="toggleKpts('+idx+')">📌 知识点小结 <span class="kpts-sum">'+filled+' / '+total+' 节已填</span><span class="chev">▸</span></div>';
+  h += '<div class="kpts-body" id="kpts-'+idx+'" style="display:none;"><div class="lesson-grid">';
   for(let n=1;n<=total;n++){
     const done = n <= (c.current||0);
-    const note = (c.kpts && c.kpts[''+n]) || '';
+    const note = kp[''+n] || '';
     h += '<div class="lesson-row">';
     h += '<span class="ls-no">第'+n+'节</span>';
     h += '<input class="ls-note" placeholder="知识点，直接输入自动保存" value="'+esc(note)+'" onchange="saveKpInline('+idx+','+n+',this.value)">';
     h += '<button class="btn sm ghost ls-done'+(done?' done':'')+'" onclick="completeLesson('+idx+','+n+')">'+(done?'✓ 已完成':'✓ 完成此节')+'</button>';
     h += '</div>';
   }
-  h += '</div>';
+  h += '</div></div></div>';
   return h;
+}
+function toggleKpts(idx){
+  const b = document.getElementById('kpts-'+idx);
+  if(!b) return;
+  const open = b.style.display!=='none';
+  b.style.display = open ? 'none' : 'block';
+  const head = b.previousElementSibling;
+  if(head) head.classList.toggle('open', !open);
+  haptic();
 }
 function saveKpInline(idx, n, val){
   const c = S.courses[idx]; if(!c) return;
