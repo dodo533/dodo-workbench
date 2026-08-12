@@ -516,6 +516,26 @@ body.gentle .content>.panel>.grid2{opacity:.92;}
 .low-hint .lh-btns{display:flex;gap:8px;flex-wrap:wrap;}
 .dream-card{background:rgba(227,238,255,0.55);border:1px solid #b6cdf5;border-radius:12px;padding:8px 10px;margin-top:6px;font-size:11px;color:var(--text);line-height:1.7;}
 .dream-card .dc-h{font-weight:bold;color:#5b7fc7;margin-bottom:2px;}
+.eye-care-layer{position:fixed;inset:0;z-index:9997;pointer-events:none;background:rgba(255,160,60,0.10);display:none;}
+body.eyeon .eye-care-layer{display:block;}
+body .plan-list li.done{background:rgba(143,220,198,0.16);border-color:rgba(143,220,198,0.55);}
+body .plan-list li.done label{text-decoration:none;opacity:.95;color:#4e9c86;}
+body.gentle .plan-list li{opacity:.72;}
+.memo-atmos{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;}
+.atmo-chip{font-size:10px;padding:2px 8px;border-radius:10px;background:rgba(227,238,255,0.6);color:#5b7fc7;border:1px solid #c4d6f8;}
+.mood-stat-title{font-size:12px;color:var(--sub);margin:12px 0 4px;}
+.mb-row{display:flex;align-items:center;gap:8px;margin:4px 0;font-size:11px;}
+.mb-l{width:18px;text-align:center;font-size:13px;}
+.mb-bar{flex:1;height:10px;border-radius:6px;background:rgba(150,150,150,0.14);overflow:hidden;}
+.mb-bar i{display:block;height:100%;border-radius:6px;}
+.mb-n{width:34px;text-align:right;color:var(--sub);}
+.mood-monthly{display:flex;gap:4px;align-items:flex-end;margin-top:4px;overflow-x:auto;padding-bottom:4px;}
+.mm-col{flex:1 0 36px;text-align:center;font-size:10px;color:var(--sub);}
+.mm-h{font-size:9.5px;margin-bottom:2px;}
+.mm-bar{display:flex;flex-direction:column-reverse;height:70px;border-radius:5px;overflow:hidden;background:rgba(150,150,150,0.12);}
+.mm-bar i{display:block;width:100%;}
+.mm-n{font-size:10px;margin-top:2px;}
+@media(min-width:1100px){.content{max-width:1160px;}}
 /* 跳舞页 */
 .dance-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;}
 @media(max-width:760px){.dance-grid{grid-template-columns:1fr;}}
@@ -818,6 +838,7 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
 
 <div id="splash"><img id="splashLogo" src="" alt=""><div id="splashName">呆啾丸</div><div id="splashTip">正在打开你的小世界…</div></div>
 <div id="appBg"></div>
+<div id="eyeCareLayer" class="eye-care-layer"></div>
 <div id="authOverlay">
   <div class="auth-box">
     <img id="authLogo" src="" alt="">
@@ -1022,6 +1043,26 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
           </div>
         </div>
         <div class="card">
+          <h3><img class="tic" data-stk="s069" alt="">🌙 梦境记录</h3>
+          <p class="muted">记下梦境，AI 会自动提取灵感卡（关键词/元素/色彩），可多选氛围标签。</p>
+          <textarea id="dreamNew" rows="3" placeholder="比如：我梦见一条暗红色的走廊，到处是漂浮的镜子…" style="width:100%;"></textarea>
+          <div class="row" style="margin-top:6px;flex-wrap:wrap;gap:6px;align-items:center;">
+            <span class="muted">氛围：</span>
+            <button class="chip" data-a="压抑" onclick="toggleAtmos(this)">压抑</button>
+            <button class="chip" data-a="雪景" onclick="toggleAtmos(this)">雪景</button>
+            <button class="chip" data-a="逃亡" onclick="toggleAtmos(this)">逃亡</button>
+            <button class="chip" data-a="奇幻" onclick="toggleAtmos(this)">奇幻</button>
+            <button class="chip" data-a="明亮" onclick="toggleAtmos(this)">明亮</button>
+            <button class="chip" data-a="温柔" onclick="toggleAtmos(this)">温柔</button>
+            <button class="chip" data-a="悬疑" onclick="toggleAtmos(this)">悬疑</button>
+            <button class="chip" data-a="治愈" onclick="toggleAtmos(this)">治愈</button>
+          </div>
+          <div class="row" style="margin-top:8px;">
+            <button class="btn sm" onclick="addDream()">记下梦境</button>
+            <button class="btn sm ghost" title="语音输入" onclick="startVoice('dreamNew')">🎙️</button>
+          </div>
+        </div>
+        <div class="card">
           <h3><img class="tic" data-stk="s069" alt="">随手记</h3>
           <p class="muted">备忘录 / 梦境 / 新奇想法，写完让 AI 自动分类并生成一段总结。</p>
           <div class="row" style="gap:6px;flex-wrap:wrap;">
@@ -1031,6 +1072,7 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
           </div>
           <div class="row" style="margin-top:8px;gap:8px;align-items:center;flex-wrap:wrap;">
             <input id="memoNew" placeholder="写点什么…（AI 会帮你分类+总结）" style="flex:1;min-width:170px;">
+            <button class="btn sm ghost" title="语音输入" onclick="startVoice('memoNew')">🎙️</button>
             <button class="btn sm" onclick="addMemo()">记下</button>
           </div>
           <div id="memoList" style="margin-top:12px;"></div>
@@ -1134,6 +1176,7 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
           <p class="muted">把想留的链接、文字、图片一键存进来，AI 自动帮你归类。以后一个搜索框全找到，不用再去各大平台翻。</p>
           <div class="row" style="gap:8px;flex-wrap:wrap;">
             <input id="favInput" placeholder="粘贴链接或写一句话…" style="flex:1;min-width:180px;">
+            <button class="btn sm ghost" title="语音输入" onclick="startVoice('favInput')">🎙️</button>
             <button class="btn sm" onclick="addFav()">＋ 收藏</button>
             <button class="btn sm ghost" onclick="document.getElementById('favImgIn').click()">＋ 图片</button>
             <input type="file" id="favImgIn" accept="image/*" style="display:none;" onchange="addFavImage(this)">
@@ -1152,6 +1195,8 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
           <div class="theme-row" id="themeRow2" style="padding:4px 0;"></div>
           <label>夜间模式</label>
           <div class="row"><select id="nightMode" onchange="setNight(this.value)"><option value="auto">自动跟随系统</option><option value="on">始终夜间</option><option value="off">始终白天</option></select></div>
+          <label>护眼模式（暖色低蓝光）</label>
+          <div class="row"><select id="eyeCareSel" onchange="setEyeCare(this.value)"><option value="off">关闭</option><option value="on">开启</option></select></div>
           <label>自定义头像</label>
           <div class="row">
             <div><button class="btn ghost" onclick="changeAvatar()">上传头像</button></div>
@@ -1164,7 +1209,7 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
           </div>
           <div class="row"><button class="btn ghost sm" onclick="delCustomBg()" id="bgDelBtn" style="display:none;">清除背景图</button></div>
           <label>白色弱化遮罩</label>
-          <div class="row"><select id="blurSel" onchange="toggleBlur(this.value)"><option value="on">开启</option><option value="off">关闭</option></select></div>
+          <div class="row"><select id="blurSel" onchange="toggleBlur(this.value)"><option value="auto">自动跟随系统</option><option value="on">开启</option><option value="off">关闭</option></select></div>
           <label>多端同步（账号登录 · 自动同步）</label>
           <p class="muted">用同一个邮箱+密码登录后，三台设备数据自动互通（删除也会同步），不再需要同步码。首次使用请粘贴 Firebase 配置并点「保存配置」。</p>
           <textarea id="syncConfig" rows="4" placeholder='{"apiKey":"...","authDomain":"...","databaseURL":"...","projectId":"...","appId":"..."}'></textarea>
@@ -1543,8 +1588,9 @@ function ensureDefaults(){
   if(!S.homeNote) S.homeNote='今天也要对自己温柔一点~';
   if(!S.theme) S.theme='0';
   if(!S.nightMode) S.nightMode='auto';
+  if(typeof S.eyeCare!=='boolean') S.eyeCare=false;
   if(!S.bg) S.bg='none';
-  if(!S.blur) S.blur='on';
+  if(!S.blur) S.blur='auto';
   if(!Array.isArray(S.courses)) S.courses=[];
   if(!Array.isArray(S.futureCourses)) S.futureCourses=[];
   if(!S.refs||typeof S.refs!=='object') S.refs={};
@@ -2279,19 +2325,40 @@ function setMemoType(i){
   _memoType=i;
   for(let k=0;k<3;k++){ const c=document.getElementById('memoChip'+k); if(c) c.classList.toggle('chip-on',k===i); }
 }
+function pushMemoItem(item){
+  if(!Array.isArray(S.memos)) S.memos=[];
+  S.memos.unshift(item);
+  save();
+  renderMemo();
+  if(aiKey()) aiClassifyMemo(item);
+  if(item.type===1 && aiKey()) aiExtractDream(item);
+}
 function addMemo(){
   const inp=document.getElementById('memoNew');
   const t=(inp&&inp.value||'').trim();
   if(!t){ toast('先写点什么~'); return; }
   const item={id:'m'+Date.now()+Math.random().toString(36).slice(2,7), date:todayStr(), ts:Date.now(), type:_memoType, text:t, cat:'', tags:[], summary:''};
-  if(!Array.isArray(S.memos)) S.memos=[];
-  S.memos.unshift(item);
-  save();
+  pushMemoItem(item);
   if(inp) inp.value='';
-  renderMemo();
   toast('记下啦~');
-  if(aiKey()) aiClassifyMemo(item);
-  if(item.type===1 && aiKey()) aiExtractDream(item);
+}
+const _atmosSel = new Set();
+function toggleAtmos(btn){
+  const v = btn && btn.getAttribute('data-a');
+  if(!v) return;
+  if(_atmosSel.has(v)){ _atmosSel.delete(v); btn.classList.remove('chip-on'); }
+  else { _atmosSel.add(v); btn.classList.add('chip-on'); }
+  haptic();
+}
+function addDream(){
+  const inp=document.getElementById('dreamNew');
+  const t=(inp&&inp.value||'').trim();
+  if(!t){ toast('写点梦境~'); return; }
+  const atmos=Array.from(_atmosSel);
+  const item={id:'m'+Date.now()+Math.random().toString(36).slice(2,7), date:todayStr(), ts:Date.now(), type:1, text:t, cat:'', tags:atmos.slice(), summary:'', atmos:atmos.slice()};
+  pushMemoItem(item);
+  if(inp) inp.value='';
+  toast('梦境记下啦~');
 }
 function aiClassifyMemo(item){
   callAI([
@@ -2316,7 +2383,7 @@ function aiExtractDream(item){
   if(!aiKey()) return;
   callAI([
     {role:'system',content:'你是呆啾丸的梦境灵感提取器。用户写了一段梦境，请提取三行，用 | 分隔：\n1) 核心画面关键词（3~6 个，逗号分隔，如：暗红走廊,漂浮的镜子）\n2) 可画元素清单（3~6 个，逗号分隔）\n3) 建议色彩氛围（2~4 个颜色词，末尾加一句氛围，如：暗红,墨黑,冷蓝,压抑潮湿）\n严格只输出三行。'},
-    {role:'user',content:item.text}
+    {role:'user',content:item.text + (item.atmos && item.atmos.length? '（氛围标签：'+item.atmos.join('、')+'）':'')}
   ], function(txt){
     const p = String(txt||'').split('|').map(function(s){ return s.trim(); });
     const it=(S.memos||[]).find(function(m){ return m.id===item.id; });
@@ -2351,6 +2418,7 @@ function renderMemo(){
       h+='<button class="memo-del" onclick="deleteMemo(\''+m.id+'\')">✕</button></div>';
       h+='<div class="memo-text">'+escHtml(m.text)+'</div>';
       if(m.summary) h+='<div class="memo-sum">✨ '+escHtml(m.summary)+'</div>';
+      if(m.atmos && m.atmos.length) h+='<div class="memo-atmos">'+m.atmos.map(function(a){ return '<span class="atmo-chip">'+escHtml(a)+'</span>'; }).join('')+'</div>';
       if(m.type===1){
         if(m.dreamCard && (m.dreamCard.kw||m.dreamCard.elems||m.dreamCard.colors)){
           h+='<div class="dream-card"><div class="dc-h">🌙 梦境灵感卡</div>';
@@ -2847,23 +2915,55 @@ function applyNight(){
   }
   const nm=document.getElementById('nightMode'); if(nm) nm.value=S.nightMode;
 }
-function setNight(v){ S.nightMode=v; save(); applyNight(); haptic(); }
+function setNight(v){ S.nightMode=v; save(); applyNight(); applyBg(); haptic(); }
 function applyBg(){
   const bg = document.getElementById('appBg');
   let src = '';
   if(S.bg==='custom') src = S.customBg;
-  if(src){ bg.style.backgroundImage = "url('"+src+"')"; bg.style.opacity = S.blur==='on'?'0.55':'1'; }
+  if(src){
+    bg.style.backgroundImage = "url('"+src+"')";
+    const night = S.nightMode==='on' || (S.nightMode==='auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    const blurOn = S.blur==='on' || (S.blur==='auto' && night);
+    bg.style.opacity = blurOn ? '0.55' : '1';
+  }
   else { bg.style.opacity='0'; }
   document.body.classList.toggle('gentle', ensureToday().state==='down');
 }
 function setBg(v){ S.bg=v; save(); applyBg(); haptic(); }
 function uploadBg(input){
   const f = input.files[0]; if(!f) return;
-  const r = new FileReader();
-  r.onload = e=>{ S.customBg=e.target.result; S.bg='custom'; save(); applyBg(); toast('背景换好啦~'); };
-  r.readAsDataURL(f);
+  compressImage(f, 1600, data=>{ S.customBg=data; S.bg='custom'; save(); applyBg(); toast('背景换好啦~'); });
+  input.value='';
 }
 function toggleBlur(v){ S.blur=v; save(); applyBg(); haptic(); }
+
+function setEyeCare(v){ S.eyeCare=(v==='on'); save(); applyEyeCare(); haptic(); }
+function applyEyeCare(){
+  const on = !!S.eyeCare;
+  document.body.classList.toggle('eyeon', on);
+  const el=document.getElementById('eyeCareSel'); if(el) el.value=on?'on':'off';
+}
+function startVoice(inputId){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const inp = document.getElementById(inputId);
+  if(!inp) return;
+  if(!SR){ toast('当前浏览器不支持语音输入，建议用 Safari / Chrome~'); return; }
+  try{
+    const rec = new SR();
+    rec.lang = 'zh-CN';
+    rec.interimResults = false;
+    rec.maxAlternatives = 1;
+    haptic();
+    rec.onstart = ()=>{ toast('🎙️ 正在听，请说话…'); };
+    rec.onresult = (e)=>{
+      const t = (e.results && e.results[0] && e.results[0][0] && e.results[0][0].transcript) || '';
+      if(t) inp.value = (inp.value? inp.value+' ':'') + t;
+    };
+    rec.onerror = (e)=>{ toast(e && e.error==='not-allowed' ? '麦克风权限被拒绝，请在系统设置里允许~' : '语音识别失败，请重试'); };
+    rec.onend = ()=>{ toast('语音结束~'); };
+    rec.start();
+  }catch(err){ toast('语音启动失败，请重试~'); }
+}
 
 // ===== home =====
 function renderHome(){
@@ -2973,7 +3073,7 @@ function renderCompass(){
 function setState(k){
   haptic();
   ensureToday().state = k; save();
-  renderHome(); renderHomePlan();
+  renderHome(); renderHomePlan(); applyBg();
   toast('切换为 '+STATE_MAP[k]+'~');
 }
 const STATE_ADVICE = {
@@ -3186,28 +3286,28 @@ function renderCourseDonut(){
   const box = document.getElementById('courseDonut'); if(!box) return;
   const courses = S.courses||[];
   if(courses.length===0){ box.innerHTML='<div class="muted" style="font-size:11px;margin-top:8px;">添加课程后，这里会显示各课程的学习占比~</div>'; return; }
-  const total = courses.reduce((a,c)=>a+Math.max(0,(c.current||0)),0);
+  const withIdx = courses.map(function(c,i){ return {c:c, i:i, v:Math.max(0,(c.current||0)), pct:(c.total||0)? Math.min(100, Math.round((c.current||0)/c.total*100)) : 0}; });
+  withIdx.sort(function(a,b){ return b.pct - a.pct; });
+  const total = withIdx.reduce(function(s,x){ return s+x.v; }, 0);
   const R=40, C=2*Math.PI*R;
   let acc=0, segs='';
-  courses.forEach((c,i)=>{
-    const v = Math.max(0,(c.current||0));
-    if(total>0 && v>0){
-      const frac = v/total;
+  withIdx.forEach(function(x){
+    if(total>0 && x.v>0){
+      const frac = x.v/total;
       const a0 = acc*C, a1 = (acc+frac)*C;
-      segs += '<circle cx="50" cy="50" r="'+R+'" fill="none" stroke="'+COURSE_COLORS[i%COURSE_COLORS.length]+'" stroke-width="14" stroke-dasharray="'+a1.toFixed(1)+' '+C.toFixed(1)+'" stroke-dashoffset="'+(-a0).toFixed(1)+'" transform="rotate(-90 50 50)"/>';
+      segs += '<circle cx="50" cy="50" r="'+R+'" fill="none" stroke="'+COURSE_COLORS[x.i%COURSE_COLORS.length]+'" stroke-width="14" stroke-dasharray="'+a1.toFixed(1)+' '+C.toFixed(1)+'" stroke-dashoffset="'+(-a0).toFixed(1)+'" transform="rotate(-90 50 50)"/>';
       acc += frac;
     }
   });
-  let legend = courses.map((c,i)=>{
-    const v = Math.max(0,(c.current||0));
-    const pct = total>0?Math.round(v/total*100):0;
-    return '<div class="cd-legend"><span class="cd-dot" style="background:'+COURSE_COLORS[i%COURSE_COLORS.length]+'"></span>'+esc(c.name)+' <span class="muted">'+pct+'%</span></div>';
+  const legend = withIdx.map(function(x){
+    const share = total>0?Math.round(x.v/total*100):0;
+    return '<div class="cd-legend"><span class="cd-dot" style="background:'+COURSE_COLORS[x.i%COURSE_COLORS.length]+'"></span>'+esc(x.c.name)+' <span class="muted">'+x.pct+'% 进度</span></div>';
   }).join('');
   box.innerHTML = '<div class="donut-wrap"><svg width="118" height="118" viewBox="0 0 100 100">'+
     '<circle cx="50" cy="50" r="'+R+'" fill="none" stroke="rgba(150,150,150,0.15)" stroke-width="14"/>'+
     segs+
-    '<text x="50" y="47" text-anchor="middle" font-size="13" font-weight="700" fill="var(--text)">'+(total||0)+'</text>'+
-    '<text x="50" y="60" text-anchor="middle" font-size="8" fill="var(--sub)">已完成节</text>'+
+    '<text x="50" y="47" text-anchor="middle" font-size="13" font-weight="700" fill="var(--text)">'+courses.length+'</text>'+
+    '<text x="50" y="60" text-anchor="middle" font-size="8" fill="var(--sub)">门课程</text>'+
     '</svg><div class="cd-legend-wrap">'+legend+'</div></div>';
 }
 
@@ -3424,9 +3524,8 @@ function planReportHtml(){
   if(!Array.isArray(S.weekReports)) S.weekReports=[];
   const latest = S.weekReports[0];
   let h = '<p class="muted">每周自动生成小结，不用你写~</p>';
-  h += '<div class="row"><button class="btn sm" onclick="genWeekReport()">📊 生成本周周报</button></div>';
   if(latest) h += '<div class="week-report" style="margin-top:8px;">'+latest.html+'</div>';
-  else h += '<div class="muted" style="margin-top:8px;">还没有周报，点上面生成第一份~</div>';
+  else h += '<div class="muted" style="margin-top:8px;">还没有周报，打开「成长」页会自动生成第一份~</div>';
   return h;
 }
 function ensureWeekReport(){
@@ -3562,6 +3661,8 @@ function markCheckin(){
 // ===== courses =====
 function renderCourses(){
   const stats = document.getElementById('courseStats');
+  const nb = document.getElementById('newCbranch');
+  if(nb) nb.innerHTML = '<option value="">不关联</option>'+knowOptionsGrouped('');
   if(S.courses.length===0){
     document.getElementById('courseList').innerHTML = '<div class="empty-note">还没有课程，点上面按钮添加~</div>';
     if(stats) stats.innerHTML='';
@@ -3587,7 +3688,7 @@ function renderCourses(){
     html += '<div class="course-body" id="cb-'+idx+'" style="display:none;"><div class="course-form">';
     html += '<label>课程名</label><input id="cname-'+idx+'" value="'+esc(c.name)+'">';
     html += '<div class="row"><div><label>总节数</label><input type="number" id="ctotal-'+idx+'" value="'+(c.total||0)+'"></div><div><label>已完成</label><input type="number" id="ccur-'+idx+'" value="'+(c.current||0)+'"></div><div><label>当前第几节</label><input type="number" id="cnow-'+idx+'" value="'+(c.now||c.current||1)+'"></div><div><label>待补</label><input type="number" id="ctodo-'+idx+'" value="'+(c.todo!=null?c.todo:Math.max(0,(c.total||0)-(c.current||0)))+'" placeholder="手动填"></div></div>';
-    html += '<label>关联根基分支</label><select id="cbranch-'+idx+'"><option value="">不关联</option>'+knowOptions(c.branch)+'</select>';
+    html += '<label>关联根基分支</label><select id="cbranch-'+idx+'"><option value="">不关联</option>'+knowOptionsGrouped(c.branch)+'</select>';
     html += '<label>📌 知识点（每节直接输入，离开输入框自动保存）</label>';
     html += lessonDotsStr(c, idx);
     if(stalled) html += '<div class="stale-note">这门课搁置超过 7 天没学了，编辑里不提供「删除」，试试温柔的「放生仪式」吧~ 放生不扣分，还能随时回归。</div>';
@@ -3685,6 +3786,18 @@ function knowOptions(selected){
       const v=b.k+'-'+leaf; const sel=v===selected?' selected':'';
       opts += '<option value="'+v+'"'+sel+'>'+b.k+' · '+leaf+'</option>';
     });
+  });
+  return opts;
+}
+function knowOptionsGrouped(selected){
+  let opts='';
+  FOUNDATIONS.forEach(b=>{
+    opts += '<optgroup label="'+b.icon+' '+b.k+'">';
+    b.sub.forEach(leaf=>{
+      const v=b.k+'-'+leaf; const sel=v===selected?' selected':'';
+      opts += '<option value="'+v+'"'+sel+'>'+leaf+'</option>';
+    });
+    opts += '</optgroup>';
   });
   return opts;
 }
@@ -4448,6 +4561,7 @@ function renderSettings(){
   renderAuthStatus();
   renderAiSettings();
   renderReminderSettings();
+  applyEyeCare();
 }
 function exportData(){
   const d=JSON.parse(JSON.stringify(S));
@@ -4600,12 +4714,42 @@ function renderMood(){
   MOODS.forEach(m=>{ h+='<div class="mood-opt'+(cur.mood===m.k?' on':'')+'" onclick="pickMood(\''+m.k+'\')"><span class="state-ic-emoji"><img src="'+stk(m.ic)+'" alt=""></span><small>'+m.n+'</small></div>'; });
   h+='</div>';
   h+='<label style="margin-top:10px;">今天想写点什么</label><textarea id="moodText" rows="4" placeholder="随便写，不开心也可以说~">'+(cur.text||'')+'</textarea>';
-  h+='<div class="row" style="margin-top:6px;"><button class="btn sm" onclick="saveMoodDiary()">保存今天的情绪日记</button></div>';
+  h+='<div class="row" style="margin-top:6px;"><button class="btn sm ghost" title="语音输入" onclick="startVoice(\'moodText\')">🎙️</button><button class="btn sm" onclick="saveMoodDiary()">保存今天的情绪日记</button></div>';
   const keys=Object.keys(S.moodDiary).sort().reverse().slice(0,60);
   if(keys.length){ h+='<div class="rev-sub" style="margin:12px 0 6px;"><img class="tic" src="'+stk('s001')+'" alt="">过往记录（可编辑）</div>'; }
   keys.forEach(k=>{ const e=S.moodDiary[k]; const mn=(MOODS.find(x=>x.k===e.mood)||{}).n||''; h+='<div class="memo-card"><div class="muted">'+k+(mn?' · '+mn:'')+'<button class="mood-edit" onclick="editMoodEntry(\''+k+'\')">编辑</button></div>'+(e.text?esc(e.text):'<span class="muted">（只选了心情）</span>')+'</div>'; });
+  h+=renderMoodStats();
   h+='</div>';
   box.innerHTML=h;
+}
+function renderMoodStats(){
+  const MOOD_KEYS=['down','meh','ok','happy'];
+  const MOOD_COLORS={down:'#a6b4d8',meh:'#e0cba8',ok:'#8fdcc6',happy:'#f6abd3'};
+  const moodOf = function(ds){ return (S.days[ds]&&S.days[ds].mood)||(S.moodDiary[ds]&&S.moodDiary[ds].mood)||''; };
+  const c30={down:0,meh:0,ok:0,happy:0};
+  for(let i=29;i>=0;i--){ const dd=new Date(); dd.setDate(dd.getDate()-i); const m=moodOf(dd.toLocaleDateString('sv-SE')); if(m && c30[m]!=null) c30[m]++; }
+  const months=[];
+  for(let i=11;i>=0;i--){ const d=new Date(); d.setDate(1); d.setMonth(d.getMonth()-i); months.push({key:d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'), cnt:{down:0,meh:0,ok:0,happy:0}}); }
+  Object.keys(S.days).forEach(function(ds){
+    const m=moodOf(ds); const mo=months.find(function(x){ return x.key===ds.slice(0,7); });
+    if(mo && m && mo.cnt[m]!=null) mo.cnt[m]++;
+  });
+  let h='<div class="card"><h3>📊 情绪周期统计</h3>';
+  h+='<div class="mood-stat-title">近 30 天心情分布</div>';
+  MOOD_KEYS.forEach(function(k){
+    const pct = Math.round(c30[k]/30*100);
+    h+='<div class="mb-row"><span class="mb-l">'+MOOD_EMOJI[k]+'</span><div class="mb-bar"><i style="width:'+pct+'%;background:'+MOOD_COLORS[k]+'"></i></div><span class="mb-n">'+c30[k]+' 天</span></div>';
+  });
+  h+='<div class="mood-stat-title">最近 12 个月 · 每月心情占比</div>';
+  h+='<div class="mood-monthly">';
+  months.forEach(function(mo){
+    const total=mo.cnt.down+mo.cnt.meh+mo.cnt.ok+mo.cnt.happy;
+    let segs='';
+    MOOD_KEYS.forEach(function(k){ const hh=total?Math.round(mo.cnt[k]/total*100):0; if(hh) segs+='<i style="height:'+hh+'%;background:'+MOOD_COLORS[k]+'" title="'+k+' '+mo.cnt[k]+'天"></i>'; });
+    h+='<div class="mm-col"><div class="mm-h">'+mo.key.slice(5)+'月</div><div class="mm-bar">'+segs+'</div><div class="mm-n">'+(total||'')+'</div></div>';
+  });
+  h+='</div></div>';
+  return h;
 }
 function editMoodEntry(k){
   const e = S.moodDiary[k]; if(!e) return;
@@ -4671,6 +4815,13 @@ function initAll(){
   try{ const qp=new URLSearchParams(location.search).get('p'); if(qp && ['home','courses','micro','know','dance','body','mood','growth','fav','settings'].indexOf(qp)>=0) S.page = qp; }catch(e){}
   buildThemes();
   applyTheme();
+  applyEyeCare();
+  try{
+    const mm = window.matchMedia('(prefers-color-scheme: dark)');
+    const onSys = ()=>{ try{ applyNight(); applyBg(); }catch(e){} };
+    if(mm.addEventListener) mm.addEventListener('change', onSys);
+    else if(mm.addListener) mm.addListener(onSys);
+  }catch(e){}
   initNavGroups();
   document.getElementById('hamb').onclick = ()=>{
     haptic();
