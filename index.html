@@ -10,9 +10,9 @@
 <meta name="apple-mobile-web-app-title" content="呆啾丸">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-192.png">
-<script src="icons.js" defer></script>
-<script src="stickers.js" defer></script>
-<title>呆啾丸 · 绘画自律工作台 v12</title>
+<script src="icons.js" async></script>
+<script src="stickers.js" async></script>
+<title>呆啾丸 · 绘画自律工作台 v13</title>
 <style>
 
 :root{
@@ -1064,7 +1064,7 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
             <button class="btn sm ghost" onclick="disconnectSync()">断开</button>
           </div>
           <p class="sync-status" id="syncStatus">未连接</p>
-          <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-16-v12</b></p>
+          <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-16-v13</b></p>
           <label>数据</label>
           <div class="row">
             <button class="btn ghost" onclick="exportData()">导出</button>
@@ -1277,7 +1277,7 @@ function load(){
   }catch(e){S={};}
 }
 
-const APP_VERSION = '2026-08-16-v12';
+const APP_VERSION = '2026-08-16-v13';
 // 深度消毒：同步合并/旧版本/损坏数据进入后，把每个用到的字段修复成正确类型，防止任意一处 undefined 崩溃
 function deepSanitize(){
   if(!S || typeof S!=='object' || Array.isArray(S)) S={};
@@ -3958,10 +3958,23 @@ function addFutureFromName(name){ if(S.futureCourses.indexOf(name)<0){ S.futureC
 // ===== init =====
 function fillStk(){
   try{
+    if(typeof STK==='undefined' || !STK){ setTimeout(fillStk, 250); return; }
     document.querySelectorAll('[data-stk]').forEach(function(el){
       var id = el.getAttribute('data-stk');
-      if(id && typeof STK!=='undefined' && STK && STK[id]) el.src = STK[id];
+      if(id && STK[id]) el.src = STK[id];
     });
+  }catch(e){}
+}
+var _stkApplied=false,_imgApplied=false;
+function assetsReady(){
+  try{
+    var stkOk = typeof STK!=='undefined' && STK;
+    var imgOk = typeof IMG!=='undefined' && IMG && Object.keys(IMG).length>0;
+    var changed = false;
+    if(stkOk && !_stkApplied){ _stkApplied=true; fillStk(); changed=true; }
+    if(imgOk && !_imgApplied){ _imgApplied=true; changed=true; }
+    if(changed){ if(typeof S!=='undefined' && S && S.page) go(S.page); }
+    if(!stkOk || !imgOk) setTimeout(assetsReady, 300);
   }catch(e){}
 }
 function initAll(){
@@ -3987,6 +4000,7 @@ function initAll(){
   // first visit welcome
   if(!S.firstVisit){ S.firstVisit=true; save(); }
   go(S.page || 'home');
+  assetsReady();
   renderDust();
   try{ startSyncListener(); }catch(e){}
   registerSW();
