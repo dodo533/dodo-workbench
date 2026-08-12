@@ -10,13 +10,14 @@
 <meta name="apple-mobile-web-app-title" content="呆啾丸">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-192.png">
+<div id="stickerLayer"></div>
 <script src="icons.js" async></script>
 <script src="stickers.js" async></script>
-<title>呆啾丸 · 绘画自律工作台 v17</title>
+<title>呆啾丸 · 绘画自律工作台 v18</title>
 <style>
 
 :root{
-  --bg1:#FFF8FA; --bg2:#FFF0F5; --primary:#FFB7D0; --accent:#FFD6E5; --pink:#FF85AA;
+  --bg1:#FFF8FA; --bg2:#FFF0F5; --primary:#FFB7D0; --accent:#FFD6E5; --pink:#FF85AA; --cardImg:none; --cardBorderStyle:solid; --cardRadius:16px;
   --text:#43303A; --sub:#7E5866;
   --panel:rgba(255,255,255,0.40); --card:rgba(255,255,255,0.20); --glass:rgba(255,255,255,0.10);
   --line:rgba(255,255,255,0.52); --shadow:0 14px 40px rgba(180,130,150,0.16);
@@ -91,7 +92,7 @@ h1,h2,h3,h4,b,strong{font-weight:300;}
 @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
 
 .card{
-  background:var(--cardBg);
+  background:var(--cardBg); background-image:var(--cardImg); background-size:cover; background-position:center; border-style:var(--cardBorderStyle); border-radius:var(--cardRadius);
   backdrop-filter:blur(10px) saturate(150%);-webkit-backdrop-filter:blur(10px) saturate(150%);
   border:1px solid rgba(255,255,255,0.55);border-radius:22px;padding:15px;margin-bottom:14px;
   box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,0.65);
@@ -940,6 +941,24 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
   #homePlan .plan-list li{padding:1.5px 6px;font-size:9.8px;margin:1px 0;}
   #homePlan .today-btns{margin-top:4px;}
 }
+.decor-banner{text-align:center;font-size:13px;color:var(--pink);margin:2px 0 6px;font-weight:300;}
+.avatar-acc{position:absolute;right:-5px;bottom:-5px;width:26px;height:26px;border-radius:50%;object-fit:contain;pointer-events:none;z-index:5;display:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.2));}
+body.decorPlain .card,body.decorPlain .found-card,body.decorPlain .modal-box,body.decorPlain .haven-card{background:transparent !important;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none;border-color:transparent;}
+body.decorPlain .card::after,body.decorPlain .found-card::after{display:none;}
+body.decorPlain .qbtn,body.decorPlain .btn{background:var(--panel);}
+#stickerLayer{position:fixed;inset:0;pointer-events:none;z-index:650;overflow:hidden;}
+.dj-sticker{position:absolute;pointer-events:auto;cursor:move;user-select:none;-webkit-user-select:none;touch-action:none;}
+.dj-sticker img{width:100%;height:100%;object-fit:contain;pointer-events:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,.18));}
+.dj-sticker .stk-del,.dj-sticker .stk-size{position:absolute;width:19px;height:19px;border-radius:50%;font-size:11px;line-height:19px;text-align:center;cursor:pointer;display:none;box-shadow:0 2px 6px rgba(0,0,0,.25);background:#fff;}
+.dj-sticker .stk-del{top:-9px;right:-9px;color:#e05555;}
+.dj-sticker .stk-size{bottom:-9px;left:-9px;color:var(--pink);}
+.dj-sticker.on .stk-del,.dj-sticker.on .stk-size{display:block;}
+@media(max-width:760px){
+  .bottom-nav{left:8px;right:8px;bottom:calc(8px + env(safe-area-inset-bottom));border-radius:22px;box-shadow:0 6px 24px rgba(180,130,150,0.28);height:56px;}
+  .bn-item img{width:26px;height:26px;}
+  .bn-item{font-size:10.5px;}
+  .decor-banner{font-size:11px;}
+}
 @media(max-width:760px){
   .card.home-top{padding:6px 10px 4px;margin-bottom:5px;}
   .quick-row{margin-top:3px;}
@@ -951,6 +970,31 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
   #homePlan .plan-list li{padding:1px 6px;font-size:9.5px;margin:1px 0;}
   #medBox>div:first-child{margin-top:1px;}
   #medBox .med-row{padding:1px 5px;margin:1px 0;}
+}
+.fold-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer;padding:2px 0;user-select:none;-webkit-tap-highlight-color:transparent;}
+.fold-bar h3{margin:0 !important;}
+.fold-ch{font-size:12px;color:var(--sub);flex:0 0 auto;padding:2px 8px;border-radius:8px;background:var(--glass);}
+.fold-body{margin-top:6px;}
+@media(max-width:760px){
+  .fold-bar h3{font-size:13px;}
+  .fold-bar .tic{width:18px;height:18px;}
+}
+@media(max-width:760px){
+  .card.home-top{padding:8px 6px 4px;margin-bottom:6px;}
+  .hero{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;align-items:center;flex-wrap:nowrap;}
+  .mascot-wrap{display:flex;justify-content:center;}
+  .mascot-wrap img{width:64px;height:64px;border-radius:16px;}
+  .hero-text{display:none;}
+  .speech-bubble{display:none;}
+  .ring-hero{transform:none;margin:0 auto;padding:0;width:100%;}
+  .ring-hero .ring-wrap-lg svg{width:100%;height:auto;}
+  .ring-hero .ring-wrap-lg .ring-label{font-size:8.5px;max-width:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .mini-cal{transform:none;margin:0 auto;width:100%;padding:4px 2px;border-radius:10px;}
+  .cal-grid.cal-mini{grid-template-columns:repeat(7,1fr);gap:1px;}
+  .cal-grid.cal-mini .cal-d{width:100%;height:15px;font-size:8px;border-radius:5px;}
+  .mini-cal .cal-head span{font-size:9px;}
+  .quick-row{margin-top:5px;gap:5px;}
+  .qbtn{padding:5px 3px;font-size:10.5px;border-radius:9px;}
 }
 </style>
 </head>
@@ -1034,9 +1078,11 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
 
       <section class="panel on" id="p-home">
         <div class="card home-top">
+          <div id="decorBanner" class="decor-banner" style="display:none;"></div>
           <div class="hero">
             <div class="mascot-wrap" id="mascotWrap">
               <img id="heroMascot" src="" alt="小啾啾">
+              <img id="avatarAcc" class="avatar-acc" src="" alt="">
               <button class="mascot-btn av-btn" onclick="changeAvatar()" title="换头像">📷</button>
               <button class="mascot-btn memo-btn" onclick="openMemo()" title="随手记">📝</button>
               <div class="heart-layer" id="heartLayer"></div>
@@ -1044,7 +1090,7 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
             <div class="speech-bubble" id="mascotBubble"></div>
             <div class="hero-text">
               <h2 id="heroTitle" onclick="editHomeNote()" title="点击编辑备注">今天也要对自己温柔一点~</h2>
-              <div class="muted" id="heroSub">快速点点小啾啾，会冒小心心哦~</div>
+              <div class="muted" id="heroSub" style="display:none;">快速点点小啾啾，会冒小心心哦~</div>
             </div>
             <div id="ringBox" class="ring-hero"></div>
             <div class="mini-cal" id="miniCal">
@@ -1064,7 +1110,7 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
         <div id="homeLowHint"></div>
         <button class="btn sm ghost home-more-btn" id="homeMoreBtn" onclick="toggleHomeMore()" style="display:none;">更多功能 ▾</button>
         <div class="home-cols">
-          <div class="card mix-card">
+          <div class="card mix-card" data-decor="homeStateTask">
             <div class="mix-top" id="homeStateCard">
               <h3><img class="tic" data-stk="s084" alt="">状态罗盘</h3>
               <div class="mood-row" id="moodRow"></div>
@@ -1077,60 +1123,70 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
               <div id="homePlan"></div>
             </div>
           </div>
-          <div class="card mix-card" id="homePlanCard">
-            <h3><img class="tic" data-stk="s012" alt="">我的计划</h3>
-            <div id="homePlanPreview"></div>
+          <div class="card mix-card" data-decor="homePlan" id="homePlanCard">
+            <div class="fold-bar" onclick="toggleFold('homePlanSec')"><h3><img class="tic" data-stk="s012" alt="">我的计划</h3><span class="fold-ch" data-foldch="homePlanSec">▾</span></div>
+            <div class="fold-body" data-fold="homePlanSec">
+              <div id="homePlanPreview"></div>
+            </div>
             <div class="dashed-sep"></div>
-            <h3><img class="tic" data-stk="s093" alt="">课程进度</h3>
-            <div id="overviewTop"></div>
-            <div id="courseDonut"></div>
+            <div class="fold-bar" onclick="toggleFold('homeCourseSec')"><h3><img class="tic" data-stk="s093" alt="">课程进度</h3><span class="fold-ch" data-foldch="homeCourseSec">▸</span></div>
+            <div class="fold-body" data-fold="homeCourseSec">
+              <div id="overviewTop"></div>
+              <div id="courseDonut"></div>
+            </div>
           </div>
         </div>
 </section>
 
       <section class="panel" id="p-courses">
         <div class="courses-grid">
-          <div class="card courses-left">
+          <div class="card courses-left" data-decor="coursesLeft">
             <div class="courses-block">
               <h3><img class="tic" data-stk="s014" alt="">总课程计划表</h3>
               <div id="coursePlanTable"></div>
             </div>
             <div class="dashed-sep"></div>
             <div class="courses-block">
-              <h3><img class="tic" data-stk="s072" alt="">课程合集</h3>
-              <p class="muted">手动添加课程，点开可填写总节数 / 已完成 / 当前第几节 / 待补，以及每节知识点。</p>
-              <div class="row">
-                <button class="btn" onclick="showCourseForm()">＋ 添加课程</button>
-              </div>
-              <div id="courseFormBox" style="display:none;margin-top:10px;padding:10px;background:var(--glass);border-radius:12px;">
+              <div class="fold-bar" onclick="toggleFold('courseList')"><h3><img class="tic" data-stk="s072" alt="">课程合集</h3><span class="fold-ch" data-foldch="courseList">▸</span></div>
+              <div class="fold-body" data-fold="courseList">
+                <p class="muted">手动添加课程，点开可填写总节数 / 已完成 / 当前第几节 / 待补，以及每节知识点。</p>
                 <div class="row">
-                  <div><input id="newCname" placeholder="课程名"></div>
-                  <div><input type="number" id="newCtotal" placeholder="总节数"></div>
+                  <button class="btn" onclick="showCourseForm()">＋ 添加课程</button>
                 </div>
-                <label>关联根基分支</label>
-                <select id="newCbranch"><option value="">不关联</option></select>
-                <button class="btn sm" onclick="addCourseFromForm()">添加</button>
+                <div id="courseFormBox" style="display:none;margin-top:10px;padding:10px;background:var(--glass);border-radius:12px;">
+                  <div class="row">
+                    <div><input id="newCname" placeholder="课程名"></div>
+                    <div><input type="number" id="newCtotal" placeholder="总节数"></div>
+                  </div>
+                  <label>关联根基分支</label>
+                  <select id="newCbranch"><option value="">不关联</option></select>
+                  <button class="btn sm" onclick="addCourseFromForm()">添加</button>
+                </div>
+                <div id="courseStats" style="margin-top:12px;"></div>
+                <div id="courseList"></div>
               </div>
-              <div id="courseStats" style="margin-top:12px;"></div>
-              <div id="courseList"></div>
             </div>
           </div>
-          <div class="card courses-right">
+          <div class="card courses-right" data-decor="coursesRight">
             <div class="courses-block">
-              <h3><img class="tic" data-stk="s091" alt="">未来想报课程</h3>
-              <p class="muted">想学但还没开始的，先收在这里~</p>
-              <div class="row">
-                <input id="futureName" placeholder="课程名（如：角色设计进阶）">
-                <button class="btn sm" onclick="addFutureCourse()">＋ 收下</button>
+              <div class="fold-bar" onclick="toggleFold('futureCourse')"><h3><img class="tic" data-stk="s091" alt="">未来想报课程</h3><span class="fold-ch" data-foldch="futureCourse">▸</span></div>
+              <div class="fold-body" data-fold="futureCourse">
+                <p class="muted">想学但还没开始的，先收在这里~</p>
+                <div class="row">
+                  <input id="futureName" placeholder="课程名（如：角色设计进阶）">
+                  <button class="btn sm" onclick="addFutureCourse()">＋ 收下</button>
+                </div>
+                <div id="futureList"></div>
               </div>
-              <div id="futureList"></div>
             </div>
             <div class="dashed-sep"></div>
             <div class="courses-block release-section">
-              <h3><img class="tic" data-stk="s018" alt="">已释怀 · 放生仪式</h3>
-              <p class="muted">超过 7 天未完成的任务/课程/计划会温柔地提醒到这里。放生不扣分，反而获得 1 颗断舍离星尘；收进来随时可以「回归」，永不清除。</p>
-              <div class="dust-badge" id="dustBadge">✨ 断舍离星尘 0</div>
-              <div id="releasedList"></div>
+              <div class="fold-bar" onclick="toggleFold('released')"><h3><img class="tic" data-stk="s018" alt="">已释怀 · 放生仪式</h3><span class="fold-ch" data-foldch="released">▸</span></div>
+              <div class="fold-body" data-fold="released">
+                <p class="muted">超过 7 天未完成的任务/课程/计划会温柔地提醒到这里。放生不扣分，反而获得 1 颗断舍离星尘；收进来随时可以「回归」，永不清除。</p>
+                <div class="dust-badge" id="dustBadge">✨ 断舍离星尘 0</div>
+                <div id="releasedList"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -1138,85 +1194,74 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
       
 
       <section class="panel" id="p-micro">
-        <div class="card">
-          <h3><img class="tic" data-stk="s022" alt="">微创作</h3>
-          <p class="muted">选课程、上传作品自动 +3 经验；素材/梦境/灵感都收在这里。</p>
-          <div class="row">
-            <div><label>选择课程</label><select id="microCourse"></select></div>
-            <div style="flex:0 0 auto;display:flex;align-items:flex-end;gap:6px;">
-              <button class="btn ghost" onclick="rollInspiration()"><img class="tic" data-stk="s023" alt="">灵感便签</button>
-            </div>
-          </div>
-          <div id="inspResult" class="muted" style="margin-top:6px;"></div>
-          <div style="margin-top:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-            <button class="btn sm ghost" id="timer" data-sec="900" onclick="startTimer()">⏳ 沙漏 15:00</button>
-            <button class="btn sm ghost" id="upTimer" onclick="startUpTimer()">⏱ 正计时 00:00</button>
-          </div>
-          <div style="margin-top:12px;">
-            <label>完成你的创作（上传即 +3 经验）</label>
-            <input type="file" accept="image/*" onchange="saveCreation(this)" id="creationInput">
-            <div class="creation-list" id="creationList"></div>
-            <div style="margin-top:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-              <button class="btn sm ghost" id="mosaicBtn" onclick="toggleMosaic()"><img class="tic" data-stk="s025" alt="">马赛克模式：关</button>
-              <span class="muted" style="font-size:10.5px;">点开某张图停留一会儿，小啾啾会轻轻提醒你歇一歇</span>
-            </div>
-            <div class="judge-note" id="judgeNote" style="display:none;"></div>
-          </div>
-        </div>
-        <div class="card">
-          <h3><img class="tic" data-stk="s069" alt="">🌙 梦境记录</h3>
-          <p class="muted">记下梦境，AI 会自动提取灵感卡（关键词/元素/色彩），可多选氛围标签。</p>
-          <textarea id="dreamNew" rows="3" placeholder="比如：我梦见一条暗红色的走廊，到处是漂浮的镜子…" style="width:100%;"></textarea>
-          <div class="row" style="margin-top:6px;flex-wrap:wrap;gap:6px;align-items:center;">
-            <span class="muted">氛围：</span>
-            <button class="chip" data-a="压抑" onclick="toggleAtmos(this)">压抑</button>
-            <button class="chip" data-a="雪景" onclick="toggleAtmos(this)">雪景</button>
-            <button class="chip" data-a="逃亡" onclick="toggleAtmos(this)">逃亡</button>
-            <button class="chip" data-a="奇幻" onclick="toggleAtmos(this)">奇幻</button>
-            <button class="chip" data-a="明亮" onclick="toggleAtmos(this)">明亮</button>
-            <button class="chip" data-a="温柔" onclick="toggleAtmos(this)">温柔</button>
-            <button class="chip" data-a="悬疑" onclick="toggleAtmos(this)">悬疑</button>
-            <button class="chip" data-a="治愈" onclick="toggleAtmos(this)">治愈</button>
-          </div>
-          <div class="row" style="margin-top:8px;">
-            <button class="btn sm" onclick="addDream()">记下梦境</button>
-          </div>
-        </div>
-        <div class="card">
-          <h3><img class="tic" data-stk="s069" alt="">随手记</h3>
-          <p class="muted">备忘录 / 梦境 / 新奇想法，写完让 AI 自动分类并生成一段总结。</p>
-          <div class="row" style="gap:6px;flex-wrap:wrap;">
-            <button class="chip chip-on" id="memoChip0" onclick="setMemoType(0)">📝 备忘录</button>
-            <button class="chip" id="memoChip1" onclick="setMemoType(1)">🌙 梦境</button>
-            <button class="chip" id="memoChip2" onclick="setMemoType(2)">💡 新奇想法</button>
-          </div>
-          <div class="row" style="margin-top:8px;gap:8px;align-items:center;flex-wrap:wrap;">
-            <input id="memoNew" placeholder="写点什么…（AI 会帮你分类+总结）" style="flex:1;min-width:170px;">
-            <button class="btn sm" onclick="addMemo()">记下</button>
-          </div>
-          <div id="memoList" style="margin-top:12px;"></div>
-        </div>
-        <div class="card">
-          <h3><img class="tic" data-stk="s089" alt="">灵感与素材</h3>
-          <div class="inspo-cols">
-            <div class="inspo-col">
-              <div class="row" style="gap:6px;">
-                <button class="btn sm ghost" id="inspoTabMaterial" onclick="switchInspo('material')"><img class="tic" data-stk="s029" alt="">素材</button>
-                <button class="btn sm ghost" id="inspoTabDream" onclick="switchInspo('dream')"><img class="tic" data-stk="s069" alt="">随手记</button>
+        <div class="card" data-decor="microMain">
+          <div class="fold-bar" onclick="toggleFold('microMain')"><h3><img class="tic" data-stk="s022" alt="">微创作</h3><span class="fold-ch" data-foldch="microMain">▾</span></div>
+          <div class="fold-body" data-fold="microMain">
+            <div class="row">
+              <div><label>选择课程</label><select id="microCourse"></select></div>
+              <div style="flex:0 0 auto;display:flex;align-items:flex-end;gap:6px;">
+                <button class="btn sm ghost" id="timer" data-sec="900" onclick="startTimer()">⏳ 15:00</button>
+                <button class="btn sm ghost" id="upTimer" onclick="startUpTimer()">⏱ 00:00</button>
               </div>
-              <div class="row" style="margin-top:8px;flex-wrap:wrap;">
-                <input type="file" accept="image/*" multiple id="inspoUp" style="display:none;" onchange="uploadInspo(this)">
-                <button class="btn sm" onclick="document.getElementById('inspoUp').click()">＋ 上传图片</button>
-                <input id="inspoLink" placeholder="贴素材链接（网盘/图库网址）…" style="flex:1;min-width:150px;">
-                <button class="btn sm ghost" onclick="addInspoLink()">＋ 存链接</button>
-                <input id="inspoText" placeholder="写一句随手记…" style="flex:1;min-width:150px;">
-                <button class="btn sm ghost" onclick="addInspoText()">记下</button>
-              </div>
-              <div id="inspoBox" style="margin-top:8px;"></div>
             </div>
-            <div class="inspo-col gallery-col">
+            <div id="inspResult" class="muted" style="margin-top:6px;"></div>
+            <div style="margin-top:12px;">
+              <label>完成你的创作（上传即 +3 经验）</label>
+              <div class="row" style="gap:6px;flex-wrap:wrap;">
+                <button class="btn" onclick="document.getElementById('creationInput').click()">＋ 上传作品</button>
+                <input type="file" accept="image/*" onchange="saveCreation(this)" id="creationInput" style="display:none;">
+                <button class="btn sm ghost" id="mosaicBtn" onclick="toggleMosaic()">马赛克：关</button>
+              </div>
+              <div class="creation-list" id="creationList"></div>
+              <div class="judge-note" id="judgeNote" style="display:none;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card" data-decor="microDream">
+          <div class="fold-bar" onclick="toggleFold('microDream')"><h3><img class="tic" data-stk="s069" alt="">梦境记录</h3><span class="fold-ch" data-foldch="microDream">▾</span></div>
+          <div class="fold-body" data-fold="microDream">
+            <p class="muted">记下梦境，AI 会自动打氛围标签并生成灵感卡~</p>
+            <textarea id="dreamNew" rows="3" placeholder="比如：我梦见一条暗红色的走廊，到处是漂浮的镜子…" style="width:100%;"></textarea>
+            <div style="margin-top:6px;">
+              <button class="btn sm ghost" onclick="toggleAtmosBar()">🎭 氛围标签 <span id="atmosChev">▾</span></button>
+              <div id="atmosWrap" style="display:none;margin-top:6px;" class="row">
+                <span class="muted">标签：</span>
+                <button class="chip" data-a="压抑" onclick="toggleAtmos(this)">压抑</button>
+                <button class="chip" data-a="雪景" onclick="toggleAtmos(this)">雪景</button>
+                <button class="chip" data-a="逃亡" onclick="toggleAtmos(this)">逃亡</button>
+                <button class="chip" data-a="奇幻" onclick="toggleAtmos(this)">奇幻</button>
+                <button class="chip" data-a="明亮" onclick="toggleAtmos(this)">明亮</button>
+                <button class="chip" data-a="温柔" onclick="toggleAtmos(this)">温柔</button>
+                <button class="chip" data-a="悬疑" onclick="toggleAtmos(this)">悬疑</button>
+                <button class="chip" data-a="治愈" onclick="toggleAtmos(this)">治愈</button>
+              </div>
+            </div>
+            <div class="row" style="margin-top:8px;">
+              <button class="btn sm" onclick="addDream()">记下梦境</button>
+            </div>
+          </div>
+        </div>
+        <div class="card" data-decor="microMemo">
+          <div class="fold-bar" onclick="toggleFold('microMemo')"><h3><img class="tic" data-stk="s069" alt="">随手记（备忘录 / 梦境 / 想法）</h3><span class="fold-ch" data-foldch="microMemo">▾</span></div>
+          <div class="fold-body" data-fold="microMemo">
+            <p class="muted">在首页点小啾啾旁的 📝 快速记录，AI 会自动分类到这里统一查看~</p>
+            <div id="memoList" style="margin-top:12px;"></div>
+          </div>
+        </div>
+        <div class="card" data-decor="microInspo">
+          <div class="fold-bar" onclick="toggleFold('microInspo')"><h3><img class="tic" data-stk="s089" alt="">灵感与素材</h3><span class="fold-ch" data-foldch="microInspo">▾</span></div>
+          <div class="fold-body" data-fold="microInspo">
+            <div class="row" style="gap:6px;flex-wrap:wrap;">
+              <button class="btn sm ghost" onclick="rollInspiration()"><img class="tic" data-stk="s023" alt="">灵感便签</button>
+              <button class="btn sm" onclick="document.getElementById('inspoUp').click()">＋ 上传图片</button>
+              <input type="file" accept="image/*" multiple id="inspoUp" style="display:none;" onchange="uploadInspo(this)">
+              <input id="inspoLink" placeholder="贴素材链接（网盘/图库网址）…" style="flex:1;min-width:140px;">
+              <button class="btn sm ghost" onclick="addInspoLink()">＋ 存链接</button>
+            </div>
+            <div id="inspoBox" style="margin-top:8px;"></div>
+            <div class="gallery-col" style="margin-top:10px;">
               <h4><img class="tic" data-stk="s186" alt="">我的图库</h4>
-              <p class="muted">所有素材、创作图片都统一存到图库新页面，点开即可跳转。</p>
+              <p class="muted">所有素材、创作图片统一存到图库新页面，点开即跳转。</p>
               <a href="gallery.html" class="btn" style="text-decoration:none;text-align:center;">打开我的图库 →</a>
             </div>
           </div>
@@ -1249,30 +1294,36 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
       
 
       <section class="panel" id="p-growth">
-        <div class="card">
-          <h3><img class="tic" data-stk="s132" alt="">成长记录</h3>
-          <div class="level-top" id="growthLv"></div>
-          <div id="xpInfo" class="muted" style="margin:6px 0 10px;"></div>
-          <div id="monthBlocks"></div>
-          <div style="margin-top:8px;">
-            <label>上传手写记录（归入当前月份）</label>
-            <div class="row">
-              <div><select id="archType"><option value="day">每日</option><option value="week">每周</option><option value="month">每月</option></select></div>
-              <div><input type="file" accept="image/*" onchange="uploadArchive(this)"></div>
+        <div class="card" data-decor="growthMain">
+          <div class="fold-bar" onclick="toggleFold('growthMain')"><h3><img class="tic" data-stk="s132" alt="">成长记录</h3><span class="fold-ch" data-foldch="growthMain">▾</span></div>
+          <div class="fold-body" data-fold="growthMain">
+            <div class="level-top" id="growthLv"></div>
+            <div id="xpInfo" class="muted" style="margin:6px 0 10px;"></div>
+            <div id="monthBlocks"></div>
+            <div style="margin-top:8px;">
+              <label>上传手写记录（归入当前月份）</label>
+              <div class="row">
+                <div><select id="archType"><option value="day">每日</option><option value="week">每周</option><option value="month">每月</option></select></div>
+                <div><button class="btn" onclick="document.getElementById('archUp').click()">＋ 上传</button><input type="file" accept="image/*" id="archUp" style="display:none;" onchange="uploadArchive(this)"></div>
+              </div>
             </div>
           </div>
         </div>
         <div class="growth-split">
-          <div class="card">
-            <h3><img class="tic" data-stk="s037" alt="">每周周报</h3>
-            <p class="muted">每周自动生成小结，不用你写~</p>
-            <div class="row"><button class="btn sm" onclick="genWeekReport()"><img class="tic" data-stk="s038" alt="">生成本周周报</button></div>
-            <div id="weekReportBox" style="margin-top:8px;"></div>
+          <div class="card" data-decor="growthReport">
+            <div class="fold-bar" onclick="toggleFold('growthReport')"><h3><img class="tic" data-stk="s037" alt="">每周周报</h3><span class="fold-ch" data-foldch="growthReport">▸</span></div>
+            <div class="fold-body" data-fold="growthReport">
+              <p class="muted">每周自动生成小结，不用你写~</p>
+              <div class="row"><button class="btn sm" onclick="genWeekReport()"><img class="tic" data-stk="s038" alt="">生成本周周报</button></div>
+              <div id="weekReportBox" style="margin-top:8px;"></div>
+            </div>
           </div>
-          <div class="card">
-            <h3><img class="tic" data-stk="s167" alt="">里程碑</h3>
-            <p class="muted">达成条件后自动点亮，不用手动打卡~</p>
-            <div id="msList"></div>
+          <div class="card" data-decor="milestone">
+            <div class="fold-bar" onclick="toggleFold('milestone')"><h3><img class="tic" data-stk="s167" alt="">里程碑</h3><span class="fold-ch" data-foldch="milestone">▾</span></div>
+            <div class="fold-body" data-fold="milestone">
+              <p class="muted">达成条件后自动点亮，不用手动打卡~</p>
+              <div id="msList"></div>
+            </div>
           </div>
         </div>
       </section>
@@ -1337,6 +1388,39 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
           <div class="row"><select id="eyeCareSel" onchange="setEyeCare(this.value)"><option value="off">关闭</option><option value="on">开启</option></select></div>
           <label>玻璃透明度</label>
           <div class="row"><input type="range" id="glassRange" min="20" max="100" value="100" oninput="setGlass(this.value)" style="flex:1;"><span id="glassVal" style="width:42px;text-align:right;">100%</span></div>
+          <label>界面风格</label>
+          <div class="row"><select id="decorStyle" onchange="setDecorStyle(this.value)"><option value="glass">液态玻璃</option><option value="plain">纯净背景（只显示背景）</option></select></div>
+          <label>卡片底图（全局，自动适配卡片，可取消）</label>
+          <div class="row" style="gap:6px;flex-wrap:wrap;">
+            <button class="btn sm" onclick="document.getElementById('decorCardBg').click()">＋ 上传底图</button>
+            <input type="file" id="decorCardBg" accept="image/*" style="display:none;" onchange="uploadDecorCardBg(this)">
+            <button class="btn sm ghost" onclick="clearDecorCardBg()">取消底图</button>
+          </div>
+          <label>每张卡片单独底图（先选卡片，再上传）</label>
+          <div class="row" style="gap:6px;flex-wrap:wrap;">
+            <select id="decorCardSel" style="flex:1;min-width:120px;"></select>
+            <button class="btn sm" onclick="document.getElementById('decorCardBgPer').click()">＋ 上传</button>
+            <input type="file" id="decorCardBgPer" accept="image/*" style="display:none;" onchange="uploadDecorCardBgPer(this)">
+            <button class="btn sm ghost" onclick="clearDecorCardBgPer()">取消</button>
+          </div>
+          <label>卡片边框样式</label>
+          <div class="row"><select id="decorBorder" onchange="setDecorBorder(this.value)"><option value="solid">实线</option><option value="dashed">虚线</option><option value="dot">圆点</option><option value="lace">花边</option></select></div>
+          <label>卡片圆角</label>
+          <div class="row"><input type="range" id="decorRadius" min="6" max="28" value="16" oninput="setDecorRadius(this.value)" style="flex:1;"><span id="decorRadiusVal" style="width:42px;text-align:right;">16px</span></div>
+          <label>头像挂件（小 PNG 显示在头像角落）</label>
+          <div class="row" style="gap:6px;">
+            <button class="btn sm" onclick="document.getElementById('decorAvAcc').click()">＋ 上传挂件</button>
+            <input type="file" id="decorAvAcc" accept="image/*" style="display:none;" onchange="uploadDecorAvAcc(this)">
+            <button class="btn sm ghost" onclick="clearDecorAvAcc()">取消挂件</button>
+          </div>
+          <label>顶部签名横幅</label>
+          <div class="row" style="gap:6px;"><input id="decorBannerInput" placeholder="比如：今天也要温柔~" style="flex:1;"><button class="btn sm" onclick="saveDecorBanner()">保存</button></div>
+          <label>贴纸（自主上传 PNG，放到界面任意位置，可拖动/删除）</label>
+          <div class="row" style="gap:6px;">
+            <button class="btn sm" onclick="document.getElementById('decorSticker').click()">＋ 添加贴纸</button>
+            <input type="file" id="decorSticker" accept="image/*" style="display:none;" onchange="uploadDecorSticker(this)">
+            <button class="btn sm ghost" onclick="clearStickers()">清空贴纸</button>
+          </div>
           <label>自定义配色（自主切换 UI，不用改代码）</label>
           <div class="ct-row">
             <span>背景1</span><input type="color" id="ctBg1" value="#fff7fc">
@@ -1380,7 +1464,7 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
           </div>
           <p class="sync-status" id="syncStatus">未连接</p>
           <p class="muted" id="syncPathInfo" style="font-size:11px;margin-top:4px;"></p>
-          <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-12-v17</b></p>
+          <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-12-v18</b></p>
           <label>数据</label>
           <div class="row">
             <button class="btn ghost" onclick="exportData()">导出</button>
@@ -1457,8 +1541,13 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
 <div class="modal" id="memoModal" onclick="if(event.target===this)closeMemo()">
   <div class="modal-box">
     <h4>随手记</h4>
-    <p>把小念头丢给小啾啾，它会帮你收进「素材与梦境」里~</p>
-    <textarea id="memoInput" rows="3" placeholder="写一句..." style="text-align:left;"></textarea>
+    <p>选个类型，小念头丢给小啾啾，AI 会自动分类和总结~</p>
+    <div class="row" style="margin-top:8px;gap:6px;">
+      <button class="chip chip-on" id="memoTypeChip0" onclick="setMemoType(0)">📝 备忘录</button>
+      <button class="chip" id="memoTypeChip1" onclick="setMemoType(1)">🌙 梦境</button>
+      <button class="chip" id="memoTypeChip2" onclick="setMemoType(2)">💡 新奇想法</button>
+    </div>
+    <textarea id="memoInput" rows="3" placeholder="写一句..." style="text-align:left;margin-top:8px;"></textarea>
     <div class="row" style="margin-top:10px;">
       <button class="btn ghost" onclick="closeMemo()">取消</button>
       <button class="btn" onclick="saveMemo()">保存</button>
@@ -1627,7 +1716,7 @@ function load(){
   }catch(e){S={};}
 }
 
-const APP_VERSION = '2026-08-12-v17';
+const APP_VERSION = '2026-08-12-v18';
 // 深度消毒：同步合并/旧版本/损坏数据进入后，把每个用到的字段修复成正确类型，防止任意一处 undefined 崩溃
 function deepSanitize(){
   if(!S || typeof S!=='object' || Array.isArray(S)) S={};
@@ -1754,6 +1843,14 @@ function ensureDefaults(){
   if(!S.theme) S.theme='0';
   if(!S.nightMode) S.nightMode='auto';
   if(typeof S.eyeCare!=='boolean') S.eyeCare=false;
+  if(!S.decor||typeof S.decor!=='object'||Array.isArray(S.decor)) S.decor={};
+  if(!S.folds||typeof S.folds!=='object'||Array.isArray(S.folds)) S.folds={};
+  if(S.folds.courseList===undefined) S.folds.courseList=false;
+  if(S.folds.futureCourse===undefined) S.folds.futureCourse=false;
+  if(S.folds.released===undefined) S.folds.released=false;
+  if(S.folds.growthReport===undefined) S.folds.growthReport=false;
+  if(S.folds.homeCourseSec===undefined) S.folds.homeCourseSec=false;
+  if(S.folds.planMore===undefined) S.folds.planMore=false;
   if(!S.homeCards||typeof S.homeCards!=='object'||Array.isArray(S.homeCards)) S.homeCards={state:true,task:true,plan:true,cal:true,meds:true};
   if(typeof S.homeMoreOpen!=='boolean') S.homeMoreOpen=false;
   if(typeof S.glass!=='number' || !(S.glass>=0.2 && S.glass<=1)) S.glass=1;
@@ -2510,6 +2607,12 @@ function addMemo(){
   if(inp) inp.value='';
   toast('记下啦~');
 }
+function toggleAtmosBar(){
+  const w=document.getElementById('atmosWrap'); if(!w) return;
+  const on = w.style.display!=='none';
+  w.style.display = on?'none':'flex';
+  const ch=document.getElementById('atmosChev'); if(ch) ch.textContent = on?'▾':'▸';
+}
 const _atmosSel = new Set();
 function toggleAtmos(btn){
   const v = btn && btn.getAttribute('data-a');
@@ -2530,7 +2633,7 @@ function addDream(){
 }
 function aiClassifyMemo(item){
   callAI([
-    {role:'system',content:'你是呆啾丸的私人整理助手。用户写了一条随手记（备忘录/梦境/新奇想法/灵感/情绪等都可能）。请：1) 给出一个简短分类名（2-6字，可自由创建新分类，如：灵感、梦境、待办、情绪、观察、创作、学习、生活）；2) 用一句不超过45字的话总结。输出严格为一行：分类|总结'},
+    {role:'system',content:'你是呆啾丸的随手记整理助手。请把用户输入分类为【备忘录】【梦境】【新奇想法】三个类别之一，并写一句不超过45字的话总结。输出严格为一行：分类名|总结，分类名只能从：备忘录、梦境、新奇想法 中三选一'},
     {role:'user',content:item.text}
   ], function(txt){
     const i=txt.indexOf('|');
@@ -2550,13 +2653,14 @@ function aiExtractDreamById(id){
 function aiExtractDream(item){
   if(!aiKey()) return;
   callAI([
-    {role:'system',content:'你是呆啾丸的梦境灵感提取器。用户写了一段梦境，请提取三行，用 | 分隔：\n1) 核心画面关键词（3~6 个，逗号分隔，如：暗红走廊,漂浮的镜子）\n2) 可画元素清单（3~6 个，逗号分隔）\n3) 建议色彩氛围（2~4 个颜色词，末尾加一句氛围，如：暗红,墨黑,冷蓝,压抑潮湿）\n严格只输出三行。'},
+    {role:'system',content:'你是呆啾丸的梦境灵感提取器。用户写了一段梦境，请提取四行，用 | 分隔：\n1) 核心画面关键词（3~6 个，逗号分隔，如：暗红走廊,漂浮的镜子）\n2) 可画元素清单（3~6 个，逗号分隔）\n3) 建议色彩氛围（2~4 个颜色词，末尾加一句氛围，如：暗红,墨黑,冷蓝,压抑潮湿）\n4) 氛围标签：从【压抑,雪景,逃亡,奇幻,明亮,温柔,悬疑,治愈】中选 1~3 个，逗号分隔\n严格只输出四行。'},
     {role:'user',content:item.text + (item.atmos && item.atmos.length? '（氛围标签：'+item.atmos.join('、')+'）':'')}
   ], function(txt){
     const p = String(txt||'').split('|').map(function(s){ return s.trim(); });
     const it=(S.memos||[]).find(function(m){ return m.id===item.id; });
     if(it && p.length){
       it.dreamCard = {kw:p[0]||'', elems:p[1]||'', colors:p[2]||''};
+      if(p[3]) it.atmos = p[3].split(/[,，、]/).map(function(s){ return s.trim(); }).filter(Boolean).slice(0,3);
       it.dreamBusy = false;
       save(); renderMemo();
       toast('梦境灵感卡生成好啦~');
@@ -3016,6 +3120,7 @@ function go(page){
     if(page==='fav') renderFav();
     if(page==='mine') renderMine();
   }catch(err){ showPageError(page, err); }
+  try{ applyFolds(); }catch(e){}
   if(page==='settings') renderSettings();
   try{
     const bnMap = {home:'home',courses:'courses',micro:'micro',growth:'growth',mine:'mine',body:'mine',mood:'mine',fav:'mine',settings:'mine'};
@@ -3141,6 +3246,123 @@ function applyEyeCare(){
   document.body.classList.toggle('eyeon', on);
   const el=document.getElementById('eyeCareSel'); if(el) el.value=on?'on':'off';
 }
+
+function foldOpen(k){ return !S.folds || S.folds[k]!==false; }
+function toggleFold(k){
+  if(!S.folds || typeof S.folds!=='object') S.folds={};
+  S.folds[k] = !foldOpen(k); save();
+  document.querySelectorAll('[data-fold="'+k+'"]').forEach(function(el){ el.style.display = foldOpen(k)?'':'none'; });
+  const ch=document.querySelector('[data-foldch="'+k+'"]'); if(ch) ch.textContent = foldOpen(k)?'▾':'▸';
+  haptic();
+}
+function applyFolds(){
+  document.querySelectorAll('[data-fold]').forEach(function(el){
+    const k=el.getAttribute('data-fold');
+    el.style.display = foldOpen(k)?'':'none';
+    const ch=document.querySelector('[data-foldch="'+k+'"]'); if(ch) ch.textContent = foldOpen(k)?'▾':'▸';
+  });
+}
+
+function applyDecor(){
+  const d = S.decor||{};
+  const r = document.documentElement.style;
+  r.setProperty('--cardImg', d.cardBg? "url('"+d.cardBg+"')" : 'none');
+  r.setProperty('--cardBorderStyle', d.cardBorder||'solid');
+  r.setProperty('--cardRadius', (d.cardRadius||16)+'px');
+  document.body.classList.toggle('decorPlain', d.style==='plain');
+  document.querySelectorAll('[data-decor]').forEach(function(el){
+    const key = el.getAttribute('data-decor');
+    const bg = d.cardBgPer && d.cardBgPer[key];
+    if(bg){ el.style.backgroundImage = "url('"+bg+"')"; el.style.backgroundSize='cover'; el.style.backgroundPosition='center'; }
+    else { el.style.backgroundImage=''; el.style.backgroundSize=''; el.style.backgroundPosition=''; }
+  });
+  const aa = document.getElementById('avatarAcc');
+  if(aa){ aa.src = d.avatarAcc||''; aa.style.display = d.avatarAcc? 'block':'none'; }
+  const bn = document.getElementById('decorBanner');
+  if(bn){ bn.textContent = d.banner||''; bn.style.display = d.banner? 'block':'none'; }
+  renderStickers();
+  const st=document.getElementById('decorStyle'); if(st) st.value=d.style||'glass';
+  const bd=document.getElementById('decorBorder'); if(bd) bd.value=d.cardBorder||'solid';
+  const rr=document.getElementById('decorRadius'); if(rr) rr.value=d.cardRadius||16;
+  const rv=document.getElementById('decorRadiusVal'); if(rv) rv.textContent=(d.cardRadius||16)+'px';
+  const bni=document.getElementById('decorBannerInput'); if(bni) bni.value=d.banner||'';
+}
+function setDecorStyle(v){ if(!S.decor) S.decor={}; S.decor.style=v; save(); applyDecor(); haptic(); toast(v==='plain'?'已切换为纯净背景（只显示背景）~':'已切换为液态玻璃~'); }
+function setDecorBorder(v){ if(!S.decor) S.decor={}; S.decor.cardBorder=v; save(); applyDecor(); }
+function setDecorRadius(v){ if(!S.decor) S.decor={}; S.decor.cardRadius=parseInt(v||16,10); save(); applyDecor(); const el=document.getElementById('decorRadiusVal'); if(el) el.textContent=v+'px'; }
+function saveDecorBanner(){ const v=(document.getElementById('decorBannerInput').value||'').trim(); if(!S.decor) S.decor={}; S.decor.banner=v; save(); applyDecor(); toast('签名横幅已更新~'); }
+function uploadDecorCardBg(input){
+  const f=input&&input.files&&input.files[0]; if(!f) return;
+  compressImage(f, 900, data=>{ if(!S.decor) S.decor={}; S.decor.cardBg=data; save(); applyDecor(); toast('卡片底图已应用（所有卡片）~'); });
+}
+function clearDecorCardBg(){ if(!S.decor) return; delete S.decor.cardBg; save(); applyDecor(); toast('已取消卡片底图~'); }
+function uploadDecorCardBgPer(input){
+  const f=input&&input.files&&input.files[0]; if(!f) return;
+  const key=document.getElementById('decorCardSel').value; if(!key){ toast('先选一张卡片~'); return; }
+  compressImage(f, 900, data=>{ if(!S.decor) S.decor={}; if(!S.decor.cardBgPer) S.decor.cardBgPer={}; S.decor.cardBgPer[key]=data; save(); applyDecor(); toast('该卡片底图已应用~'); });
+}
+function clearDecorCardBgPer(){
+  const key=document.getElementById('decorCardSel').value;
+  if(!S.decor||!S.decor.cardBgPer||!key) return;
+  delete S.decor.cardBgPer[key]; save(); applyDecor(); toast('已取消该卡片底图~');
+}
+function uploadDecorAvAcc(input){
+  const f=input&&input.files&&input.files[0]; if(!f) return;
+  compressImage(f, 200, data=>{ if(!S.decor) S.decor={}; S.decor.avatarAcc=data; save(); applyDecor(); toast('头像挂件已添加~'); });
+}
+function clearDecorAvAcc(){ if(!S.decor) return; delete S.decor.avatarAcc; save(); applyDecor(); toast('已取消头像挂件~'); }
+function uploadDecorSticker(input){
+  const f=input&&input.files&&input.files[0]; if(!f) return;
+  compressImage(f, 300, data=>{
+    if(!S.decor) S.decor={};
+    if(!Array.isArray(S.decor.stickers)) S.decor.stickers=[];
+    if(S.decor.stickers.length>=12){ toast('贴纸最多 12 个，先删几个~'); return; }
+    S.decor.stickers.push({img:data, x:50, y:35, size:90});
+    save(); applyDecor(); toast('贴纸已添加，拖动可换位置~');
+  });
+}
+function delSticker(i){ if(S.decor&&Array.isArray(S.decor.stickers)){ S.decor.stickers.splice(i,1); save(); applyDecor(); toast('贴纸已删除~'); } }
+function resizeSticker(i,dir){ const s=S.decor&&S.decor.stickers&&S.decor.stickers[i]; if(!s) return; s.size=Math.max(30,Math.min(220,(s.size||90)+dir*15)); save(); applyDecor(); }
+function clearStickers(){ if(!confirm('清空所有贴纸？')) return; if(S.decor) S.decor.stickers=[]; save(); applyDecor(); }
+function renderStickers(){
+  const layer=document.getElementById('stickerLayer'); if(!layer) return;
+  const d=S.decor||{}; const arr=d.stickers||[];
+  layer.innerHTML='';
+  arr.forEach(function(s,i){
+    const el=document.createElement('div');
+    el.className='dj-sticker';
+    el.style.left=(s.x||50)+'%'; el.style.top=(s.y||35)+'%';
+    el.style.width=(s.size||90)+'px'; el.style.height=(s.size||90)+'px';
+    el.innerHTML='<img src="'+s.img+'"><span class="stk-del" title="删除" onclick="event.stopPropagation();delSticker('+i+')">✕</span><span class="stk-size" title="放大" onclick="event.stopPropagation();resizeSticker('+i+',1)">＋</span>';
+    el.dataset.idx=i;
+    el.addEventListener('pointerdown',function(ev){ ev.preventDefault(); _stDrag={idx:i,px:ev.clientX,py:ev.clientY,l:parseFloat(el.style.left),t:parseFloat(el.style.top)}; el.classList.add('on'); });
+    el.addEventListener('click',function(){ el.classList.add('on'); });
+    layer.appendChild(el);
+  });
+}
+let _stDrag=null;
+document.addEventListener('pointermove',function(ev){
+  if(!_stDrag) return;
+  const nx=_stDrag.l+(ev.clientX-_stDrag.px)/window.innerWidth*100;
+  const ny=_stDrag.t+(ev.clientY-_stDrag.py)/window.innerHeight*100;
+  const el=document.querySelector('.dj-sticker[data-idx="'+_stDrag.idx+'"]');
+  if(el){ el.style.left=Math.max(-15,Math.min(115,nx))+'%'; el.style.top=Math.max(-15,Math.min(115,ny))+'%'; }
+});
+document.addEventListener('pointerup',function(){
+  if(!_stDrag) return;
+  const el=document.querySelector('.dj-sticker[data-idx="'+_stDrag.idx+'"]');
+  if(el&&S.decor&&Array.isArray(S.decor.stickers)&&S.decor.stickers[_stDrag.idx]){
+    S.decor.stickers[_stDrag.idx].x=parseFloat(el.style.left);
+    S.decor.stickers[_stDrag.idx].y=parseFloat(el.style.top);
+    save();
+  }
+  _stDrag=null;
+});
+document.addEventListener('click',function(ev){
+  if(ev.target && ev.target.closest && !ev.target.closest('.dj-sticker')){
+    document.querySelectorAll('.dj-sticker').forEach(function(el){ el.classList.remove('on'); });
+  }
+});
 
 // ===== home =====
 function renderHome(){
@@ -3531,12 +3753,7 @@ function renderHomePlanPreview(){
   if(!box) return;
   if(!S.planTab) S.planTab='week';
   ensurePlanSel();
-  let h = '<div class="plan-tabs">';
-  [['year','年'],['month','月'],['week','周'],['report','周报']].forEach(t=>{
-    h += '<button class="btn sm ghost'+(S.planTab===t[0]?' on':'')+'" onclick="setPlanTab(\''+t[0]+'\')">'+t[1]+'</button>';
-  });
-  h += '</div>';
-  h += '<div class="plan-time">';
+  let h = '<div class="plan-time">';
   h += '<select id="planSelY" onchange="savePlanSel()">'+planYearOptions()+'</select>';
   h += '<select id="planSelM" onchange="savePlanSel()">'+planMonthOptions()+'</select>';
   h += '<button class="btn sm ghost" onclick="planShift(-1)">‹</button>';
@@ -3545,13 +3762,22 @@ function renderHomePlanPreview(){
   h += '<button class="btn sm ghost" onclick="planGoToday()">本周</button>';
   h += '</div>';
   h += '<div class="muted pt-cur">当前：'+S.planSel.y+'年'+S.planSel.m+'月 · 第'+S.planSel.w+'周（周一起始）</div>';
+  h += planWeekHtml();
+  h += '<div class="fold-bar" style="margin-top:6px;" onclick="toggleFold(\'planMore\')"><span style="font-size:12px;color:var(--sub);">📂 年 / 月 / 周报视图</span><span class="fold-ch" data-foldch="planMore">▸</span></div>';
+  h += '<div class="fold-body" data-fold="planMore"><div class="plan-tabs">';
+  [['year','年'],['month','月'],['week','周'],['report','周报']].forEach(t=>{
+    h += '<button class="btn sm ghost'+(S.planTab===t[0]?' on':'')+'" onclick="setPlanTab(\''+t[0]+'\')">'+t[1]+'</button>';
+  });
+  h += '</div>';
   if(S.planTab==='year') h += planYearHtml();
   else if(S.planTab==='month'){ h += planMonthHtml(); }
   else if(S.planTab==='week') h += planWeekHtml();
   else h += planReportHtml();
+  h += '</div>';
   box.innerHTML = h;
   if(S.planTab==='month') renderHomeMonthCal();
   if(S.planTab==='report') ensureWeekReport();
+  applyFolds();
 }
 function isoWeek(d){
   const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
@@ -3881,10 +4107,10 @@ function renderCourses(){
     html += '<div class="ch" onclick="toggleCourse('+idx+')"><span class="cn">'+esc(c.name)+'</span><span class="chev">▾ 归纳</span></div>';
     html += '<div class="meta-row">已完成 '+c.current+' / '+(c.total||0)+' 节 · 待补 '+remain+' · 当前第 '+(c.now||1)+' 节</div>';
     html += '<div class="course-actions">'+
-      '<button class="btn sm" onclick="saveCourseInline('+idx+')">💾 保存</button>'+
+      '<button class="btn sm" onclick="saveCourseInline('+idx+')">保存</button>'+
       (stalled
-        ? '<button class="btn sm ghost" onclick="releaseCourse('+idx+')">🕊️ 放生</button>'
-        : '<button class="btn sm ghost" onclick="deleteCourse('+idx+')">🗑️ 删除</button><button class="btn sm ghost" onclick="releaseCourse('+idx+')">🕊️ 放生</button>')+
+        ? '<button class="btn sm ghost" onclick="releaseCourse('+idx+')">放生</button>'
+        : '<button class="btn sm ghost" onclick="deleteCourse('+idx+')">删除</button><button class="btn sm ghost" onclick="releaseCourse('+idx+')">放生</button>')+
       '</div>';
     html += '<div class="pbar"><i style="width:'+pct+'%"></i></div>';
     html += '<div class="course-body" id="cb-'+idx+'" style="display:none;"><div class="course-form">';
@@ -4239,7 +4465,7 @@ function renderInspo(){
   if(!_inspoShowAll && list.length>60) html += '<button class="btn sm ghost" style="margin-top:8px;" onclick="_inspoShowAll=true;renderInspo()">查看全部还有 '+(list.length-60)+' 条</button>';
   box.innerHTML = html;
 }
-function switchInspo(tab){ currentInspo=tab; const b1=document.getElementById('inspoTabMaterial'), b2=document.getElementById('inspoTabDream'); if(b1)b1.classList.toggle('ghost', tab!=='material'); if(b2)b2.classList.toggle('ghost', tab!=='dream'); renderInspo(); haptic(); }
+function switchInspo(tab){ currentInspo=tab; renderInspo(); }
 
 function compressImage(file, maxW, cb, quality){
   const r = new FileReader();
@@ -4811,6 +5037,13 @@ function renderSettings(){
   renderAiSettings();
   renderReminderSettings();
   applyEyeCare();
+  try{
+    const sel=document.getElementById('decorCardSel');
+    if(sel){
+      const opts=[['homeStateTask','首页·状态/任务'],['homePlan','首页·计划/课程'],['microMain','微创作'],['microDream','梦境'],['microMemo','随手记'],['microInspo','灵感素材'],['coursesLeft','课程·左列'],['coursesRight','课程·右列'],['growthMain','成长记录'],['growthReport','每周周报'],['milestone','里程碑']];
+      sel.innerHTML=opts.map(function(o){ return '<option value="'+o[0]+'">'+o[1]+'</option>'; }).join('');
+    }
+  }catch(e){}
   const gr=document.getElementById('glassRange'); if(gr) gr.value=Math.round((S.glass||1)*100);
   const gv=document.getElementById('glassVal'); if(gv) gv.textContent=Math.round((S.glass||1)*100)+'%';
   const ct = S.customTheme || THEMES[parseInt(S.theme)||0];
@@ -4839,17 +5072,16 @@ function importData(input){
 }
 
 // ===== modals =====
-function openMemo(){ haptic(); document.getElementById('memoModal').classList.add('on'); document.getElementById('memoInput').focus(); }
+function openMemo(){ haptic(); document.getElementById('memoModal').classList.add('on'); setMemoType(_memoType); setTimeout(function(){ const i=document.getElementById('memoInput'); if(i) i.focus(); },50); }
 function closeMemo(){ document.getElementById('memoModal').classList.remove('on'); }
 function saveMemo(){
   haptic();
   const t = document.getElementById('memoInput').value.trim();
   if(!t){ closeMemo(); return; }
-  S.memos.push({date:todayStr(), text:t});
-  S.inspo.dream.push({date:todayStr(), text:t});
-  save(); closeMemo(); document.getElementById('memoInput').value='';
-  toast('随手记已收进梦境素材~');
-  if(S.page==='inspo') renderInspo();
+  const item={id:'m'+Date.now()+Math.random().toString(36).slice(2,7), date:todayStr(), ts:Date.now(), type:_memoType, text:t, cat:'', tags:[], summary:''};
+  pushMemoItem(item);
+  closeMemo(); document.getElementById('memoInput').value='';
+  toast('随手记记下啦~');
 }
 const PRAISE_STK = ['s033','s055','s078','s109','s113','s117','s177','s179','s187','s185'];
 function showPraise(reason){
@@ -5075,6 +5307,7 @@ function initAll(){
   try{ const qp=new URLSearchParams(location.search).get('p'); if(qp && ['home','courses','micro','know','dance','body','mood','growth','fav','settings','mine'].indexOf(qp)>=0) S.page = qp; }catch(e){}
   buildThemes();
   applyTheme();
+  applyDecor();
   applyEyeCare();
   try{
     const mm = window.matchMedia('(prefers-color-scheme: dark)');
