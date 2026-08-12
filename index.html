@@ -2216,14 +2216,13 @@ function renderAuthStatus(){
   const lo=document.getElementById('logoutBtn');
   if(!st) return;
   const local=(S.sync&&S.sync.authLocal);
-  if(local && local.email){ st.textContent='已登录：'+local.email+'（本地登录）'; st.className='sync-status ok'; if(b2) b2.style.display='none'; if(lo) lo.style.display='inline-block'; const sc2=document.getElementById('syncCard'); if(sc2) sc2.style.display='none'; return; }
+  if(local && local.email){ st.textContent='已登录：'+local.email+'（本地登录）'; st.className='sync-status ok'; if(b2) b2.style.display='none'; if(lo) lo.style.display='inline-block'; return; }
   const u=authCurrent();
   if(u){
     st.textContent='已登录：'+(u.email||u.uid);
     st.className='sync-status ok';
     if(b2) b2.style.display='none';
     if(lo) lo.style.display='inline-block';
-    const sc=document.getElementById('syncCard'); if(sc) sc.style.display='none';
   } else {
     st.textContent='未登录（用邮箱登录，三端自动同步）';
     st.className='sync-status';
