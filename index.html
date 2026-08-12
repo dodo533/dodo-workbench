@@ -1164,15 +1164,11 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
           <div class="row"><button class="btn ghost sm" onclick="delCustomBg()" id="bgDelBtn" style="display:none;">清除背景图</button></div>
           <label>白色弱化遮罩</label>
           <div class="row"><select id="blurSel" onchange="toggleBlur(this.value)"><option value="on">开启</option><option value="off">关闭</option></select></div>
-          <label>多端同步（Firebase · 同步码）</label>
-          <p class="muted">在 Firebase 建一个免费项目，把配置粘贴到下面；再生成一个「同步码」，其他设备填同一个同步码即可实时互通，删除也会同步。</p>
+          <label>多端同步（账号登录 · 自动同步）</label>
+          <p class="muted">用同一个邮箱+密码登录后，三台设备数据自动互通（删除也会同步），不再需要同步码。首次使用请粘贴 Firebase 配置并点「保存配置」。</p>
           <textarea id="syncConfig" rows="4" placeholder='{"apiKey":"...","authDomain":"...","databaseURL":"...","projectId":"...","appId":"..."}'></textarea>
           <div class="row">
-            <div style="flex:2;"><input id="syncCode" placeholder="同步码（各设备填同一个）"></div>
-            <div style="flex:1;"><button class="btn sm ghost" onclick="genSyncCode()">生成同步码</button></div>
-          </div>
-          <div class="row">
-            <button class="btn sm" onclick="saveSyncConfig()">保存并连接</button>
+            <button class="btn sm" onclick="saveSyncConfig()">保存配置</button>
             <button class="btn sm ghost" onclick="syncNow()">立即同步</button>
             <button class="btn sm ghost" onclick="forcePushLocal()"><img class="tic" data-stk="s060" alt="">本机覆盖云端</button>
             <button class="btn sm ghost" onclick="restoreBackup()">↩️ 恢复备份</button>
@@ -2160,7 +2156,11 @@ function afterLocalLogin(email, code){
     if(oldW>0 && oldW>=curW && oldW>=uidW){ src=oldv; srcName='旧同步码'; }
     else if(uidW>0 && uidW>=curW){ src=uidv; srcName='原账号'; }
     else if(curW>0){ src=cur; srcName='已同步'; }
-    if(src){
+    if(src && localW>0 && dataWeight(src) < localW){
+      // 云端数据比本机少：保留本机并推回，避免被旧快照覆盖丢数据
+      pushToServer();
+      toast('云端数据比本机少，已保留本机并推回云端~');
+    } else if(src){
       try{ const b=localStorage.getItem('dajiuwan_v5'); if(b) localStorage.setItem('dajiuwan_v5_backup', b); }catch(e){}
       S=src; applyTombstones(S);
       try{ ensureDefaults(); }catch(e){}
@@ -2533,7 +2533,14 @@ function updateSyncStatus(txt, cls){
   el.textContent = txt || '未连接';
   el.className = 'sync-status'+(cls?' '+cls:'');
   const pe = document.getElementById('syncPathInfo');
-  if(pe) pe.textContent = syncReady() ? ('同步路径：dajiuwan/'+syncCodePath()) : '';
+  if(!pe) return;
+  if(syncReady()){
+    pe.textContent = '同步路径：dajiuwan/'+syncCodePath();
+  } else {
+    let why = '未粘贴 Firebase 配置';
+    if(S.sync && S.sync.config && !(S.sync.code || S.sync.uid)) why = '还没填同步码';
+    pe.textContent = '⚠️ 本地模式（未同步）：'+why+'。三台设备需填同一个配置+同步码';
+  }
 }
 function scheduleSyncPush(){
   if(!S.sync) S.sync={};
@@ -2607,6 +2614,8 @@ function mergeRemoteData(remote){
   if(rt <= lt) return;
   const pending = (S.sync&&S.sync._pendingAt)||0;
   if(pending > 0) return;
+  const lw=dataWeight(S), rw=dataWeight(remote);
+  if(lw>0 && rw===0){ pushToServer(); updateSyncStatus('远端是空数据，已保留本机并推回','err'); return; }
   const merged = JSON.parse(JSON.stringify(remote));
   applyTombstones(merged);
   if(!merged.sync) merged.sync={};
@@ -2635,24 +2644,29 @@ function mergeRemoteData(remote){
   }
   toast('已同步其他设备的数据~');
 }
-function genSyncCode(){
+function genSyncCodeStr(){
   const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let c='';
   for(let i=0;i<6;i++) c+=chars[Math.floor(Math.random()*chars.length)];
+  return c;
+}
+function genSyncCode(){
   if(!S.sync) S.sync={};
-  S.sync.code=c;
+  S.sync.code=genSyncCodeStr();
   save();
-  const el=document.getElementById('syncCode'); if(el) el.value=c;
-  toast('同步码：'+c+'（其他设备填同一个）');
+  const el=document.getElementById('syncCode'); if(el) el.value=S.sync.code;
+  toast('同步码：'+S.sync.code+'（其他设备填同一个）');
 }
 function saveSyncConfig(){
   const cfg = document.getElementById('syncConfig').value.trim();
-  const code = document.getElementById('syncCode').value.trim().toUpperCase();
   if(!cfg){ toast('先把 Firebase 配置粘贴进来~'); return; }
   try{ JSON.parse(cfg); }catch(e){ toast('配置不是合法的 JSON~'); return; }
-  if(!code){ toast('先填一个同步码（各设备保持一致）~'); return; }
   if(!S.sync) S.sync={};
-  S.sync.config=cfg; S.sync.code=code;
+  S.sync.config=cfg;
+  if(!S.sync.code){
+    if(S.sync.authLocal && S.sync.authLocal.code) S.sync.code = S.sync.authLocal.code;
+    else S.sync.code = genSyncCodeStr();
+  }
   save();
   resetSyncApp();
   if(syncReady()){
