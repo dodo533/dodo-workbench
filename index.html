@@ -828,6 +828,7 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
     <div id="authMsg"></div>
     <button class="btn" id="authBtn" onclick="authSubmit()">登录</button>
     <button class="btn ghost" onclick="authToggleMode()" id="authToggle">没有账号？注册一个</button>
+    <button class="btn ghost" style="font-size:12px;" onclick="skipAuth()">暂不登录（先用本机数据）</button>
     <div id="authConfigWrap" style="display:none;">
       <textarea id="authConfig" rows="3" placeholder='{"apiKey":"...","authDomain":"...","databaseURL":"...","projectId":"...","appId":"..."}'></textarea>
       <p style="font-size:10.5px;">首次使用：在 Firebase 启用 Email/密码登录，再把配置粘贴到这里。</p>
@@ -1196,6 +1197,11 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
             <button class="btn sm" id="authBtn2" onclick="showAuthOverlay()">登录 / 注册</button>
             <button class="btn sm ghost" id="logoutBtn" onclick="authLogout()" style="display:none;">退出登录</button>
           </div>
+          <div class="row" style="margin-top:8px;flex-wrap:wrap;gap:6px;">
+            <input id="oldCodeIn" placeholder="旧同步码（找回数据用，选填）" style="flex:1;min-width:120px;">
+            <button class="btn sm ghost" onclick="recoverFromCode()">找回旧数据</button>
+          </div>
+          <p class="muted" id="recoverMsg" style="font-size:11px;margin-top:6px;"></p>
         </div>
         <div class="card">
           <h3><img class="tic" data-stk="s022" alt="">AI 助手</h3>
@@ -2112,34 +2118,86 @@ function hideSplash(){
   const sp=document.getElementById('splash'); if(!sp) return;
   setTimeout(function(){ sp.classList.add('hide'); setTimeout(function(){ if(sp.parentNode) sp.parentNode.removeChild(sp); },650); },800);
 }
+function dataWeight(s){
+  if(!s || typeof s!=='object' || Array.isArray(s)) return 0;
+  let w=0;
+  w+=(Array.isArray(s.courses)?s.courses.length:0)*10;
+  w+=(Array.isArray(s.futureCourses)?s.futureCourses.length:0)*5;
+  w+=(Array.isArray(s.creations)?s.creations.length:0)*10;
+  w+=(Array.isArray(s.memos)?s.memos.length:0)*5;
+  w+=(Array.isArray(s.favs)?s.favs.length:0)*5;
+  w+=(Array.isArray(s.reviews)?s.reviews.length:0)*3;
+  w+=Object.keys(s.days||{}).length;
+  w+=Object.keys(s.moodDiary||{}).length*2;
+  w+=Object.keys(s.inspo||{}).length;
+  return w;
+}
 function afterLoginSync(){
   const uid=(S.sync&&S.sync.uid)||'';
   if(!uid) return;
-  const oldCode=(S.sync&&S.sync.code)||'';
+  const oldCode=(S.sync&&(S.sync.oldCode||S.sync.code))||'';
   resetSyncApp();
   if(!syncReady()) return;
-  const db=syncRef();
-  if(!db) return;
-  db.once('value').then(function(snap){
-    const v=snap.val();
-    if(v && v._meta){ mergeRemoteData(v); startSyncListener(); toast('已同步账号数据~'); return; }
-    if(oldCode && oldCode!==syncCodePath() && window.__djwDb){
-      window.__djwDb.ref('dajiuwan/'+oldCode).once('value').then(function(s2){
-        const oldv=s2.val();
-        if(oldv && oldv._meta){
-          try{ const cur=localStorage.getItem('dajiuwan_v5'); if(cur) localStorage.setItem('dajiuwan_v5_backup', cur); }catch(e){}
-          S=oldv; applyTombstones(S);
-          if(!S.sync) S.sync={};
-          S.sync.config=oldv.sync&&oldv.sync.config||S.sync.config;
-          S.sync.uid=uid; S.sync.code=oldCode; S.sync.oldCode=oldCode;
-          localStorage.setItem('dajiuwan_v5',JSON.stringify(S));
-          pushToServer();
-          toast('已把旧同步码数据迁移到你的账号~');
-        } else { pushToServer(); }
-        startSyncListener();
-      }).catch(function(){ pushToServer(); startSyncListener(); });
-    } else { pushToServer(); startSyncListener(); }
-  }).catch(function(){ pushToServer(); startSyncListener(); });
+  const db=syncRef(); if(!db) return;
+  const uidTask = db.once('value');
+  const oldTask = (oldCode && oldCode!==syncCodePath() && window.__djwDb)
+    ? window.__djwDb.ref('dajiuwan/'+oldCode).once('value')
+    : Promise.resolve({ val: function(){ return null; } });
+  Promise.all([uidTask, oldTask]).then(function(results){
+    const v=results[0].val();
+    const oldv=results[1].val();
+    const uidW=v?dataWeight(v):0;
+    const oldW=oldv?dataWeight(oldv):0;
+    const localW=dataWeight(S);
+    if(oldW>0 && (oldW>uidW || uidW===0)){
+      try{ const cur=localStorage.getItem('dajiuwan_v5'); if(cur) localStorage.setItem('dajiuwan_v5_backup', cur); }catch(e){}
+      S=oldv; applyTombstones(S);
+      if(!S.sync) S.sync={};
+      S.sync.config=(oldv.sync&&oldv.sync.config)||S.sync.config;
+      S.sync.uid=uid; S.sync.code=oldCode; S.sync.oldCode=oldCode;
+      localStorage.setItem('dajiuwan_v5',JSON.stringify(S));
+      pushToServer();
+      toast('已把旧同步码数据迁移到你的账号~');
+    } else if(uidW>0){
+      mergeRemoteData(v);
+      toast('已同步账号数据~');
+    } else if(localW>0){
+      pushToServer();
+      toast('已把你的本机数据同步到账号~');
+    } else {
+      toast('账号里还没有数据，先去使用吧~');
+    }
+    startSyncListener();
+  }).catch(function(){ startSyncListener(); });
+}
+function skipAuth(){
+  hideAuthOverlay();
+  toast('已跳过登录，数据只保存在本机');
+}
+function recoverFromCode(){
+  const inp=document.getElementById('oldCodeIn');
+  const code=((inp&&inp.value)||'').trim().toUpperCase()||(S.sync&&(S.sync.oldCode||S.sync.code))||'';
+  if(!code){ toast('先填旧同步码（在旧设备设置页可以看到）~'); return; }
+  if(!syncReady()){ toast('还没配置 Firebase，无法找回~'); return; }
+  if(!window.__djwDb){ toast('同步未连接~'); return; }
+  window.__djwDb.ref('dajiuwan/'+code).once('value').then(function(s2){
+    const oldv=s2.val();
+    if(!oldv || !oldv._meta){ toast('这个同步码下没有找到数据~'); return; }
+    const w=dataWeight(oldv);
+    if(w===0){ toast('找到的是空数据，没有可恢复内容~'); return; }
+    try{ const cur=localStorage.getItem('dajiuwan_v5'); if(cur) localStorage.setItem('dajiuwan_v5_backup', cur); }catch(e){}
+    S=oldv; applyTombstones(S);
+    if(!S.sync) S.sync={};
+    const uid=(S.sync&&S.sync.uid)||'';
+    S.sync.code=code; S.sync.oldCode=code;
+    localStorage.setItem('dajiuwan_v5',JSON.stringify(S));
+    save();
+    const rm=document.getElementById('recoverMsg');
+    if(rm) rm.textContent='✓ 已找回 '+w+' 份数据，正在同步…';
+    if(uid) pushToServer();
+    initAll();
+    toast('已找回旧数据~');
+  }).catch(function(e){ toast('找回失败：'+(e&&e.message||e)); });
 }
 function renderAuthStatus(){
   const st=document.getElementById('authStatus');
