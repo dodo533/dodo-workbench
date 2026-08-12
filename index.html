@@ -286,6 +286,17 @@ input[type=file]{color:#5a5a5a;font-size:12px;}
 .ai-msg{background:var(--glass);border:1px solid var(--line);border-radius:14px;padding:8px 11px;font-size:12.5px;line-height:1.5;color:var(--text);max-width:85%;align-self:flex-start;white-space:pre-wrap;}
 .ai-msg.me{background:var(--pink);color:#fff;border-color:var(--pink);align-self:flex-end;}
 .ai-empty{color:var(--sub);font-size:12px;text-align:center;padding:20px 0;}
+.ai-fab{position:fixed;right:16px;bottom:24px;width:54px;height:54px;border-radius:50%;background:var(--pink);border:none;box-shadow:0 6px 18px rgba(179,82,124,.42);z-index:997;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;}
+.ai-fab img{width:36px;height:36px;border-radius:50%;object-fit:cover;}
+.ai-win{position:fixed;right:16px;bottom:90px;width:320px;max-width:calc(100vw - 24px);height:min(460px,62vh);background:var(--card);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);z-index:998;display:none;flex-direction:column;overflow:hidden;}
+.ai-win.on{display:flex;}
+.ai-head{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--panel);cursor:grab;border-bottom:1px solid var(--line);user-select:none;-webkit-user-select:none;}
+.ai-head:active{cursor:grabbing;}
+.ai-title{display:flex;align-items:center;gap:6px;font-weight:bold;font-size:13px;color:var(--text);}
+.ai-title img{width:22px;height:22px;border-radius:50%;}
+.ai-min{cursor:pointer;color:var(--sub);padding:0 6px;font-size:16px;line-height:1;}
+.ai-foot{display:flex;gap:6px;padding:8px;border-top:1px solid var(--line);}
+.ai-foot input{flex:1;min-width:0;}
 .ai-input{display:flex;gap:8px;margin-top:8px;}
 .ai-input input{flex:1;}
 .hot-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;background:var(--glass);border-radius:12px;margin-top:6px;}
@@ -1296,6 +1307,15 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
       <button class="btn ghost" onclick="document.getElementById('sosModal').classList.remove('on')">收好</button>
     </div>
   </div>
+</div>
+
+<!-- AI 悬浮窗 -->
+<button class="ai-fab" id="aiFab" onclick="aiToggle()"><img class="tic" data-stk="s087" alt=""></button>
+<div class="ai-win" id="aiWin">
+  <div class="ai-head" id="aiDrag"><span class="ai-title"><img class="tic" data-stk="s087" alt="">小啾啾·AI 朋友</span><span class="ai-min" onclick="aiToggle()">—</span></div>
+  <div class="ai-msgs" id="aiMsgs"></div>
+  <div class="ai-chips" id="aiChips"></div>
+  <div class="ai-foot"><input id="aiInput" placeholder="随便聊聊，或让我帮你分类总结…"><button class="btn sm" onclick="sendAI()">发送</button></div>
 </div>
 
 <script src="firebase-app.js" defer></script>
@@ -4543,6 +4563,42 @@ function aiLocalReply(text){
   }
   return pick(['我听到你啦。不管今天顺不顺利，你愿意说出来就很勇敢。','嗯嗯，我陪着你呢。如果觉得累，先歇一会儿也没关系的。','你说得我都记下了~ 慢慢来，不用急着变好，今天已经很好了。','听起来你最近压力不小，抱抱你。要不要先喝口水，深呼吸一下？','这个问题真好。我的想法是：别给自己太大目标，先完成一件小小的事就够啦。']);
 }
+// ===== v16.6 新增：AI 悬浮窗（可拖动） =====
+let _aiDragging=false,_aiOffX=0,_aiOffY=0;
+function aiSavePos(x,y){ try{ localStorage.setItem('djw_ai_pos', JSON.stringify({x:x,y:y})); }catch(e){} }
+function aiLoadPos(){ try{ const p=JSON.parse(localStorage.getItem('djw_ai_pos')||'null'); return (p&&typeof p.x==='number')?p:null; }catch(e){ return null; } }
+function initAiDrag(){
+  const h=document.getElementById('aiDrag'), w=document.getElementById('aiWin');
+  if(!h||!w) return;
+  const pos=aiLoadPos();
+  if(pos && pos.x!=null && pos.y!=null){ w.style.left=pos.x+'px'; w.style.top=pos.y+'px'; w.style.right='auto'; w.style.bottom='auto'; }
+  h.addEventListener('pointerdown',function(e){
+    _aiDragging=true; _aiOffX=e.clientX-w.offsetLeft; _aiOffY=e.clientY-w.offsetTop;
+    try{ h.setPointerCapture(e.pointerId); }catch(err){}
+  });
+  h.addEventListener('pointermove',function(e){
+    if(!_aiDragging) return;
+    let x=e.clientX-_aiOffX, y=e.clientY-_aiOffY;
+    x=Math.max(4,Math.min(window.innerWidth-w.offsetWidth-4,x));
+    y=Math.max(4,Math.min(window.innerHeight-36,y));
+    w.style.left=x+'px'; w.style.top=y+'px'; w.style.right='auto'; w.style.bottom='auto';
+  });
+  h.addEventListener('pointerup',function(){
+    if(!_aiDragging) return;
+    _aiDragging=false;
+    try{ aiSavePos(parseInt(w.style.left)||0, parseInt(w.style.top)||0); }catch(e){}
+  });
+  h.addEventListener('pointercancel',function(){ _aiDragging=false; });
+}
+function aiToggle(){
+  const w=document.getElementById('aiWin');
+  if(!w) return;
+  w.classList.toggle('on');
+  if(w.classList.contains('on')){
+    try{ renderAi(); }catch(e){}
+    const i=document.getElementById('aiInput'); if(i) i.focus();
+  }
+}
 async function sendAI(){
   const inp=document.getElementById('aiInput'); if(!inp) return;
   const text=inp.value.trim(); if(!text) return;
@@ -4551,16 +4607,17 @@ async function sendAI(){
   renderAiMsgs();
   const box=document.getElementById('aiMsgs');
   const think=document.createElement('div'); think.className='ai-msg'; think.id='aiThink'; think.textContent='小啾啾的 AI 朋友正在想…'; box.appendChild(think); box.scrollTop=box.scrollHeight;
-  const reply=await callAI(text);
+  const reply=await aiChatReply(text);
   const t2=document.getElementById('aiThink'); if(t2) t2.remove();
   S.aiChat.push({role:'assistant',content:reply}); if(S.aiChat.length>40) S.aiChat=S.aiChat.slice(-40);
   save(); renderAiMsgs();
 }
-async function callAI(text){
-  if(!S.ai || !S.ai.key) return aiLocalReply(text);
+async function aiChatReply(text){
+  const key=aiKey();
+  if(!key) return aiLocalReply(text);
   try{
-    const res=await fetch(S.ai.endpoint,{ method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+S.ai.key},
-      body:JSON.stringify({ model:S.ai.model||'deepseek-chat',
+    const res=await fetch('https://api.deepseek.com/chat/completions',{ method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
+      body:JSON.stringify({ model:aiModel()||'deepseek-chat',
         messages:[{role:'system',content:'你是“小啾啾的AI朋友”，陪伴一位有些焦虑、ADHD、刚毕业在学画画的用户。语气温柔、简短、不评判，不用专业术语，多给鼓励和接纳，偶尔用可爱语气。用户问什么都可以认真回答。'},
           ...S.aiChat.slice(0,-1).map(m=>({role:m.role,content:m.content})), {role:'user',content:text}] }) });
     if(!res.ok) return '（接口返回 '+res.status+'，可能是 Key 或跨域限制。先给你一句：你已经很棒了，咱们慢慢来~）';
@@ -4618,6 +4675,7 @@ function initAll(){
   go(S.page || 'home');
   assetsReady();
   renderDust();
+  try{ initAiDrag(); }catch(e){}
   try{ startSyncListener(); }catch(e){}
   initAuthFlow();
   hideSplash();
