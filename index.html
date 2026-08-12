@@ -21,6 +21,7 @@
   --panel:rgba(255,255,255,0.40); --card:rgba(255,255,255,0.20); --glass:rgba(255,255,255,0.10);
   --line:rgba(255,255,255,0.52); --shadow:0 14px 40px rgba(180,130,150,0.16);
   --sheen1:rgba(255,255,255,0.55); --sheen2:rgba(255,255,255,0.04);
+  --cardA:0.60; --cardBg:linear-gradient(160deg,rgba(255,255,255,0.30),rgba(255,255,255,0.06));
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{margin:0;height:100%;}
@@ -90,7 +91,7 @@ h1,h2,h3,h4,b,strong{font-weight:300;}
 @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
 
 .card{
-  background:linear-gradient(160deg,rgba(255,255,255,0.30),rgba(255,255,255,0.06));
+  background:var(--cardBg);
   backdrop-filter:blur(10px) saturate(150%);-webkit-backdrop-filter:blur(10px) saturate(150%);
   border:1px solid rgba(255,255,255,0.55);border-radius:22px;padding:15px;margin-bottom:14px;
   box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,0.65);
@@ -348,7 +349,6 @@ body.gentle .content>.panel>.grid2{opacity:.92;}
   .know-tree{grid-template-columns:1fr;}
 }
 
-
 /* ===== v6 追加样式：液态玻璃细节 + 新功能 ===== */
 /* 补齐原本缺失的动态类 */
 .course-body{padding:8px 2px 2px;}
@@ -544,8 +544,6 @@ body.gentle .plan-list li{opacity:.72;}
 .mine-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:6px;}
 .mine-cell{display:flex;align-items:center;gap:8px;padding:13px 12px;border-radius:14px;background:var(--glass);border:1px solid var(--line);font-size:13px;color:var(--text);cursor:pointer;}
 .mine-cell img{width:20px;height:20px;}
-.mic-hold.rec{background:linear-gradient(160deg,#f87171,#ef4444);color:#fff;transform:scale(1.08);box-shadow:0 0 0 3px rgba(239,68,68,0.25);}
-.mic-hold.cancel{background:#94a3b8;color:#fff;}
 .ct-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:11px;color:var(--sub);}
 .ct-row input[type=color]{width:30px;height:28px;border:none;border-radius:8px;padding:0;background:none;cursor:pointer;}
 .chk-row{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text);padding:4px 0;}
@@ -554,11 +552,33 @@ body.gentle .plan-list li{opacity:.72;}
 @media(max-width:760px){
   .bottom-nav{display:flex;}
   .content{padding-bottom:78px;}
-  .card{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(255,255,255,0.6);box-shadow:0 8px 20px rgba(180,130,150,0.12);}
+  .card{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(255,255,255,var(--cardA));box-shadow:0 8px 20px rgba(180,130,150,0.12);}
   .card::after{display:none;}
   body.homeMoreClosed #homePlanCard{display:none;}
-  .ring-hero{transform:scale(.8);transform-origin:left center;margin-left:-12px;}
-  .mini-cal{transform:scale(.9);transform-origin:right center;margin-right:-8px;}
+  .card.home-top{padding:10px 12px 6px;margin-bottom:8px;}
+  .hero{flex-wrap:nowrap;gap:6px;align-items:center;}
+  .mascot-wrap img{width:56px;height:56px;border-radius:14px;}
+  .speech-bubble{left:58px;top:6px;max-width:110px;font-size:9px;padding:3px 6px;}
+  .hero-text{flex:1 1 auto;min-width:0;text-align:left;}
+  .hero-text h2{font-size:12px;line-height:1.25;margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .hero-text .muted{font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .ring-hero{transform:scale(.55);transform-origin:center;margin:0 0 0 auto;padding:0;flex:0 0 auto;}
+  .mini-cal{transform:scale(.58);transform-origin:center;margin:0;flex:0 0 auto;padding:6px 7px;border-radius:10px;}
+  .quick-row{margin-top:6px;gap:6px;}
+  .qbtn{min-width:0;padding:7px 4px;font-size:11px;border-radius:11px;}
+  #homeMoreBtn{width:100%;padding:10px;font-size:12px;position:relative;z-index:20;}
+  .home-cols{margin-top:8px;gap:8px;}
+  .mix-card{padding:11px;}
+  .mix-top h3,.mix-bottom h3{font-size:12px;margin-bottom:6px;}
+  .mood-row{gap:5px;margin-top:2px;}
+  .mood-opt{padding:4px;border-radius:12px;}
+  .mood-opt img{width:34px;height:34px;}
+  .compass{gap:4px;margin-top:2px;}
+  .state-opt{padding:6px 2px;border-radius:10px;font-size:10px;}
+  .plan-list li{padding:6px 8px;font-size:11px;}
+  #courseDonut{transform:scale(.82);transform-origin:top center;}
+  .ov-item{padding:6px 3px;}
+  .mm-bar{height:52px;}
 }
 @media(min-width:761px) and (max-width:1024px){
   .content{max-width:900px;}
@@ -772,7 +792,7 @@ table.tt td input:focus{background:var(--panel);border-radius:6px;}
 
 /* ===== 夜间模式覆写 ===== */
 body.night{background:#2a1a26;background-image:none;}
-body.night .card,body.night .found-card,body.night .modal-box,body.night .haven-card,body.night .slime-box,body.night .wake-picker-box,body.night .lv-pop,body.night .slime-banner{background:rgba(28,18,30,0.5);}
+body.night .card,body.night .found-card,body.night .modal-box,body.night .haven-card,body.night .slime-box,body.night .wake-picker-box,body.night .lv-pop,body.night .slime-banner{background:var(--cardBg);}
 body.night .card::after,body.night .found-card::after,body.night .modal-box::after{display:none;}
 body.night .topbar,body.night #sidebar{background:rgba(28,18,30,0.42);}
 body.night h1,body.night h2,body.night h3,body.night h4,body.night h5,body.night b,body.night strong,
@@ -796,7 +816,6 @@ body.night input,body.night textarea,body.night select{background:rgba(255,255,2
 body.night input::placeholder,body.night textarea::placeholder{color:rgba(255,255,255,0.4);}
 body.night .mood-opt.on,body.night .state-opt.on,body.night .day-chip.on,body.night .plan-tab.on,body.night .nav-item.on,body.night .mg-cell.on{color:var(--pink);}
 body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2px rgba(255,133,170,.35);}
-
 
 /* ===== v16 新增：splash / auth / search / fav / memo ===== */
 #splash{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:linear-gradient(160deg,#FFF8FA,#FFF0F5);transition:opacity .55s;}
@@ -860,6 +879,79 @@ body.night .sr-item{background:rgba(255,255,255,.08);border-color:rgba(255,255,2
 body.night .fav-item,body.night .memo-item{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);}
 body.night .memo-item .memo-sum{color:#c9a8b8;}
 
+@media(max-width:760px){
+  #moodRow .mood-ic img{width:26px;height:26px;}
+  #moodRow .mood-opt small{font-size:10px;}
+  #moodRow .mood-opt{padding:3px 2px;border-radius:10px;}
+  #moodRow .state-opt img{width:20px;height:20px;margin-bottom:1px;}
+  #moodRow .state-opt{padding:4px 2px;font-size:9.5px;border-radius:8px;}
+  #medBox>div:first-child{margin-top:4px;font-size:11px;}
+  #medBox .med-row,#medBox .check-row{padding:4px 8px;margin:3px 0;}
+  #medBox .nm{font-size:11px;}
+  .today-head{margin-top:6px;font-size:12px;}
+  #homePlan .state-advice{font-size:10.5px;padding:4px 8px;margin-bottom:4px;}
+  #homePlan .plan-list li{padding:3px 8px;font-size:10.5px;margin:2px 0;}
+  #homePlan .today-btns{margin-top:6px;}
+  #homePlan .stepper{padding:1px 4px;}
+  #homePlan .stepper button{width:18px;height:18px;font-size:12px;}
+  #homePlanPreview .plan-tabs{display:flex;gap:4px;flex-wrap:wrap;}
+  #homePlanPreview .plan-tabs .btn.sm{padding:3px 8px;font-size:10px;}
+  #homePlanPreview .plan-time select,#homePlanPreview .plan-time .btn.sm{padding:2px 5px;font-size:10px;}
+  #homePlanPreview .pt-cur{font-size:10px;margin-top:2px;}
+}
+@media(max-width:760px){
+  #moodRow .mood-ic img{width:24px;height:24px;}
+  #moodRow .mood-opt{padding:2px 1px;border-radius:9px;}
+  #moodRow .mood-opt small{font-size:9.5px;}
+  #moodRow .state-opt img{width:18px;height:18px;margin-bottom:0;}
+  #moodRow .state-opt{padding:3px 1px;font-size:9px;border-radius:7px;}
+  #medBox>div:first-child{margin-top:2px;font-size:10.5px;}
+  #medBox .med-row{padding:2px 6px;margin:2px 0;gap:5px;}
+  #medBox .nm{font-size:10.5px;}
+  #homePlan .today-head{margin-top:4px;font-size:11.5px;}
+  #homePlan .state-advice{font-size:9.5px;padding:3px 6px;margin-bottom:3px;}
+  #homePlan .plan-list li{padding:2px 6px;font-size:10px;margin:1.5px 0;}
+  #homePlan .today-btns .btn.sm{padding:3px 8px;font-size:10px;}
+  #homePlan .stepper button{width:16px;height:16px;font-size:11px;}
+  #homePlan .stepper span{font-size:10px;}
+}
+@media(max-width:760px){
+  .content{padding:10px;}
+  .card.home-top{padding:8px 10px 5px;margin-bottom:6px;}
+  .mascot-wrap img{width:50px;height:50px;border-radius:12px;}
+  .speech-bubble{left:52px;top:5px;max-width:90px;font-size:8.5px;padding:2px 5px;}
+  .hero-text h2{font-size:11px;}
+  .hero-text .muted{font-size:8px;}
+  .ring-hero{transform:scale(.48);}
+  .mini-cal{transform:scale(.52);}
+  .quick-row{margin-top:4px;gap:5px;}
+  .qbtn{padding:5px 3px;font-size:10.5px;border-radius:9px;}
+  #homeMoreBtn{padding:8px;margin-top:6px;}
+  .mix-card{padding:8px;}
+  .mix-top h3,.mix-bottom h3{font-size:11.5px;margin-bottom:4px;}
+  #compass .state-opt img{width:18px;height:18px;margin-bottom:0;}
+  #compass .state-opt{padding:3px 1px;font-size:9px;border-radius:7px;}
+  #compass{gap:3px;margin-top:1px;}
+  #medBox>div:first-child{margin-top:2px;font-size:10px;}
+  #medBox .med-row{padding:1px 6px;margin:1.5px 0;}
+  #medBox .med-row .ck{width:18px;height:18px;font-size:10px;}
+  #medBox .nm{font-size:10px;}
+  #homePlan .state-advice{font-size:9px;padding:2px 6px;margin-bottom:2px;}
+  #homePlan .plan-list li{padding:1.5px 6px;font-size:9.8px;margin:1px 0;}
+  #homePlan .today-btns{margin-top:4px;}
+}
+@media(max-width:760px){
+  .card.home-top{padding:6px 10px 4px;margin-bottom:5px;}
+  .quick-row{margin-top:3px;}
+  .qbtn{padding:4px 3px;}
+  #homeMoreBtn{padding:6px;margin-top:4px;}
+  .mix-card{padding:7px;}
+  .mix-top h3,.mix-bottom h3{margin-bottom:3px;}
+  #homePlan .today-head{margin-top:2px;font-size:11px;}
+  #homePlan .plan-list li{padding:1px 6px;font-size:9.5px;margin:1px 0;}
+  #medBox>div:first-child{margin-top:1px;}
+  #medBox .med-row{padding:1px 5px;margin:1px 0;}
+}
 </style>
 </head>
 <body>
@@ -1088,7 +1180,6 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
           </div>
           <div class="row" style="margin-top:8px;">
             <button class="btn sm" onclick="addDream()">记下梦境</button>
-            <button class="btn sm ghost mic-hold" title="按住说话，松开填入；上滑取消" onpointerdown="holdVoiceStart('dreamNew',this,event)" onpointermove="holdVoiceMove(this,event)" onpointerup="holdVoiceEnd(this)" onpointercancel="holdVoiceEnd(this)">🎙️</button>
           </div>
         </div>
         <div class="card">
@@ -1101,7 +1192,6 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
           </div>
           <div class="row" style="margin-top:8px;gap:8px;align-items:center;flex-wrap:wrap;">
             <input id="memoNew" placeholder="写点什么…（AI 会帮你分类+总结）" style="flex:1;min-width:170px;">
-            <button class="btn sm ghost mic-hold" title="按住说话，松开填入；上滑取消" onpointerdown="holdVoiceStart('memoNew',this,event)" onpointermove="holdVoiceMove(this,event)" onpointerup="holdVoiceEnd(this)" onpointercancel="holdVoiceEnd(this)">🎙️</button>
             <button class="btn sm" onclick="addMemo()">记下</button>
           </div>
           <div id="memoList" style="margin-top:12px;"></div>
@@ -1205,7 +1295,6 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
           <p class="muted">把想留的链接、文字、图片一键存进来，AI 自动帮你归类。以后一个搜索框全找到，不用再去各大平台翻。</p>
           <div class="row" style="gap:8px;flex-wrap:wrap;">
             <input id="favInput" placeholder="粘贴链接或写一句话…" style="flex:1;min-width:180px;">
-            <button class="btn sm ghost mic-hold" title="按住说话，松开填入；上滑取消" onpointerdown="holdVoiceStart('favInput',this,event)" onpointermove="holdVoiceMove(this,event)" onpointerup="holdVoiceEnd(this)" onpointercancel="holdVoiceEnd(this)">🎙️</button>
             <button class="btn sm" onclick="addFav()">＋ 收藏</button>
             <button class="btn sm ghost" onclick="document.getElementById('favImgIn').click()">＋ 图片</button>
             <input type="file" id="favImgIn" accept="image/*" style="display:none;" onchange="addFavImage(this)">
@@ -2055,7 +2144,6 @@ function closeSlimeOverlay(){
   if(m) m.classList.remove('on');
 }
 function enterHaven(){ closeSlimeOverlay(); go('micro'); }
-
 
 function copyColor(c){
   if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(c).catch(()=>{});
@@ -3005,6 +3093,8 @@ function applyNight(){
     r.setProperty('--sub','rgba(255,255,255,0.72)');
     r.setProperty('--panel','rgba(28,18,30,'+(0.42*g).toFixed(2)+')');
     r.setProperty('--card','rgba(28,18,30,'+(0.25*g).toFixed(2)+')');
+    r.setProperty('--cardA',(0.30*g).toFixed(2));
+    r.setProperty('--cardBg','linear-gradient(160deg,rgba(28,18,30,'+(0.42*g).toFixed(2)+'),rgba(28,18,30,'+(0.25*g).toFixed(2)+'))');
     r.setProperty('--glass','rgba(255,255,255,'+(0.08*g).toFixed(2)+')');
     r.setProperty('--line','rgba(255,255,255,0.20)');
     r.setProperty('--shadow','0 14px 40px rgba(0,0,0,0.4)');
@@ -3015,6 +3105,8 @@ function applyNight(){
     r.setProperty('--sub', t.sub);
     r.setProperty('--panel','rgba(255,255,255,'+(0.40*g).toFixed(2)+')');
     r.setProperty('--card','rgba(255,255,255,'+(0.20*g).toFixed(2)+')');
+    r.setProperty('--cardA',(0.60*g).toFixed(2));
+    r.setProperty('--cardBg','linear-gradient(160deg,rgba(255,255,255,'+(0.30*g).toFixed(2)+'),rgba(255,255,255,'+(0.06*g).toFixed(2)+'))');
     r.setProperty('--glass','rgba(255,255,255,'+(0.10*g).toFixed(2)+')');
     r.setProperty('--line','rgba(255,255,255,0.52)');
     r.setProperty('--shadow','0 14px 40px rgba(180,130,150,0.16)');
@@ -3048,51 +3140,6 @@ function applyEyeCare(){
   const on = !!S.eyeCare;
   document.body.classList.toggle('eyeon', on);
   const el=document.getElementById('eyeCareSel'); if(el) el.value=on?'on':'off';
-}
-let _voice = null;
-function holdVoiceStart(inputId, btn, evt){
-  evt.preventDefault();
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  const inp = document.getElementById(inputId);
-  if(!inp) return;
-  if(!SR){ toast('当前浏览器不支持语音输入，建议用 Safari / Chrome~'); return; }
-  if(_voice) return;
-  haptic();
-  try{ btn.setPointerCapture(evt.pointerId); }catch(e){}
-  const rec = new SR();
-  rec.lang = 'zh-CN';
-  rec.interimResults = false;
-  rec.maxAlternatives = 1;
-  _voice = {rec:rec, inputId:inputId, buf:'', cancel:false, sx:evt.clientX||0, sy:evt.clientY||0, btn:btn};
-  btn.classList.add('rec');
-  toast('🎙️ 按住说话，松开填入；上滑取消（别超过 8 秒，说话要连贯）');
-  rec.onresult = (e)=>{
-    if(!_voice || _voice.rec!==rec) return;
-    const t = (e.results && e.results[0] && e.results[0][0] && e.results[0][0].transcript) || '';
-    if(t) _voice.buf += t;
-  };
-  rec.onerror = (e)=>{
-    if(_voice && _voice.rec===rec){ _voice.cancel = true; holdVoiceEnd(btn); toast(e && e.error==='not-allowed' ? '麦克风权限被拒绝，请在系统设置里允许~' : '语音识别失败，请重试'); }
-  };
-  rec.onend = ()=>{ /* 松开时统一填入 */ };
-  try{ rec.start(); }catch(err){ _voice=null; btn.classList.remove('rec'); toast('语音启动失败，请重试~'); }
-}
-function holdVoiceMove(btn, evt){
-  if(!_voice || _voice.btn!==btn) return;
-  const dy = (evt.clientY||0) - _voice.sy;
-  if(dy < -60){ _voice.cancel = true; btn.classList.add('cancel'); }
-  else { _voice.cancel = false; btn.classList.remove('cancel'); }
-}
-function holdVoiceEnd(btn){
-  if(!_voice || _voice.btn!==btn) return;
-  const v = _voice; _voice = null;
-  btn.classList.remove('rec','cancel');
-  try{ v.rec.stop(); }catch(e){}
-  if(v.cancel){ toast('已取消~'); return; }
-  const t = v.buf.trim();
-  const inp = document.getElementById(v.inputId);
-  if(t && inp) inp.value = (inp.value? inp.value+' ':'') + t;
-  toast(t ? '已填入~' : '没有听清，再试一次~');
 }
 
 // ===== home =====
@@ -3143,9 +3190,10 @@ function applyHomeCards(){
 function toggleHomeMore(){
   S.homeMoreOpen = !S.homeMoreOpen; save();
   document.body.classList.toggle('homeMoreClosed', !S.homeMoreOpen);
+  applyHomeCards();
   const hm = document.getElementById('homeMoreBtn');
   if(hm) hm.textContent = S.homeMoreOpen ? '收起 ▴' : '更多功能 ▾';
-  haptic();
+  haptic(); toast(S.homeMoreOpen ? '已展开~' : '已收起~');
 }
 function saveHomeCards(){
   const gv = function(id){ const el=document.getElementById(id); return !!(el && el.checked); };
@@ -3466,8 +3514,6 @@ function renderCourseDonut(){
     '<text x="50" y="60" text-anchor="middle" font-size="8" fill="var(--sub)">门课程</text>'+
     '</svg><div class="cd-legend-wrap">'+legend+'</div></div>';
 }
-
-
 
 function renderOverview(){
   const totalCourse = S.courses.reduce((a,c)=>a+(c.total||0),0);
@@ -4354,8 +4400,6 @@ function delFoundBranchLeaf(key){
   toast('已减去 1 枝芽~');
 }
 
-
-
 function addKnowWorkByBranch(branch){ addFoundWork(branch, 1); checkKnowAutoLight(); save(); }
 
 function checkKnowAutoLight(){
@@ -4367,7 +4411,6 @@ function checkKnowAutoLight(){
   });
   save();
 }
-
 
 // ===== dance =====
 function renderDance(){
@@ -4930,7 +4973,7 @@ function renderMood(){
   MOODS.forEach(m=>{ h+='<div class="mood-opt'+(cur.mood===m.k?' on':'')+'" onclick="pickMood(\''+m.k+'\')"><span class="state-ic-emoji"><img src="'+stk(m.ic)+'" alt=""></span><small>'+m.n+'</small></div>'; });
   h+='</div>';
   h+='<label style="margin-top:10px;">今天想写点什么</label><textarea id="moodText" rows="4" placeholder="随便写，不开心也可以说~">'+(cur.text||'')+'</textarea>';
-  h+='<div class="row" style="margin-top:6px;"><button class="btn sm ghost mic-hold" title="按住说话，松开填入；上滑取消" onpointerdown="holdVoiceStart(\'moodText\',this,event)" onpointermove="holdVoiceMove(this,event)" onpointerup="holdVoiceEnd(this)" onpointercancel="holdVoiceEnd(this)">🎙️</button><button class="btn sm" onclick="saveMoodDiary()">保存今天的情绪日记</button></div>';
+  h+='<div class="row" style="margin-top:6px;"><button class="btn sm" onclick="saveMoodDiary()">保存今天的情绪日记</button></div>';
   const keys=Object.keys(S.moodDiary).sort().reverse().slice(0,60);
   if(keys.length){ h+='<div class="rev-sub" style="margin:12px 0 6px;"><img class="tic" src="'+stk('s001')+'" alt="">过往记录（可编辑）</div>'; }
   keys.forEach(k=>{ const e=S.moodDiary[k]; const mn=(MOODS.find(x=>x.k===e.mood)||{}).n||''; h+='<div class="memo-card"><div class="muted">'+k+(mn?' · '+mn:'')+'<button class="mood-edit" onclick="editMoodEntry(\''+k+'\')">编辑</button></div>'+(e.text?esc(e.text):'<span class="muted">（只选了心情）</span>')+'</div>'; });
@@ -5065,7 +5108,6 @@ function initAll(){
   checkReminders();
   setInterval(checkReminders, 30000);
 }
-
 
 // ===== PWA 安装 =====
 let _deferredPrompt=null;
