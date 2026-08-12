@@ -10,14 +10,13 @@
 <meta name="apple-mobile-web-app-title" content="呆啾丸">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-192.png">
-<div id="stickerLayer"></div>
 <script src="icons.js" async></script>
 <script src="stickers.js" async></script>
-<title>呆啾丸 · 绘画自律工作台 v18</title>
+<title>呆啾丸 · 绘画自律工作台 v19</title>
 <style>
 
 :root{
-  --bg1:#FFF8FA; --bg2:#FFF0F5; --primary:#FFB7D0; --accent:#FFD6E5; --pink:#FF85AA; --cardImg:none; --cardBorderStyle:solid; --cardRadius:16px;
+  --bg1:#FFF8FA; --bg2:#FFF0F5; --primary:#FFB7D0; --accent:#FFD6E5; --pink:#FF85AA; --cardImg:var(--cardBg); --cardBorderStyle:solid; --cardRadius:16px;
   --text:#43303A; --sub:#7E5866;
   --panel:rgba(255,255,255,0.40); --card:rgba(255,255,255,0.20); --glass:rgba(255,255,255,0.10);
   --line:rgba(255,255,255,0.52); --shadow:0 14px 40px rgba(180,130,150,0.16);
@@ -92,9 +91,13 @@ h1,h2,h3,h4,b,strong{font-weight:300;}
 @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
 
 .card{
-  background:var(--cardBg); background-image:var(--cardImg); background-size:cover; background-position:center; border-style:var(--cardBorderStyle); border-radius:var(--cardRadius);
-  backdrop-filter:blur(10px) saturate(150%);-webkit-backdrop-filter:blur(10px) saturate(150%);
-  border:1px solid rgba(255,255,255,0.55);border-radius:22px;padding:15px;margin-bottom:14px;
+  border:1px solid rgba(255,255,255,0.55);
+  border-radius:22px;
+  background:var(--cardBg);
+  background-image:var(--cardImg); background-size:cover; background-position:center;
+  border-style:var(--cardBorderStyle); border-radius:var(--cardRadius);
+  backdrop-filter:blur(5px) saturate(130%);-webkit-backdrop-filter:blur(5px) saturate(130%);
+  padding:15px;margin-bottom:14px;
   box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,0.65);
   position:relative;
 }
@@ -106,7 +109,7 @@ h1,h2,h3,h4,b,strong{font-weight:300;}
 .card h3 img{width:20px;height:20px;object-fit:contain;}
 .tic{width:14px;height:14px;object-fit:contain;display:inline-block;vertical-align:-2px;}
 .muted{color:var(--sub);font-size:12px;}
-.btn{background:linear-gradient(160deg,var(--pink),var(--primary));color:#fff;border:none;border-radius:13px;padding:8px 14px;font-weight:300;font-size:12.5px;cursor:pointer;box-shadow:0 6px 16px rgba(255,156,191,0.40), inset 0 1px 0 rgba(255,255,255,0.35);transition:.15s;}
+.btn{background:rgba(255,255,255,0.68);color:var(--primary);border:1px solid rgba(255,255,255,0.7);border-radius:13px;padding:8px 14px;font-weight:400;font-size:12.5px;cursor:pointer;box-shadow:0 4px 14px rgba(180,140,160,0.16), inset 0 1px 0 rgba(255,255,255,0.55);transition:.15s;}
 .btn:active{transform:scale(0.96);}
 .btn.ghost{background:var(--glass);color:var(--text);box-shadow:none;border:1px solid var(--line);}
 .btn.sm{padding:5px 10px;font-size:11.5px;border-radius:9px;}
@@ -552,10 +555,10 @@ body.gentle .plan-list li{opacity:.72;}
 .home-more-btn{margin:10px 0 0;}
 @media(max-width:760px){
   .bottom-nav{display:flex;}
-  .content{padding-bottom:78px;}
-  .card{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(255,255,255,var(--cardA));box-shadow:0 8px 20px rgba(180,130,150,0.12);}
+  .content{padding-bottom:124px;}
+  .card{backdrop-filter:none;-webkit-backdrop-filter:none;background-color:rgba(255,255,255,var(--cardA));box-shadow:0 8px 20px rgba(180,130,150,0.12);}
   .card::after{display:none;}
-  body.homeMoreClosed #homePlanCard{display:none;}
+  body.hasCardImg .card::after{display:none;}
   .card.home-top{padding:10px 12px 6px;margin-bottom:8px;}
   .hero{flex-wrap:nowrap;gap:6px;align-items:center;}
   .mascot-wrap img{width:56px;height:56px;border-radius:14px;}
@@ -780,7 +783,7 @@ table.tt td input:focus{background:var(--panel);border-radius:6px;}
 .qbtn img{width:22px;height:22px;object-fit:contain;display:block;margin:0 auto 3px;}
 
 /* 按钮 · 白天模式贴合四色卡（浅色底 + 主题色文字） */
-.btn{background:linear-gradient(160deg,var(--bg2),var(--accent));color:var(--pink);border:1px solid rgba(255,255,255,0.7);border-radius:13px;padding:8px 14px;font-weight:300;font-size:12.5px;cursor:pointer;box-shadow:0 5px 14px rgba(180,130,150,0.14), inset 0 1px 0 rgba(255,255,255,0.6);transition:.15s;}
+.btn{background:linear-gradient(160deg,var(--bg2),var(--accent));color:var(--primary);border:1px solid rgba(255,255,255,0.7);border-radius:13px;padding:8px 14px;font-weight:300;font-size:12.5px;cursor:pointer;box-shadow:0 5px 14px rgba(180,130,150,0.14), inset 0 1px 0 rgba(255,255,255,0.6);transition:.15s;}
 .btn:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(180,130,150,0.22);}
 .btn:active{transform:scale(0.96);}
 .btn.ghost{background:var(--glass);color:var(--text);box-shadow:none;border:1px solid var(--line);}
@@ -917,7 +920,7 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
   #homePlan .stepper span{font-size:10px;}
 }
 @media(max-width:760px){
-  .content{padding:10px;}
+  .content{padding:10px 10px 124px;}
   .card.home-top{padding:8px 10px 5px;margin-bottom:6px;}
   .mascot-wrap img{width:50px;height:50px;border-radius:12px;}
   .speech-bubble{left:52px;top:5px;max-width:90px;font-size:8.5px;padding:2px 5px;}
@@ -941,20 +944,16 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
   #homePlan .plan-list li{padding:1.5px 6px;font-size:9.8px;margin:1px 0;}
   #homePlan .today-btns{margin-top:4px;}
 }
+body.custom-bg{background-image:none!important;}
+.home-more-panel{margin-bottom:10px;}
+.home-more-panel .chk-row{padding:5px 2px;}
 .decor-banner{text-align:center;font-size:13px;color:var(--pink);margin:2px 0 6px;font-weight:300;}
-.avatar-acc{position:absolute;right:-5px;bottom:-5px;width:26px;height:26px;border-radius:50%;object-fit:contain;pointer-events:none;z-index:5;display:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.2));}
+.avatar-acc{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:150%;height:150%;object-fit:contain;pointer-events:none;z-index:6;display:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18));}
 body.decorPlain .card,body.decorPlain .found-card,body.decorPlain .modal-box,body.decorPlain .haven-card{background:transparent !important;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none;border-color:transparent;}
 body.decorPlain .card::after,body.decorPlain .found-card::after{display:none;}
 body.decorPlain .qbtn,body.decorPlain .btn{background:var(--panel);}
-#stickerLayer{position:fixed;inset:0;pointer-events:none;z-index:650;overflow:hidden;}
-.dj-sticker{position:absolute;pointer-events:auto;cursor:move;user-select:none;-webkit-user-select:none;touch-action:none;}
-.dj-sticker img{width:100%;height:100%;object-fit:contain;pointer-events:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,.18));}
-.dj-sticker .stk-del,.dj-sticker .stk-size{position:absolute;width:19px;height:19px;border-radius:50%;font-size:11px;line-height:19px;text-align:center;cursor:pointer;display:none;box-shadow:0 2px 6px rgba(0,0,0,.25);background:#fff;}
-.dj-sticker .stk-del{top:-9px;right:-9px;color:#e05555;}
-.dj-sticker .stk-size{bottom:-9px;left:-9px;color:var(--pink);}
-.dj-sticker.on .stk-del,.dj-sticker.on .stk-size{display:block;}
 @media(max-width:760px){
-  .bottom-nav{left:8px;right:8px;bottom:calc(8px + env(safe-area-inset-bottom));border-radius:22px;box-shadow:0 6px 24px rgba(180,130,150,0.28);height:56px;}
+  .bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:66%;max-width:340px;bottom:calc(18px + env(safe-area-inset-bottom));border-radius:27px;background:rgba(255,255,255,0.5);backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);border:1px solid rgba(255,255,255,0.65);box-shadow:0 10px 30px rgba(120,80,100,0.28);height:52px;padding:4px 6px;}
   .bn-item img{width:26px;height:26px;}
   .bn-item{font-size:10.5px;}
   .decor-banner{font-size:11px;}
@@ -1109,6 +1108,14 @@ body.decorPlain .qbtn,body.decorPlain .btn{background:var(--panel);}
 
         <div id="homeLowHint"></div>
         <button class="btn sm ghost home-more-btn" id="homeMoreBtn" onclick="toggleHomeMore()" style="display:none;">更多功能 ▾</button>
+        <div class="card home-more-panel" id="homeMorePanel" style="display:none;">
+          <h3><img class="tic" data-stk="s032" alt="">首页显示</h3>
+          <div class="chk-row"><input type="checkbox" id="hcState" onchange="saveHomeCards()"><span>心情 · 状态罗盘</span></div>
+          <div class="chk-row"><input type="checkbox" id="hcTask" onchange="saveHomeCards()"><span>今日任务</span></div>
+          <div class="chk-row"><input type="checkbox" id="hcPlan" onchange="saveHomeCards()"><span>我的计划 · 课程进度</span></div>
+          <div class="chk-row"><input type="checkbox" id="hcCal" onchange="saveHomeCards()"><span>日历 · 星环</span></div>
+          <div class="chk-row"><input type="checkbox" id="hcMeds" onchange="saveHomeCards()"><span>今日用药</span></div>
+        </div>
         <div class="home-cols">
           <div class="card mix-card" data-decor="homeStateTask">
             <div class="mix-top" id="homeStateCard">
@@ -1372,152 +1379,162 @@ body.decorPlain .qbtn,body.decorPlain .btn{background:var(--panel);}
           <h3><img class="tic" data-stk="s087" alt="">账号</h3>
           <p class="sync-status" id="authStatusMine">未登录</p>
           <div class="row">
-            <button class="btn sm" onclick="showAuthOverlay()">登录 / 注册</button>
-            <button class="btn sm ghost" onclick="authLogout()">退出登录</button>
+            <button class="btn sm" id="authBtnMine" onclick="showAuthOverlay()">登录 / 注册</button>
+            <button class="btn sm ghost" id="logoutBtnMine" onclick="authLogout()" style="display:none;">退出登录</button>
           </div>
         </div>
       </section>
         <section class="panel" id="p-settings">
         <div class="card" id="syncCard">
-          <h3><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAALj0lEQVR42u1ZbWwcZX7/Pc/MrF/XTtZxkgvGCo5xYycmKToI4JB1P1hB4cMVKZOWCiJxp5pEp+jCh1aIRgR0h079Up2q0x1qpTZVGxRiAmpABy2cDEgWIiTlOLDl2DEFk6x93pfZ3Zmd9+f534fM7K0dJzHh5Vopf+nR7s7OPPN/+f1fH+Am3aRvnVi0/r/sWyWu67rCOQfnHCdPnlQA8K9j35MnT1b31XX969p38UsYqyqHA9AAILrGv6Z9FQBq/CMSZEVmux4pAASA/l27dj2xffv2e5uamrTJycn3XnnllZ8AOK/rujIyMiJq9mO6ri/ae2RkhABQ9JN0XVdeeuklQUS37dmz58jWrVt3Oo7DPvnkk/dHR0d/BuDc0aNH+bPPPitvWD1Hjx7lALB+/Xr98OHDzvnz58myLLJtmzKZDB06dCgPYGusMcYY4nWFpmr+q9HunwwPD89//vnn5DgOWZZFFy5coCeffNLv6Oj4fi0PN2ReImIANj/xxBOubdvk+75vmqYoFovCdV3/iy++oAcffPDChg0bemrgtRZAD4C7AQxE67vRtfbIoujs7OwaGhoav3DhAvm+7xmGIcrlsnBdN/B9n5566ilqaGi4qwYFy5J6Le0zxsKBgYG/ffzxx+s0TQs8z9Pq6upARLBtm69du1bu3r17UyaT+Z+enp6p9vb2xvb29u80Nzcn6+vrWVNTExhjqFQqcByHKpVKeWFhYSGXy1nFYrF7aGgo2dHRISuVSqKhoQGccwRBwAGEw8PD6pkzZ/7urbfe+nNd1zEyMvLlQhrnHAC0AwcOfGpZljRNUwRBQEIICsOQHMchx3Howw8/FKdPn6bJyUnKZrPkOA6FYUhCCElEgoiEEEKGYUiu61Iul6Pz58/Tq6++Sh988IGwbZts246foSAIyDRN6TiOPHz48O8ANEe8sC9lgYhWp1KptkQiwXzfr2Kbcw5VVREEATZv3sz7+/tJSklEBCklC8Mwgv0fnEFKSQDQ3NxMLS0t2LRpEwuCgBMRNE0D5xxEVPUTTdNYW1vbKgBriMiKBKArcH41CwghGIBm0zQbpZRQFAU1oROc8+qLgyBgRMQVReGJRIJFC5qmVVd8XVVVDoCHYcgiRhFpuMo855xJKcmyLE3TtCQRXRHVrilAOp3mjDHauHFjf7FYVF3XFaqq1ioUjDEoigJN01BXV1dlZOk9NUxVP1VVRSKRQCKRgKIoV0QtTdPg+740DIN1dnb+KQBaWFhYsQBs7dq1BKBu3bp1T+/fvx/JZJLVav+azrOCUHq95wGgoaGBPfLII7R+/fqnADQMDg7KFeWtOEZ3d3f//Pjx40REoeM4JISIcf6NkZSSpJQkhCDXdYmIwlOnTlFvb+8/ryg7x8lo9erVu48cOUJEFFQqFQrDsLr5N03xe8IwpEqlQkQUPPfcc9Te3q4vJ0QthFhfXx8RUeO99977y4MHD5Lv+1xV1apZVwKhr1ySLgkSnufx4eFhuXPnzn8EkOrr66NloZROp1UA2Lhx49+8+OKLVe3H0Pk2tL8clGIrnD59mrq7u39Sy+siwaOyoXnfvn3zuVxOWpYlfN//VrB/NSGEEOT7PlmWJYvFonz00UfzANZEVvpDKZxOpxXGGK1Zs2bP0NDQutbWVklEfCVR45uGU5TgWDKZFA888EBqw4YNOhEhnU4rVQGisIne3t6/uO+++0gIQXGD8X+BFEWB53ns7rvvpt7e3r0AEIXVWFAGAE2PPfbYvGEYVCqVpOd5fzT4LPUFz/OoWCzKcrlMBw4cKAJoi5sprus6JyIA2NzV1bW2vr6eiIj9MaFzlcjE6urq5O23395aX1+/hYig6zrjcYpOpVJdHR0dTFVVcZ2wKaSU8hvgU0ad31UzOOdc3nLLLUilUt0AsLCwwKrhqKmpKZVMJrEC3pTIN0TkQ1/VVBQxr1zPClJKJJNJNDY2rgEAy7IYr7khvA5sCABM0/yVZVkfRS9kV9PaCinuoxXbtidKpdKrEZzpOrWWckUmdl3XdRwHjDEQUXUtFWB6evofksnk9mw2+yPHcQqRIHSDmlc8zystLCw82dTUtGVqaurHUd+w+MWX+wwAgOM48H2/FPcWPA6hhULh00wmAyEEl1IuByUGQPb39/+nYRg/e/PNN184d+7cXaZpHoujxYrBfvl+mKZ5YmZm5q733nvvF4Zh/HTbtm2/VhRlUakQMy+lBBGxTCaD+fn587XhP444rcPDwwXDMCiXy8lKpUJBECxbRjiOMz8xMfEgAJw9e7Y/DEOPiOTlyCevGg6j/yQRiSAI6OzZszsB4OOPP/6zcrk8t9wzQRBQpVKhfD4vS6USHTp0yAZwSzWMAqCnn36aAyhNTU29Pzc3R4lEQgRBgDAMY8kJAAVBkJ+dnf3LhoaG9bOzs7/N5XI/37Zt25iiKJqUEpVKhbmuGz8D3/fh+z6ICEII2LYNz/MYAKaqKt1xxx3/ncvl/sn3/U9bWlq+c+nSpe/5vv87ALEAEEIgDEOoqiqz2SxNTk6eBXAp4llyAHj77bc5AIyPj//Lu+++yzRNY0EQQAgBIUTcz7IwDM0gCGZyudwv0un0hba2th+qqpoEwBzHYVJKaJpWdTbHceC6LuKsrqoqPM+D7/sMANM0raGtre2vt27dOmVZ1vPlcnkhwjejy9MAhGGIIAiQSCQwNjbGxsfHj9XyvLSYq9+zZ8/UZ599Jg3DCAuFAlmWRZ7nURiGyyXLgIikEIJKpRL5vr8IcvHEobY4s22bTNOsIkUIccXGQgjyPI8sy6JCoUD5fF5cvHhRPvTQQ58CaIx4ZYsGRhMTE8rExERgGMb/NjY2/lU6nZaWZfElSY0u+xXJaBOFMcaklAiC4IoGXUoJxhhUVa11YAghUFdXF/sfjyAjiAhhGEIIwWLNe56H1tbW8NixY8qJEycOViqV30S8yqu2k1u2bPnXl19+mTzP8zOZDOXzeSqXyxRN5xb1CPGyLIuWtp6FQoEMw6haIAxDMk0zrvEXPR+XzrGFCoUCzc3Nkeu6/uuvv07bt2//j5W0lSy6QduxY8ev33jjjaoQ2WyWisVilVHf96vDqNoW0HVdiodYhmGQYRjkum6VudomKR6S+b5fnY0Wi0XK5XKUyWTIdV1/dHSU7r///ncBNEZz0utm/tgfkjt27PivU6dOkW3bQTabFXNzc5TP56lYLJJpmmTbdpW5IAgoCALyPI983yfP8xZdi6+HYUhBEJDv++S6blXjpVKJ8vk8zc/PUzabFbZtB6+99hoNDAy8DWD11Ub57Bpze0lEal9f3/MPP/zwD/bv34/29vawUqlwIQRXFAWKooBzXp3t1M5/rki70dStJilV/SFejDFKJpOiUCiox48fxwsvvPBvH3300UHGmENEPKqZVnw+wKKXUnt7uz4wMPD3+/btuy2dTmPVqlUiCAL4vs+klDxmPGY+XnEpUvs9FiAWgnMuE4kEaZqGUqmkjI2N4cSJE7NjY2NH5ufn/z16dlnmV3LAwXRd59HhRWtXV9fwnXfe+Xg6nd50zz334NZbb0VDQwNUVRWRU0IIweK0v6QIo8haFI0pmRBCcRwHFy9exJkzZzA6OvrFuXPnnp+ZmfklACM64KBrFncrqV1qTlMAoDGVSu3u6el5qKur6/7Ozs6N3d3d6OjoQFtbG1paWlBfX18d1taGVNd1YZom8vk8MpkMpqenMTs7+/nMzMz709PTp3K53BsAyowx7N27Nz71+cpHTIusUSMIANQD6Fm3bl1vKpXqa21tva25uXldU1PTKkVRGiNcxz5QtG3btSzrUrFYzBSLxfG5ublxAFMA7FjQXbt2qe+8845YaYV7I80I03WdA8ASYW64Xdy7d68SnaPJL1uaf9VuigFg6XS6Gt4GBwflM888Q5zzRYxExdeiGmZwcFBeD+M36SbdpGvT7wFN8J6stpwo9AAAAABJRU5ErkJggg=="> 设置</h3>
-          <label>皮肤配色</label>
-          <div class="theme-row" id="themeRow2" style="padding:4px 0;"></div>
-          <label>夜间模式</label>
-          <div class="row"><select id="nightMode" onchange="setNight(this.value)"><option value="auto">自动跟随系统</option><option value="on">始终夜间</option><option value="off">始终白天</option></select></div>
-          <label>护眼模式（暖色低蓝光）</label>
-          <div class="row"><select id="eyeCareSel" onchange="setEyeCare(this.value)"><option value="off">关闭</option><option value="on">开启</option></select></div>
-          <label>玻璃透明度</label>
-          <div class="row"><input type="range" id="glassRange" min="20" max="100" value="100" oninput="setGlass(this.value)" style="flex:1;"><span id="glassVal" style="width:42px;text-align:right;">100%</span></div>
-          <label>界面风格</label>
-          <div class="row"><select id="decorStyle" onchange="setDecorStyle(this.value)"><option value="glass">液态玻璃</option><option value="plain">纯净背景（只显示背景）</option></select></div>
-          <label>卡片底图（全局，自动适配卡片，可取消）</label>
-          <div class="row" style="gap:6px;flex-wrap:wrap;">
-            <button class="btn sm" onclick="document.getElementById('decorCardBg').click()">＋ 上传底图</button>
-            <input type="file" id="decorCardBg" accept="image/*" style="display:none;" onchange="uploadDecorCardBg(this)">
-            <button class="btn sm ghost" onclick="clearDecorCardBg()">取消底图</button>
+          <h3><img class="tic" data-stk="s087" alt="">设置</h3>
+          <div class="fold-bar" onclick="toggleFold('setAppear')"><h3>外观</h3><span class="fold-ch" data-foldch="setAppear">▾</span></div>
+          <div class="fold-body" data-fold="setAppear">
+            <label>皮肤配色</label>
+            <div class="theme-row" id="themeRow2" style="padding:4px 0;"></div>
+            <label>界面风格</label>
+            <div class="row"><select id="decorStyle" onchange="setDecorStyle(this.value)"><option value="glass">液态玻璃</option><option value="plain">纯净背景（只显示背景）</option></select></div>
+            <label>玻璃透明度</label>
+            <div class="row"><input type="range" id="glassRange" min="20" max="100" value="100" oninput="setGlass(this.value)" style="flex:1;"><span id="glassVal" style="width:42px;text-align:right;">100%</span></div>
+            <label>夜间模式</label>
+            <div class="row"><select id="nightMode" onchange="setNight(this.value)"><option value="auto">自动跟随系统</option><option value="on">始终夜间</option><option value="off">始终白天</option></select></div>
+            <label>护眼模式（暖色低蓝光）</label>
+            <div class="row"><select id="eyeCareSel" onchange="setEyeCare(this.value)"><option value="off">关闭</option><option value="on">开启</option></select></div>
           </div>
-          <label>每张卡片单独底图（先选卡片，再上传）</label>
-          <div class="row" style="gap:6px;flex-wrap:wrap;">
-            <select id="decorCardSel" style="flex:1;min-width:120px;"></select>
-            <button class="btn sm" onclick="document.getElementById('decorCardBgPer').click()">＋ 上传</button>
-            <input type="file" id="decorCardBgPer" accept="image/*" style="display:none;" onchange="uploadDecorCardBgPer(this)">
-            <button class="btn sm ghost" onclick="clearDecorCardBgPer()">取消</button>
+          <div class="dashed-sep"></div>
+          <div class="fold-bar" onclick="toggleFold('setColor')"><h3>自定义配色</h3><span class="fold-ch" data-foldch="setColor">▾</span></div>
+          <div class="fold-body" data-fold="setColor">
+            <p class="muted" style="font-size:11px;">背景=整页底色（无渐变）；按钮文字=按钮字色；重点文字=高亮强调；字体颜色=全局正文。</p>
+            <div class="ct-row">
+              <span>背景</span><input type="color" id="ctBg1" value="#fff7fc">
+              <span>按钮文字</span><input type="color" id="ctPrimary" value="#f6abd3">
+              <span>重点文字</span><input type="color" id="ctPink" value="#ec84bc">
+              <span>字体颜色</span><input type="color" id="ctText" value="#43303a">
+            </div>
+            <div class="row" style="margin-top:6px;">
+              <button class="btn sm" onclick="saveCustomTheme()">应用自定义配色</button>
+              <button class="btn sm ghost" onclick="resetCustomTheme()">恢复预设</button>
+            </div>
           </div>
-          <label>卡片边框样式</label>
-          <div class="row"><select id="decorBorder" onchange="setDecorBorder(this.value)"><option value="solid">实线</option><option value="dashed">虚线</option><option value="dot">圆点</option><option value="lace">花边</option></select></div>
-          <label>卡片圆角</label>
-          <div class="row"><input type="range" id="decorRadius" min="6" max="28" value="16" oninput="setDecorRadius(this.value)" style="flex:1;"><span id="decorRadiusVal" style="width:42px;text-align:right;">16px</span></div>
-          <label>头像挂件（小 PNG 显示在头像角落）</label>
-          <div class="row" style="gap:6px;">
-            <button class="btn sm" onclick="document.getElementById('decorAvAcc').click()">＋ 上传挂件</button>
-            <input type="file" id="decorAvAcc" accept="image/*" style="display:none;" onchange="uploadDecorAvAcc(this)">
-            <button class="btn sm ghost" onclick="clearDecorAvAcc()">取消挂件</button>
+          <div class="dashed-sep"></div>
+          <div class="fold-bar" onclick="toggleFold('setDecor')"><h3>装扮</h3><span class="fold-ch" data-foldch="setDecor">▾</span></div>
+          <div class="fold-body" data-fold="setDecor">
+            <label>卡片底图（所有卡片）</label>
+            <div class="row" style="gap:6px;flex-wrap:wrap;">
+              <button class="btn sm" onclick="document.getElementById('decorCardBg').click()">＋ 上传底图</button>
+              <input type="file" id="decorCardBg" accept="image/*" style="display:none;" onchange="uploadDecorCardBg(this)">
+              <button class="btn sm ghost" onclick="clearDecorCardBg()">取消底图</button>
+            </div>
+            <label>单张卡片底图</label>
+            <div class="row" style="gap:6px;flex-wrap:wrap;">
+              <select id="decorCardSel" style="flex:1;min-width:120px;"></select>
+              <button class="btn sm" onclick="document.getElementById('decorCardBgPer').click()">＋ 上传</button>
+              <input type="file" id="decorCardBgPer" accept="image/*" style="display:none;" onchange="uploadDecorCardBgPer(this)">
+              <button class="btn sm ghost" onclick="clearDecorCardBgPer()">取消</button>
+            </div>
+            <label>卡片边框</label>
+            <div class="row"><select id="decorBorder" onchange="setDecorBorder(this.value)"><option value="solid">实线</option><option value="dashed">虚线</option><option value="dot">圆点</option><option value="lace">花边</option></select></div>
+            <label>卡片圆角</label>
+            <div class="row"><input type="range" id="decorRadius" min="6" max="28" value="16" oninput="setDecorRadius(this.value)" style="flex:1;"><span id="decorRadiusVal" style="width:42px;text-align:right;">16px</span></div>
+            <label>头像挂件（透明 PNG，包裹头像）</label>
+            <div class="row" style="gap:6px;">
+              <button class="btn sm" onclick="document.getElementById('decorAvAcc').click()">＋ 上传挂件</button>
+              <input type="file" id="decorAvAcc" accept="image/*" style="display:none;" onchange="uploadDecorAvAcc(this)">
+              <button class="btn sm ghost" onclick="clearDecorAvAcc()">取消挂件</button>
+            </div>
+            <label>顶部签名横幅</label>
+            <div class="row" style="gap:6px;"><input id="decorBannerInput" placeholder="比如：今天也要温柔~" style="flex:1;"><button class="btn sm" onclick="saveDecorBanner()">保存</button></div>
           </div>
-          <label>顶部签名横幅</label>
-          <div class="row" style="gap:6px;"><input id="decorBannerInput" placeholder="比如：今天也要温柔~" style="flex:1;"><button class="btn sm" onclick="saveDecorBanner()">保存</button></div>
-          <label>贴纸（自主上传 PNG，放到界面任意位置，可拖动/删除）</label>
-          <div class="row" style="gap:6px;">
-            <button class="btn sm" onclick="document.getElementById('decorSticker').click()">＋ 添加贴纸</button>
-            <input type="file" id="decorSticker" accept="image/*" style="display:none;" onchange="uploadDecorSticker(this)">
-            <button class="btn sm ghost" onclick="clearStickers()">清空贴纸</button>
+          <div class="dashed-sep"></div>
+          <div class="fold-bar" onclick="toggleFold('setBgAvatar')"><h3>背景与头像</h3><span class="fold-ch" data-foldch="setBgAvatar">▾</span></div>
+          <div class="fold-body" data-fold="setBgAvatar">
+            <label>自定义头像</label>
+            <div class="row">
+              <div><button class="btn ghost" onclick="changeAvatar()">上传头像</button></div>
+              <div><button class="btn ghost" onclick="resetAvatar()">恢复默认</button></div>
+            </div>
+            <label>自定义背景</label>
+            <div class="row">
+              <div><select id="bgSel" onchange="setBg(this.value)"><option value="none">无（纯色）</option><option value="custom">我的上传</option></select></div>
+              <div><button class="btn ghost" onclick="document.getElementById('bgUp').click()">上传背景图</button><input type="file" id="bgUp" accept="image/*" style="display:none;" onchange="uploadBg(this)"></div>
+            </div>
+            <div class="row"><button class="btn ghost sm" onclick="delCustomBg()" id="bgDelBtn" style="display:none;">清除背景图</button></div>
+            <label>白色弱化遮罩</label>
+            <div class="row"><select id="blurSel" onchange="toggleBlur(this.value)"><option value="auto">自动跟随系统</option><option value="on">开启</option><option value="off">关闭</option></select></div>
           </div>
-          <label>自定义配色（自主切换 UI，不用改代码）</label>
-          <div class="ct-row">
-            <span>背景1</span><input type="color" id="ctBg1" value="#fff7fc">
-            <span>背景2</span><input type="color" id="ctBg2" value="#fee6fa">
-            <span>主色</span><input type="color" id="ctPrimary" value="#f6abd3">
-            <span>强调</span><input type="color" id="ctAccent" value="#fbd7ee">
-            <span>粉色</span><input type="color" id="ctPink" value="#ec84bc">
+          <div class="dashed-sep"></div>
+          <div class="fold-bar" onclick="toggleFold('setSync')"><h3>同步与数据</h3><span class="fold-ch" data-foldch="setSync">▾</span></div>
+          <div class="fold-body" data-fold="setSync">
+            <label>多端同步（账号登录 · 自动同步）</label>
+            <p class="muted" style="font-size:11px;">同一邮箱+密码登录，手机/平板/电脑自动互通（删除也同步）。首次使用粘贴 Firebase 配置并保存。</p>
+            <textarea id="syncConfig" rows="4" placeholder='{"apiKey":"...","authDomain":"...","databaseURL":"...","projectId":"...","appId":"..."}'></textarea>
+            <div class="row">
+              <button class="btn sm" onclick="saveSyncConfig()">保存配置</button>
+              <button class="btn sm ghost" onclick="syncNow()">立即同步</button>
+              <button class="btn sm ghost" onclick="forcePushLocal()"><img class="tic" data-stk="s060" alt="">本机覆盖云端</button>
+              <button class="btn sm ghost" onclick="restoreBackup()">↩️ 恢复备份</button>
+              <button class="btn sm ghost" onclick="disconnectSync()">断开</button>
+            </div>
+            <p class="sync-status" id="syncStatus">未连接</p>
+            <p class="muted" id="syncPathInfo" style="font-size:11px;margin-top:4px;"></p>
+            <label>数据</label>
+            <div class="row">
+              <button class="btn ghost" onclick="exportData()">导出</button>
+              <button class="btn ghost" onclick="document.getElementById('imIn').click()">导入</button>
+              <input type="file" id="imIn" style="display:none;" onchange="importData(this)">
+            </div>
+            <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-12-v19</b></p>
           </div>
-          <div class="row" style="margin-top:6px;">
-            <button class="btn sm" onclick="saveCustomTheme()">应用自定义配色</button>
-            <button class="btn sm ghost" onclick="resetCustomTheme()">恢复预设</button>
-          </div>
-          <label>首页显示（可自主开关小卡片）</label>
-          <div class="chk-row"><input type="checkbox" id="hcState" onchange="saveHomeCards()"><span>心情 · 状态罗盘</span></div>
-          <div class="chk-row"><input type="checkbox" id="hcTask" onchange="saveHomeCards()"><span>今日任务</span></div>
-          <div class="chk-row"><input type="checkbox" id="hcPlan" onchange="saveHomeCards()"><span>我的计划 · 课程进度</span></div>
-          <div class="chk-row"><input type="checkbox" id="hcCal" onchange="saveHomeCards()"><span>日历 · 星环</span></div>
-          <div class="chk-row"><input type="checkbox" id="hcMeds" onchange="saveHomeCards()"><span>今日用药</span></div>
-          <label>自定义头像</label>
-          <div class="row">
-            <div><button class="btn ghost" onclick="changeAvatar()">上传头像</button></div>
-            <div><button class="btn ghost" onclick="resetAvatar()">恢复默认</button></div>
-          </div>
-          <label>自定义背景</label>
-          <div class="row">
-            <div><select id="bgSel" onchange="setBg(this.value)"><option value="none">无（纯色）</option><option value="custom">我的上传</option></select></div>
-            <div><button class="btn ghost" onclick="document.getElementById('bgUp').click()">上传背景图</button><input type="file" id="bgUp" accept="image/*" style="display:none;" onchange="uploadBg(this)"></div>
-          </div>
-          <div class="row"><button class="btn ghost sm" onclick="delCustomBg()" id="bgDelBtn" style="display:none;">清除背景图</button></div>
-          <label>白色弱化遮罩</label>
-          <div class="row"><select id="blurSel" onchange="toggleBlur(this.value)"><option value="auto">自动跟随系统</option><option value="on">开启</option><option value="off">关闭</option></select></div>
-          <label>多端同步（账号登录 · 自动同步）</label>
-          <p class="muted">用同一个邮箱+密码登录后，三台设备数据自动互通（删除也会同步），不再需要同步码。首次使用请粘贴 Firebase 配置并点「保存配置」。</p>
-          <textarea id="syncConfig" rows="4" placeholder='{"apiKey":"...","authDomain":"...","databaseURL":"...","projectId":"...","appId":"..."}'></textarea>
-          <div class="row">
-            <button class="btn sm" onclick="saveSyncConfig()">保存配置</button>
-            <button class="btn sm ghost" onclick="syncNow()">立即同步</button>
-            <button class="btn sm ghost" onclick="forcePushLocal()"><img class="tic" data-stk="s060" alt="">本机覆盖云端</button>
-            <button class="btn sm ghost" onclick="restoreBackup()">↩️ 恢复备份</button>
-            <button class="btn sm ghost" onclick="disconnectSync()">断开</button>
-          </div>
-          <p class="sync-status" id="syncStatus">未连接</p>
-          <p class="muted" id="syncPathInfo" style="font-size:11px;margin-top:4px;"></p>
-          <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-12-v18</b></p>
-          <label>数据</label>
-          <div class="row">
-            <button class="btn ghost" onclick="exportData()">导出</button>
-            <button class="btn ghost" onclick="document.getElementById('imIn').click()">导入</button>
-            <input type="file" id="imIn" style="display:none;" onchange="importData(this)">
-          </div>
-        </div>
-        
-      
-        <div class="card">
-          <h3><img class="tic" data-stk="s100" alt="">账号</h3>
-          <p class="muted">登录后数据跟随账号，手机/平板/电脑三端自动同步，不再需要同步码。</p>
-          <p class="sync-status" id="authStatus">未登录</p>
-          <div class="row">
-            <button class="btn sm" id="authBtn2" onclick="showAuthOverlay()">登录 / 注册</button>
-            <button class="btn sm ghost" id="logoutBtn" onclick="authLogout()" style="display:none;">退出登录</button>
-          </div>
-          <div class="row" style="margin-top:8px;flex-wrap:wrap;gap:6px;">
-            <input id="oldCodeIn" placeholder="旧同步码（找回数据用，选填）" style="flex:1;min-width:120px;">
-            <button class="btn sm ghost" onclick="recoverFromCode()">找回旧数据</button>
-          </div>
-          <p class="muted" id="recoverMsg" style="font-size:11px;margin-top:6px;"></p>
         </div>
         <div class="card">
-          <h3><img class="tic" data-stk="s022" alt="">AI 助手</h3>
-          <p class="muted">填入 DeepSeek API Key 后：随手记/收藏自动分类、每周周报总结、梦境灵感卡都可用。Key 只存在本机，不会同步到云端。</p>
-          <input id="aiKey" type="password" placeholder="sk-…（platform.deepseek.com 获取）" style="width:100%;">
-          <div class="row" style="margin-top:8px;align-items:center;">
-            <select id="aiModel" style="flex:1;min-width:0;">
-              <option value="deepseek-v4-flash">Flash · 便宜（日常）</option>
-              <option value="deepseek-v4-pro">Pro · 更强（深度）</option>
-            </select>
-            <button class="btn sm" onclick="saveAiKey()">保存</button>
-            <button class="btn sm ghost" onclick="testAi()">测试</button>
-          </div>
-          <p class="muted" id="aiStatus" style="font-size:11px;margin-top:6px;"></p>
-        </div>
-        <div class="card">
-          <h3><img class="tic" data-stk="s040" alt="">提醒</h3>
-          <p class="muted">到点后 App 打开时会提醒你（系统级推送后续配置）。</p>
-          <div class="row"><label style="flex:0 0 70px;">护眼</label><input type="time" id="remEye" style="flex:1;min-width:0;"></div>
-          <div class="row"><label style="flex:0 0 70px;">课程打卡</label><input type="time" id="remCourse" style="flex:1;min-width:0;"></div>
-          <div class="row"><label style="flex:0 0 70px;">茶饮</label><input type="time" id="remTea" style="flex:1;min-width:0;"></div>
-          <div class="row"><button class="btn sm" onclick="saveReminders()">保存提醒</button></div>
-        </div>
-        <div class="card">
-          <h3><img class="tic" data-stk="s087" alt="">安装为 App</h3>
-          <p class="muted" id="installHint">把工作台安装成 App，像手机应用一样打开，以后更新自动同步，不用再记网址~</p>
-          <div class="row" style="flex-wrap:wrap;">
-            <button class="btn sm" id="installAppBtn" style="display:none;" onclick="installApp()">📲 安装 App</button>
+          <div class="fold-bar" onclick="toggleFold('setAccount')"><h3><img class="tic" data-stk="s100" alt="">账号</h3><span class="fold-ch" data-foldch="setAccount">▾</span></div>
+          <div class="fold-body" data-fold="setAccount">
+            <p class="muted" style="font-size:11px;">登录后数据跟随账号，三端自动同步，不再需要同步码。</p>
+            <p class="sync-status" id="authStatus">未登录</p>
+            <div class="row">
+              <button class="btn sm" id="authBtn2" onclick="showAuthOverlay()">登录 / 注册</button>
+              <button class="btn sm ghost" id="logoutBtn" onclick="authLogout()" style="display:none;">退出登录</button>
+            </div>
+            <div class="row" style="margin-top:8px;flex-wrap:wrap;gap:6px;">
+              <input id="oldCodeIn" placeholder="旧同步码（找回数据用，选填）" style="flex:1;min-width:120px;">
+              <button class="btn sm ghost" onclick="recoverFromCode()">找回旧数据</button>
+            </div>
+            <p class="muted" id="recoverMsg" style="font-size:11px;margin-top:6px;"></p>
           </div>
         </div>
-
+        <div class="card">
+          <div class="fold-bar" onclick="toggleFold('setAI')"><h3><img class="tic" data-stk="s022" alt="">AI 助手</h3><span class="fold-ch" data-foldch="setAI">▾</span></div>
+          <div class="fold-body" data-fold="setAI">
+            <p class="muted" style="font-size:11px;">填入 DeepSeek API Key 后：随手记/收藏自动分类、每周周报总结、梦境灵感卡都可用。Key 只存本机，不传云端。</p>
+            <input id="aiKey" type="password" placeholder="sk-…（platform.deepseek.com 获取）" style="width:100%;">
+            <div class="row" style="margin-top:8px;align-items:center;">
+              <select id="aiModel" style="flex:1;min-width:0;">
+                <option value="deepseek-v4-flash">Flash · 便宜（日常）</option>
+                <option value="deepseek-v4-pro">Pro · 更强（深度）</option>
+              </select>
+              <button class="btn sm" onclick="saveAiKey()">保存</button>
+              <button class="btn sm ghost" onclick="testAi()">测试</button>
+            </div>
+            <p class="muted" id="aiStatus" style="font-size:11px;margin-top:6px;"></p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="fold-bar" onclick="toggleFold('setRemind')"><h3><img class="tic" data-stk="s040" alt="">提醒</h3><span class="fold-ch" data-foldch="setRemind">▾</span></div>
+          <div class="fold-body" data-fold="setRemind">
+            <div class="row"><label style="flex:0 0 70px;">护眼</label><input type="time" id="remEye" style="flex:1;min-width:0;"></div>
+            <div class="row"><label style="flex:0 0 70px;">课程打卡</label><input type="time" id="remCourse" style="flex:1;min-width:0;"></div>
+            <div class="row"><label style="flex:0 0 70px;">茶饮</label><input type="time" id="remTea" style="flex:1;min-width:0;"></div>
+            <div class="row"><button class="btn sm" onclick="saveReminders()">保存提醒</button></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="fold-bar" onclick="toggleFold('setInstall')"><h3><img class="tic" data-stk="s087" alt="">安装为 App</h3><span class="fold-ch" data-foldch="setInstall">▾</span></div>
+          <div class="fold-body" data-fold="setInstall">
+            <p class="muted" id="installHint" style="font-size:11px;">把工作台安装成 App，像手机应用一样打开，以后更新自动同步~</p>
+            <div class="row" style="flex-wrap:wrap;">
+              <button class="btn sm" id="installAppBtn" style="display:none;" onclick="installApp()">📲 安装 App</button>
+            </div>
+          </div>
+        </div>
       </section>
 
     </div>
@@ -1716,7 +1733,7 @@ function load(){
   }catch(e){S={};}
 }
 
-const APP_VERSION = '2026-08-12-v18';
+const APP_VERSION = '2026-08-12-v19';
 // 深度消毒：同步合并/旧版本/损坏数据进入后，把每个用到的字段修复成正确类型，防止任意一处 undefined 崩溃
 function deepSanitize(){
   if(!S || typeof S!=='object' || Array.isArray(S)) S={};
@@ -2334,11 +2351,17 @@ function authToggleMode(){
 }
 function localHash(email, pass){
   const data=(email||'').trim().toLowerCase()+'|'+pass;
-  return crypto.subtle.digest('SHA-256', new TextEncoder().encode(data)).then(function(buf){
-    const arr=Array.from(new Uint8Array(buf));
-    let hex=''; for(const b of arr) hex+=b.toString(16).padStart(2,'0');
-    return 'L'+hex.slice(0,15).toUpperCase();
-  });
+  try{
+    if(window.crypto && crypto.subtle && crypto.subtle.digest){
+      return crypto.subtle.digest('SHA-256', new TextEncoder().encode(data)).then(function(buf){
+        const arr=Array.from(new Uint8Array(buf));
+        let hex=''; for(const b of arr) hex+=b.toString(16).padStart(2,'0');
+        return 'L'+hex.slice(0,15).toUpperCase();
+      });
+    }
+  }catch(e){}
+  let h=0; for(let i=0;i<data.length;i++) h=(h*31+data.charCodeAt(i))>>>0;
+  return Promise.resolve('L'+h.toString(16).toUpperCase().padStart(15,'0'));
 }
 function authSubmit(){
   const btn=document.getElementById('authBtn');
@@ -2353,7 +2376,6 @@ function authSubmit(){
     try{ JSON.parse(c); }catch(e){ showAuthMsg('配置不是合法 JSON'); return; }
     S.sync.config=c; save();
   }
-  if(!window.crypto || !crypto.subtle){ showAuthMsg('当前浏览器不支持本地加密，请用最新版 Safari/Chrome'); return; }
   if(btn){ btn.disabled=true; btn.textContent='处理中…'; }
   showAuthMsg('正在本地生成钥匙…');
   localHash(email, pass).then(function(code){
@@ -2365,6 +2387,7 @@ function authSubmit(){
     toast('登录成功，欢迎回来~');
     afterLocalLogin(email, code);
     renderSettings();
+    if(S.page==='mine') renderMine();
   }).catch(function(err){
     if(btn){ btn.disabled=false; btn.textContent='登录'; }
     showAuthMsg('本地加密失败：'+(err&&err.message||err));
@@ -2377,7 +2400,7 @@ function authLogout(){
   delete S.sync.authLocal;
   S.sync.uid='';
   S.sync.oldCode=(S.sync&&S.sync.code)||'';
-  save(); renderSettings();
+  save(); renderSettings(); if(S.page==='mine') renderMine();
   toast('已退出登录');
   showAuthOverlay();
 }
@@ -2748,7 +2771,7 @@ function addFav(){
 }
 function addFavImage(input){
   const f=input.files&&input.files[0]; if(!f) return;
-  compressImage(f, 800, function(data){
+  compressImage(f, 640, function(data){
     const it={id:'f'+Date.now()+Math.random().toString(36).slice(2,7), type:'image', title:(f.name||'图片').replace(/\.[a-zA-Z0-9]+$/,''), url:'', img:data, note:'', tags:[], cat:'', ts:Date.now(), date:todayStr()};
     if(!Array.isArray(S.favs)) S.favs=[];
     S.favs.unshift(it); save(); renderFav(); toast('图片已收藏~');
@@ -2861,7 +2884,7 @@ function checkReminders(){
 function escHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g, function(c){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"\'":'&#39;'})[c]; }); }
 
 // ===== v6 新增：多端同步（Firebase 同步码） =====
-let _syncTimer=null, _syncBusy=false, _syncListenerRef=null, _applyingRemote=false;
+let _syncTimer=null, _syncBusy=false, _syncListenerRef=null, _applyingRemote=false, _syncQueued=false, _lastPushSig='';
 let _createShowAll=false, _inspoShowAll=false, _archShowAll=false;
 function syncReady(){
   try{
@@ -2917,23 +2940,33 @@ function scheduleSyncPush(){
   if(!S.sync) S.sync={};
   S.sync._pendingAt = Date.now();
   if(_syncTimer) clearTimeout(_syncTimer);
-  _syncTimer = setTimeout(()=>{ if(!_syncBusy) pushToServer(); }, 500);
+  _syncTimer = setTimeout(()=>{ pushToServer(); }, 600);
+}
+function dataSig(obj){
+  try{
+    const s=JSON.stringify(obj); let h=0;
+    for(let i=0;i<s.length;i++) h=(h*31+s.charCodeAt(i))>>>0;
+    return h;
+  }catch(e){ return 0; }
 }
 function pushToServer(){
   if(!syncReady()) return;
-  if(_syncBusy) return;
+  if(_syncBusy){ _syncQueued=true; return; }
   _syncBusy = true;
   try{
     const payload = JSON.parse(JSON.stringify(S));
     if(payload.sync) delete payload.sync._pendingAt;
+    const sig = dataSig(payload);
+    if(sig===_lastPushSig){ updateSyncStatus('已同步'); _syncBusy=false; return; }
     if(payload._meta) payload._meta.updatedAt = firebase.database.ServerValue.TIMESTAMP;
     syncRef().set(payload)
       .then(()=>{
+        _lastPushSig=sig;
         if(S.sync){ S.sync._pendingAt=0; S.sync.lastSync=Date.now(); }
         updateSyncStatus('已同步 · '+new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'}));
       })
       .catch(err=>{ updateSyncStatus('同步失败：'+(err&&err.message||err),'err'); })
-      .finally(()=>{ _syncBusy=false; });
+      .finally(()=>{ _syncBusy=false; if(_syncQueued){ _syncQueued=false; scheduleSyncPush(); } });
   }catch(e){ _syncBusy=false; updateSyncStatus('同步失败','err'); }
 }
 function pullFromServer(){
@@ -3141,10 +3174,20 @@ function initNavGroups(){
 }
 
 function renderMine(){
+  const logged = !!(S.sync && (S.sync.uid || (S.sync.authLocal && S.sync.authLocal.email)));
   const as = document.getElementById('authStatusMine');
-  if(as) as.textContent = (S.sync && S.sync.uid) ? '✓ 已登录' : '未登录';
-  const lo = document.querySelector('#p-mine .btn.ghost');
-  if(lo) lo.style.display = (S.sync && S.sync.uid) ? 'inline-block' : 'none';
+  if(as){
+    if(logged){
+      const email = (S.sync.authLocal && S.sync.authLocal.email) || '账号';
+      as.textContent = '✓ 已登录：'+email;
+      as.className = 'sync-status ok';
+    } else {
+      as.textContent = '未登录';
+      as.className = 'sync-status';
+    }
+  }
+  const lb=document.getElementById('authBtnMine'); if(lb) lb.style.display = logged?'none':'inline-block';
+  const lo=document.getElementById('logoutBtnMine'); if(lo) lo.style.display = logged?'inline-block':'none';
 }
 
 // ===== theme =====
@@ -3168,9 +3211,20 @@ function buildThemes(){
   make('themeRow'); make('themeRow2');
 }
 function applyTheme(){
-  const t = (S.customTheme && S.customTheme.bg1 && S.customTheme.bg2 && S.customTheme.primary && S.customTheme.pink) ? S.customTheme : THEMES[parseInt(S.theme)||0];
+  const ct = S.customTheme;
+  const t = (ct && ct.bg1 && ct.primary && ct.pink) ? ct : THEMES[parseInt(S.theme)||0];
   const r = document.querySelector(':root');
-  for(const k of ['bg1','bg2','primary','accent','pink','text','sub']) if(t[k]) r.style.setProperty('--'+k, t[k]);
+  if(ct && ct.bg1 && ct.primary && ct.pink){
+    r.style.setProperty('--bg1', ct.bg1);
+    r.style.setProperty('--bg2', ct.bg1);
+    r.style.setProperty('--primary', ct.primary);
+    r.style.setProperty('--pink', ct.pink);
+    r.style.setProperty('--text', ct.text || '#43303A');
+    document.body.classList.add('custom-bg');
+  } else {
+    for(const k of ['bg1','bg2','primary','accent','pink','text','sub']) if(t[k]) r.style.setProperty('--'+k, t[k]);
+    document.body.classList.remove('custom-bg');
+  }
   applyNight();
   applyBg();
 }
@@ -3181,8 +3235,8 @@ function setGlass(v){
 }
 function saveCustomTheme(){
   const pick = function(id){ const el=document.getElementById(id); return el? el.value : ''; };
-  S.customTheme = {bg1:pick('ctBg1'), bg2:pick('ctBg2'), primary:pick('ctPrimary'), accent:pick('ctAccent'), pink:pick('ctPink'), text:'', sub:''};
-  save(); applyTheme(); toast('自定义配色已应用~');
+  S.customTheme = {bg1:pick('ctBg1'), primary:pick('ctPrimary'), pink:pick('ctPink'), text:pick('ctText')};
+  save(); applyTheme(); renderSettings(); toast('自定义配色已应用~');
 }
 function resetCustomTheme(){
   S.customTheme = null; save(); applyTheme(); renderSettings(); toast('已恢复预设配色~');
@@ -3191,7 +3245,8 @@ function applyNight(){
   const wants = S.nightMode==='on' || (S.nightMode==='auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
   document.body.classList.toggle('night', wants);
   const r = document.documentElement.style;
-  const t = THEMES[parseInt(S.theme)||0];
+  const ct = S.customTheme;
+  const t = (ct && ct.bg1 && ct.primary && ct.pink) ? ct : THEMES[parseInt(S.theme)||0];
   const g = (typeof S.glass==='number' && S.glass>=0.2 && S.glass<=1) ? S.glass : 1;
   if(wants){
     r.setProperty('--text','#ffffff');
@@ -3206,8 +3261,8 @@ function applyNight(){
     r.setProperty('--bg1','#2a1a26');
     r.setProperty('--bg2','#351f30');
   } else {
-    r.setProperty('--text', t.text);
-    r.setProperty('--sub', t.sub);
+    if(t.text) r.setProperty('--text', t.text);
+    if(t.sub) r.setProperty('--sub', t.sub);
     r.setProperty('--panel','rgba(255,255,255,'+(0.40*g).toFixed(2)+')');
     r.setProperty('--card','rgba(255,255,255,'+(0.20*g).toFixed(2)+')');
     r.setProperty('--cardA',(0.60*g).toFixed(2));
@@ -3235,7 +3290,7 @@ function applyBg(){
 function setBg(v){ S.bg=v; save(); applyBg(); haptic(); }
 function uploadBg(input){
   const f = input.files[0]; if(!f) return;
-  compressImage(f, 1600, data=>{ S.customBg=data; S.bg='custom'; save(); applyBg(); toast('背景换好啦~'); });
+  compressImage(f, 1280, data=>{ S.customBg=data; S.bg='custom'; save(); applyBg(); toast('背景换好啦~'); });
   input.value='';
 }
 function toggleBlur(v){ S.blur=v; save(); applyBg(); haptic(); }
@@ -3266,7 +3321,7 @@ function applyFolds(){
 function applyDecor(){
   const d = S.decor||{};
   const r = document.documentElement.style;
-  r.setProperty('--cardImg', d.cardBg? "url('"+d.cardBg+"')" : 'none');
+  r.setProperty('--cardImg', d.cardBg? "url('"+d.cardBg+"')" : 'var(--cardBg)');
   r.setProperty('--cardBorderStyle', d.cardBorder||'solid');
   r.setProperty('--cardRadius', (d.cardRadius||16)+'px');
   document.body.classList.toggle('decorPlain', d.style==='plain');
@@ -3278,9 +3333,10 @@ function applyDecor(){
   });
   const aa = document.getElementById('avatarAcc');
   if(aa){ aa.src = d.avatarAcc||''; aa.style.display = d.avatarAcc? 'block':'none'; }
+  const hasAny = !!(d.cardBg || (d.cardBgPer && Object.keys(d.cardBgPer).length));
+  document.body.classList.toggle('hasCardImg', hasAny);
   const bn = document.getElementById('decorBanner');
   if(bn){ bn.textContent = d.banner||''; bn.style.display = d.banner? 'block':'none'; }
-  renderStickers();
   const st=document.getElementById('decorStyle'); if(st) st.value=d.style||'glass';
   const bd=document.getElementById('decorBorder'); if(bd) bd.value=d.cardBorder||'solid';
   const rr=document.getElementById('decorRadius'); if(rr) rr.value=d.cardRadius||16;
@@ -3293,13 +3349,13 @@ function setDecorRadius(v){ if(!S.decor) S.decor={}; S.decor.cardRadius=parseInt
 function saveDecorBanner(){ const v=(document.getElementById('decorBannerInput').value||'').trim(); if(!S.decor) S.decor={}; S.decor.banner=v; save(); applyDecor(); toast('签名横幅已更新~'); }
 function uploadDecorCardBg(input){
   const f=input&&input.files&&input.files[0]; if(!f) return;
-  compressImage(f, 900, data=>{ if(!S.decor) S.decor={}; S.decor.cardBg=data; save(); applyDecor(); toast('卡片底图已应用（所有卡片）~'); });
+  compressImage(f, 720, data=>{ if(!S.decor) S.decor={}; S.decor.cardBg=data; save(); applyDecor(); toast('卡片底图已应用（所有卡片）~'); });
 }
 function clearDecorCardBg(){ if(!S.decor) return; delete S.decor.cardBg; save(); applyDecor(); toast('已取消卡片底图~'); }
 function uploadDecorCardBgPer(input){
   const f=input&&input.files&&input.files[0]; if(!f) return;
   const key=document.getElementById('decorCardSel').value; if(!key){ toast('先选一张卡片~'); return; }
-  compressImage(f, 900, data=>{ if(!S.decor) S.decor={}; if(!S.decor.cardBgPer) S.decor.cardBgPer={}; S.decor.cardBgPer[key]=data; save(); applyDecor(); toast('该卡片底图已应用~'); });
+  compressImage(f, 720, data=>{ if(!S.decor) S.decor={}; if(!S.decor.cardBgPer) S.decor.cardBgPer={}; S.decor.cardBgPer[key]=data; save(); applyDecor(); toast('该卡片底图已应用~'); });
 }
 function clearDecorCardBgPer(){
   const key=document.getElementById('decorCardSel').value;
@@ -3308,61 +3364,9 @@ function clearDecorCardBgPer(){
 }
 function uploadDecorAvAcc(input){
   const f=input&&input.files&&input.files[0]; if(!f) return;
-  compressImage(f, 200, data=>{ if(!S.decor) S.decor={}; S.decor.avatarAcc=data; save(); applyDecor(); toast('头像挂件已添加~'); });
+  compressImage(f, 160, data=>{ if(!S.decor) S.decor={}; S.decor.avatarAcc=data; save(); applyDecor(); toast('头像挂件已添加~'); });
 }
 function clearDecorAvAcc(){ if(!S.decor) return; delete S.decor.avatarAcc; save(); applyDecor(); toast('已取消头像挂件~'); }
-function uploadDecorSticker(input){
-  const f=input&&input.files&&input.files[0]; if(!f) return;
-  compressImage(f, 300, data=>{
-    if(!S.decor) S.decor={};
-    if(!Array.isArray(S.decor.stickers)) S.decor.stickers=[];
-    if(S.decor.stickers.length>=12){ toast('贴纸最多 12 个，先删几个~'); return; }
-    S.decor.stickers.push({img:data, x:50, y:35, size:90});
-    save(); applyDecor(); toast('贴纸已添加，拖动可换位置~');
-  });
-}
-function delSticker(i){ if(S.decor&&Array.isArray(S.decor.stickers)){ S.decor.stickers.splice(i,1); save(); applyDecor(); toast('贴纸已删除~'); } }
-function resizeSticker(i,dir){ const s=S.decor&&S.decor.stickers&&S.decor.stickers[i]; if(!s) return; s.size=Math.max(30,Math.min(220,(s.size||90)+dir*15)); save(); applyDecor(); }
-function clearStickers(){ if(!confirm('清空所有贴纸？')) return; if(S.decor) S.decor.stickers=[]; save(); applyDecor(); }
-function renderStickers(){
-  const layer=document.getElementById('stickerLayer'); if(!layer) return;
-  const d=S.decor||{}; const arr=d.stickers||[];
-  layer.innerHTML='';
-  arr.forEach(function(s,i){
-    const el=document.createElement('div');
-    el.className='dj-sticker';
-    el.style.left=(s.x||50)+'%'; el.style.top=(s.y||35)+'%';
-    el.style.width=(s.size||90)+'px'; el.style.height=(s.size||90)+'px';
-    el.innerHTML='<img src="'+s.img+'"><span class="stk-del" title="删除" onclick="event.stopPropagation();delSticker('+i+')">✕</span><span class="stk-size" title="放大" onclick="event.stopPropagation();resizeSticker('+i+',1)">＋</span>';
-    el.dataset.idx=i;
-    el.addEventListener('pointerdown',function(ev){ ev.preventDefault(); _stDrag={idx:i,px:ev.clientX,py:ev.clientY,l:parseFloat(el.style.left),t:parseFloat(el.style.top)}; el.classList.add('on'); });
-    el.addEventListener('click',function(){ el.classList.add('on'); });
-    layer.appendChild(el);
-  });
-}
-let _stDrag=null;
-document.addEventListener('pointermove',function(ev){
-  if(!_stDrag) return;
-  const nx=_stDrag.l+(ev.clientX-_stDrag.px)/window.innerWidth*100;
-  const ny=_stDrag.t+(ev.clientY-_stDrag.py)/window.innerHeight*100;
-  const el=document.querySelector('.dj-sticker[data-idx="'+_stDrag.idx+'"]');
-  if(el){ el.style.left=Math.max(-15,Math.min(115,nx))+'%'; el.style.top=Math.max(-15,Math.min(115,ny))+'%'; }
-});
-document.addEventListener('pointerup',function(){
-  if(!_stDrag) return;
-  const el=document.querySelector('.dj-sticker[data-idx="'+_stDrag.idx+'"]');
-  if(el&&S.decor&&Array.isArray(S.decor.stickers)&&S.decor.stickers[_stDrag.idx]){
-    S.decor.stickers[_stDrag.idx].x=parseFloat(el.style.left);
-    S.decor.stickers[_stDrag.idx].y=parseFloat(el.style.top);
-    save();
-  }
-  _stDrag=null;
-});
-document.addEventListener('click',function(ev){
-  if(ev.target && ev.target.closest && !ev.target.closest('.dj-sticker')){
-    document.querySelectorAll('.dj-sticker').forEach(function(el){ el.classList.remove('on'); });
-  }
-});
 
 // ===== home =====
 function renderHome(){
@@ -3395,9 +3399,12 @@ function renderHome(){
   updateLevelUI();
   renderLowHint();
   applyHomeCards();
-  document.body.classList.toggle('homeMoreClosed', !S.homeMoreOpen);
+  const hc2 = S.homeCards||{};
+  [['hcState','state'],['hcTask','task'],['hcPlan','plan'],['hcCal','cal'],['hcMeds','meds']].forEach(function(x){ const el=document.getElementById(x[0]); if(el) el.checked = hc2[x[1]]!==false; });
   const hm = document.getElementById('homeMoreBtn');
-  if(hm){ hm.style.display = (window.innerWidth<=760 && S.homeCards.plan!==false) ? 'inline-block' : 'none'; hm.textContent = S.homeMoreOpen ? '收起 ▴' : '更多功能 ▾'; }
+  if(hm){ hm.style.display = (window.innerWidth<=760) ? 'inline-block' : 'none'; hm.textContent = S.homeMoreOpen ? '收起 ▴' : '更多功能 ▾'; }
+  const hp = document.getElementById('homeMorePanel');
+  if(hp) hp.style.display = S.homeMoreOpen ? 'block' : 'none';
 }
 function applyHomeCards(){
   const hc = S.homeCards||{};
@@ -3411,11 +3418,11 @@ function applyHomeCards(){
 }
 function toggleHomeMore(){
   S.homeMoreOpen = !S.homeMoreOpen; save();
-  document.body.classList.toggle('homeMoreClosed', !S.homeMoreOpen);
-  applyHomeCards();
+  const hp = document.getElementById('homeMorePanel');
+  if(hp) hp.style.display = S.homeMoreOpen ? 'block' : 'none';
   const hm = document.getElementById('homeMoreBtn');
   if(hm) hm.textContent = S.homeMoreOpen ? '收起 ▴' : '更多功能 ▾';
-  haptic(); toast(S.homeMoreOpen ? '已展开~' : '已收起~');
+  haptic();
 }
 function saveHomeCards(){
   const gv = function(id){ const el=document.getElementById(id); return !!(el && el.checked); };
@@ -4370,7 +4377,7 @@ function fmtTime(s){ const m=Math.floor(s/60); const sec=s%60; return m+':'+(sec
 function saveCreation(input){
   const f = input.files[0]; if(!f) return;
   const cid = document.getElementById('microCourse').value;
-  compressImage(f, 800, data=>{
+  compressImage(f, 640, data=>{
     const c = S.courses.find(x=>x.id===cid);
     const branches = new Set();
     if(c && c.branch && foundKey(c.branch)) branches.add(foundKey(c.branch));
@@ -4476,8 +4483,14 @@ function compressImage(file, maxW, cb, quality){
         const scale = Math.min(1, (maxW||1200) / img.width);
         const w = Math.max(1, Math.round(img.width*scale)), h = Math.max(1, Math.round(img.height*scale));
         const cv = document.createElement('canvas'); cv.width=w; cv.height=h;
-        cv.getContext('2d').drawImage(img,0,0,w,h);
-        cb(cv.toDataURL('image/jpeg', quality||0.8));
+        const ctx = cv.getContext('2d');
+        ctx.drawImage(img,0,0,w,h);
+        let alpha=false;
+        try{
+          const d = ctx.getImageData(0,0,w,h).data;
+          for(let i=3;i<d.length;i+=4){ if(d[i]<250){ alpha=true; break; } }
+        }catch(err){}
+        cb(alpha ? cv.toDataURL('image/png') : cv.toDataURL('image/jpeg', quality||0.8));
       }catch(err){ cb(e.target.result); }
     };
     img.onerror = ()=>{ cb(e.target.result); };
@@ -4520,7 +4533,7 @@ function migrateStoredImages(){
     batch.forEach(function(it){
       const item = S[it.arr][it.i];
       if(!item || !item.img){ done++; return; }
-      recompressDataUrl(item.img, 800, 0.7, function(nu){
+      recompressDataUrl(item.img, 640, 0.7, function(nu){
         if(nu && nu !== item.img){ item.img = nu; dirty = true; }
         done++;
       });
@@ -4538,7 +4551,7 @@ function migrateStoredImages(){
 
 function uploadInspo(input){
   Array.from(input.files).forEach(file=>{
-    compressImage(file, 900, data=>{
+    compressImage(file, 720, data=>{
       if(!S.inspo[currentInspo]) S.inspo[currentInspo]=[];
       S.inspo[currentInspo].push({img:data, date:todayStr()}); save(); renderInspo();
     });
@@ -4961,7 +4974,7 @@ function uploadArchive(input){
   const type = document.getElementById('archType').value;
   const month = new Date().toISOString().slice(0,7);
   Array.from(input.files).forEach(file=>{
-    compressImage(file, 900, data=>{
+    compressImage(file, 720, data=>{
       S.archives.push({date:todayStr(),type:type,month:month,img:data}); save(); renderGrowth();
     });
   });
@@ -5047,12 +5060,8 @@ function renderSettings(){
   const gr=document.getElementById('glassRange'); if(gr) gr.value=Math.round((S.glass||1)*100);
   const gv=document.getElementById('glassVal'); if(gv) gv.textContent=Math.round((S.glass||1)*100)+'%';
   const ct = S.customTheme || THEMES[parseInt(S.theme)||0];
-  [['ctBg1','bg1'],['ctBg2','bg2'],['ctPrimary','primary'],['ctAccent','accent'],['ctPink','pink']].forEach(function(p){
+  [['ctBg1','bg1'],['ctPrimary','primary'],['ctPink','pink'],['ctText','text']].forEach(function(p){
     const el=document.getElementById(p[0]); if(el && ct[p[1]]) el.value=ct[p[1]];
-  });
-  const hc = S.homeCards||{};
-  [['hcState','state'],['hcTask','task'],['hcPlan','plan'],['hcCal','cal'],['hcMeds','meds']].forEach(function(p){
-    const el=document.getElementById(p[0]); if(el) el.checked = hc[p[1]]!==false;
   });
 }
 function exportData(){
