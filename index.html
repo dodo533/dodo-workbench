@@ -11,7 +11,8 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-192.png">
 <script src="icons.js" defer></script>
-<title>呆啾丸 · 绘画自律工作台 v11</title>
+<script src="stickers.js" defer></script>
+<title>呆啾丸 · 绘画自律工作台 v12</title>
 <style>
 
 :root{
@@ -754,7 +755,7 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
 <div id="appBg"></div>
 <div id="app">
   <aside id="sidebar">
-    <div class="brand"><span class="logo">🐣</span><span>呆啾丸 · 工作台</span></div>
+    <div class="brand"><img class="logo-img" data-stk="s087" alt=""><span>呆啾丸 · 工作台</span></div>
     <div class="avatar-box">
       <img id="avImg" class="av" src="" alt="小啾啾">
       <span class="status-ic" id="statusIcWrap"><img id="statusIc" src="" alt="状态"></span>
@@ -763,30 +764,30 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
     <div class="nav-group">
       <div class="nav-ghead">总览</div>
       <div class="nav-items">
-        <div class="nav-item" data-page="home" onclick="go('home')"><span class="ni-ic" style="font-size:16px;">🏠</span><span>首页</span></div>
-        <div class="nav-item" data-page="growth" onclick="go('growth')"><span class="ni-ic" style="font-size:16px;">🌱</span><span>成长</span></div>
+        <div class="nav-item" data-page="home" onclick="go('home')"><span class="ni-ic"><img data-stk="s107" alt=""></span><span>首页</span></div>
+        <div class="nav-item" data-page="growth" onclick="go('growth')"><span class="ni-ic"><img data-stk="s105" alt=""></span><span>成长</span></div>
       </div>
     </div>
     <div class="nav-group">
       <div class="nav-ghead">练习</div>
       <div class="nav-items">
-        <div class="nav-item" data-page="courses" onclick="go('courses')"><span class="ni-ic" style="font-size:16px;">📚</span><span>课程</span></div>
-        <div class="nav-item" data-page="micro" onclick="go('micro')"><span class="ni-ic" style="font-size:16px;">✏️</span><span>微创作</span></div>
-        <div class="nav-item" data-page="know" onclick="go('know')"><span class="ni-ic" style="font-size:16px;">🌳</span><span>知识树</span></div>
-        <div class="nav-item" data-page="dance" onclick="go('dance')"><span class="ni-ic" style="font-size:16px;">💃</span><span>跳舞</span></div>
+        <div class="nav-item" data-page="courses" onclick="go('courses')"><span class="ni-ic"><img data-stk="s058" alt=""></span><span>课程</span></div>
+        <div class="nav-item" data-page="micro" onclick="go('micro')"><span class="ni-ic"><img data-stk="s028" alt=""></span><span>微创作</span></div>
+        <div class="nav-item" data-page="know" onclick="go('know')"><span class="ni-ic"><img data-stk="s036" alt=""></span><span>知识树</span></div>
+        <div class="nav-item" data-page="dance" onclick="go('dance')"><span class="ni-ic"><img data-stk="s062" alt=""></span><span>跳舞</span></div>
       </div>
     </div>
     <div class="nav-group">
       <div class="nav-ghead">生活</div>
       <div class="nav-items">
-        <div class="nav-item" data-page="body" onclick="go('body')"><span class="ni-ic" style="font-size:16px;">🩹</span><span>身体</span></div>
-        <div class="nav-item" data-page="mood" onclick="go('mood')"><span class="ni-ic" style="font-size:16px;">💭</span><span>情绪日记</span></div>
+        <div class="nav-item" data-page="body" onclick="go('body')"><span class="ni-ic"><img data-stk="s020" alt=""></span><span>身体</span></div>
+        <div class="nav-item" data-page="mood" onclick="go('mood')"><span class="ni-ic"><img data-stk="s100" alt=""></span><span>情绪日记</span></div>
       </div>
     </div>
     <div class="nav-group" id="g-set">
       <div class="nav-ghead">设置</div>
       <div class="nav-items">
-        <div class="nav-item" data-page="settings" onclick="go('settings')"><span class="ni-ic" style="font-size:16px;">⚙️</span><span>设置</span></div>
+        <div class="nav-item" data-page="settings" onclick="go('settings')"><span class="ni-ic"><img data-stk="s032" alt=""></span><span>设置</span></div>
       </div>
     </div>
     <div class="theme-row" id="themeRow"></div>
@@ -838,22 +839,22 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
         <div class="home-cols">
           <div class="card mix-card">
             <div class="mix-top">
-              <h3>🧭 状态罗盘</h3>
+              <h3><img class="tic" data-stk="s084" alt="">状态罗盘</h3>
               <div class="mood-row" id="moodRow"></div>
               <div class="compass" id="compass"></div>
               <div id="medBox"></div>
             </div>
             <div class="dashed-sep"></div>
             <div class="mix-bottom">
-              <h3>✅ 今日任务</h3>
+              <h3><img class="tic" data-stk="s041" alt="">今日任务</h3>
               <div id="homePlan"></div>
             </div>
           </div>
           <div class="card mix-card">
-            <h3>📋 我的计划</h3>
+            <h3><img class="tic" data-stk="s012" alt="">我的计划</h3>
             <div id="homePlanPreview"></div>
             <div class="dashed-sep"></div>
-            <h3>📊 课程进度</h3>
+            <h3><img class="tic" data-stk="s093" alt="">课程进度</h3>
             <div id="overviewTop"></div>
             <div id="courseDonut"></div>
           </div>
@@ -864,12 +865,12 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
         <div class="courses-grid">
           <div class="card courses-left">
             <div class="courses-block">
-              <h3>📋 总课程计划表</h3>
+              <h3><img class="tic" data-stk="s014" alt="">总课程计划表</h3>
               <div id="coursePlanTable"></div>
             </div>
             <div class="dashed-sep"></div>
             <div class="courses-block">
-              <h3>📚 课程合集</h3>
+              <h3><img class="tic" data-stk="s072" alt="">课程合集</h3>
               <p class="muted">手动添加课程，点开可填写总节数 / 已完成 / 当前第几节 / 待补，以及每节知识点。</p>
               <div class="row">
                 <button class="btn" onclick="showCourseForm()">＋ 添加课程</button>
@@ -889,7 +890,7 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
           </div>
           <div class="card courses-right">
             <div class="courses-block">
-              <h3>🌟 未来想报课程</h3>
+              <h3><img class="tic" data-stk="s091" alt="">未来想报课程</h3>
               <p class="muted">想学但还没开始的，先收在这里~</p>
               <div class="row">
                 <input id="futureName" placeholder="课程名（如：角色设计进阶）">
@@ -899,7 +900,7 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
             </div>
             <div class="dashed-sep"></div>
             <div class="courses-block release-section">
-              <h3>🕊️ 已释怀 · 放生仪式</h3>
+              <h3><img class="tic" data-stk="s018" alt="">已释怀 · 放生仪式</h3>
               <p class="muted">超过 7 天未完成的任务/课程/计划会温柔地提醒到这里。放生不扣分，反而获得 1 颗断舍离星尘；收进来随时可以「回归」，永不清除。</p>
               <div class="dust-badge" id="dustBadge">✨ 断舍离星尘 0</div>
               <div id="releasedList"></div>
@@ -911,12 +912,12 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
 
       <section class="panel" id="p-micro">
         <div class="card">
-          <h3>☆⋆｡𖦹°‧★ 微创作</h3>
+          <h3><img class="tic" data-stk="s022" alt="">微创作</h3>
           <p class="muted">选课程、上传作品自动 +3 经验；素材/梦境/灵感都收在这里。</p>
           <div class="row">
             <div><label>选择课程</label><select id="microCourse"></select></div>
             <div style="flex:0 0 auto;display:flex;align-items:flex-end;gap:6px;">
-              <button class="btn ghost" onclick="rollInspiration()">💡 灵感便签</button>
+              <button class="btn ghost" onclick="rollInspiration()"><img class="tic" data-stk="s023" alt="">灵感便签</button>
             </div>
           </div>
           <div id="inspResult" class="muted" style="margin-top:6px;"></div>
@@ -929,19 +930,19 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
             <input type="file" accept="image/*" onchange="saveCreation(this)" id="creationInput">
             <div class="creation-list" id="creationList"></div>
             <div style="margin-top:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-              <button class="btn sm ghost" id="mosaicBtn" onclick="toggleMosaic()">🖼 马赛克模式：关</button>
+              <button class="btn sm ghost" id="mosaicBtn" onclick="toggleMosaic()"><img class="tic" data-stk="s025" alt="">马赛克模式：关</button>
               <span class="muted" style="font-size:10.5px;">点开某张图停留一会儿，小啾啾会轻轻提醒你歇一歇</span>
             </div>
             <div class="judge-note" id="judgeNote" style="display:none;"></div>
           </div>
         </div>
         <div class="card">
-          <h3>🗂 灵感与素材</h3>
+          <h3><img class="tic" data-stk="s089" alt="">灵感与素材</h3>
           <div class="inspo-cols">
             <div class="inspo-col">
               <div class="row" style="gap:6px;">
-                <button class="btn sm ghost" id="inspoTabMaterial" onclick="switchInspo('material')">🗂 素材</button>
-                <button class="btn sm ghost" id="inspoTabDream" onclick="switchInspo('dream')">💭 随手记</button>
+                <button class="btn sm ghost" id="inspoTabMaterial" onclick="switchInspo('material')"><img class="tic" data-stk="s029" alt="">素材</button>
+                <button class="btn sm ghost" id="inspoTabDream" onclick="switchInspo('dream')"><img class="tic" data-stk="s069" alt="">随手记</button>
               </div>
               <div class="row" style="margin-top:8px;flex-wrap:wrap;">
                 <input type="file" accept="image/*" multiple id="inspoUp" style="display:none;" onchange="uploadInspo(this)">
@@ -954,7 +955,7 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
               <div id="inspoBox" style="margin-top:8px;"></div>
             </div>
             <div class="inspo-col gallery-col">
-              <h4>📂 我的图库</h4>
+              <h4><img class="tic" data-stk="s186" alt="">我的图库</h4>
               <p class="muted">所有素材、创作图片都统一存到图库新页面，点开即可跳转。</p>
               <a href="gallery.html" class="btn" style="text-decoration:none;text-align:center;">打开我的图库 →</a>
             </div>
@@ -966,7 +967,7 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
 
             <section class="panel" id="p-know">
         <div class="card">
-          <h3>🌳 四大根基 · 像素树</h3>
+          <h3><img class="tic" data-stk="s031" alt="">四大根基 · 像素树</h3>
           <p class="muted">一棵小树 = 20 枝芽，每个根基最多 4 棵；根基累计 80 枝芽升级「展叶」、160 枝芽满级「开花」。没有毕业，只有不断生长~</p>
           <div class="found-grid" id="foundGrid"></div>
         </div>
@@ -974,7 +975,7 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
 
       <section class="panel" id="p-dance">
         <div class="card">
-          <h3>💃 跳舞</h3>
+          <h3><img class="tic" data-stk="s184" alt="">跳舞</h3>
           <div id="danceBox"></div>
         </div>
       </section>
@@ -989,7 +990,7 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
 
       <section class="panel" id="p-growth">
         <div class="card">
-          <h3>🌱 成长记录</h3>
+          <h3><img class="tic" data-stk="s132" alt="">成长记录</h3>
           <div class="level-top" id="growthLv"></div>
           <div id="xpInfo" class="muted" style="margin:6px 0 10px;"></div>
           <div id="monthBlocks"></div>
@@ -1003,13 +1004,13 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
         </div>
         <div class="growth-split">
           <div class="card">
-            <h3>📊 每周周报</h3>
+            <h3><img class="tic" data-stk="s037" alt="">每周周报</h3>
             <p class="muted">每周自动生成小结，不用你写~</p>
-            <div class="row"><button class="btn sm" onclick="genWeekReport()">📊 生成本周周报</button></div>
+            <div class="row"><button class="btn sm" onclick="genWeekReport()"><img class="tic" data-stk="s038" alt="">生成本周周报</button></div>
             <div id="weekReportBox" style="margin-top:8px;"></div>
           </div>
           <div class="card">
-            <h3>🏆 里程碑</h3>
+            <h3><img class="tic" data-stk="s167" alt="">里程碑</h3>
             <p class="muted">达成条件后自动点亮，不用手动打卡~</p>
             <div id="msList"></div>
           </div>
@@ -1058,12 +1059,12 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
           <div class="row">
             <button class="btn sm" onclick="saveSyncConfig()">保存并连接</button>
             <button class="btn sm ghost" onclick="syncNow()">立即同步</button>
-            <button class="btn sm ghost" onclick="forcePushLocal()">⬆️ 本机覆盖云端</button>
+            <button class="btn sm ghost" onclick="forcePushLocal()"><img class="tic" data-stk="s060" alt="">本机覆盖云端</button>
             <button class="btn sm ghost" onclick="restoreBackup()">↩️ 恢复备份</button>
             <button class="btn sm ghost" onclick="disconnectSync()">断开</button>
           </div>
           <p class="sync-status" id="syncStatus">未连接</p>
-          <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-15-v11</b></p>
+          <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-16-v12</b></p>
           <label>数据</label>
           <div class="row">
             <button class="btn ghost" onclick="exportData()">导出</button>
@@ -1072,13 +1073,13 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
           </div>
         </div>
         <div class="card">
-          <h3>🎧 白噪音 · 专注</h3>
+          <h3><img class="tic" data-stk="s003" alt="">白噪音 · 专注</h3>
           <p class="muted">雨声 / 海浪 / 篝火 / 棕色噪音，全部本地生成，不用联网~</p>
           <div class="row" id="noiseBtns" style="flex-wrap:wrap;">
-            <button class="btn sm ghost" data-noise="rain" onclick="toggleNoise('rain',this)">🌧 雨声</button>
-            <button class="btn sm ghost" data-noise="wave" onclick="toggleNoise('wave',this)">🌊 海浪</button>
-            <button class="btn sm ghost" data-noise="fire" onclick="toggleNoise('fire',this)">🔥 篝火</button>
-            <button class="btn sm ghost" data-noise="brown" onclick="toggleNoise('brown',this)">🤎 棕色噪音</button>
+            <button class="btn sm ghost" data-noise="rain" onclick="toggleNoise('rain',this)"><img class="tic" data-stk="s061" alt="">雨声</button>
+            <button class="btn sm ghost" data-noise="wave" onclick="toggleNoise('wave',this)"><img class="tic" data-stk="s004" alt="">海浪</button>
+            <button class="btn sm ghost" data-noise="fire" onclick="toggleNoise('fire',this)"><img class="tic" data-stk="s006" alt="">篝火</button>
+            <button class="btn sm ghost" data-noise="brown" onclick="toggleNoise('brown',this)"><img class="tic" data-stk="s009" alt="">棕色噪音</button>
           </div>
           <div id="noiseStatus" class="muted" style="font-size:11px;margin-top:6px;">未播放</div>
         </div>
@@ -1111,7 +1112,7 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
 
 <div class="slime-overlay" id="slimeOverlay">
   <div class="slime-box">
-    <h3>🫧 你现在处于「史莱姆模式」</h3>
+    <h3><img class="tic" data-stk="s068" alt="">你现在处于「史莱姆模式」</h3>
     <p>不建议学习新知识。<br>先照顾好自己，电量会回来的。<br>小啾啾陪你去微创作躺一会儿吧~</p>
     <div class="row" style="justify-content:center;gap:8px;">
       <button class="btn" onclick="enterHaven()">去微创作</button>
@@ -1122,7 +1123,7 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
 
 <div class="modal" id="judgeModal" onclick="if(event.target===this)this.classList.remove('on')">
   <div class="modal-box">
-    <h4>🌱 你在审判自己吗？</h4>
+    <h4><img class="tic" data-stk="s057" alt="">你在审判自己吗？</h4>
     <p>在作品集里反复翻看旧作的时候，常常是在审判自己。画得再「丑」，也是你认真走过的路。</p>
     <div class="row" style="gap:8px;">
       <button class="btn" onclick="confirmJudge(true)">是，我在审判自己</button>
@@ -1133,7 +1134,7 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
 
 <div class="modal" id="sosModal" onclick="if(event.target===this)this.classList.remove('on')">
   <div class="modal-box">
-    <h4>🆘 一键求救</h4>
+    <h4><img class="tic" data-stk="s144" alt="">一键求救</h4>
     <p id="sosText"></p>
     <p class="muted" style="font-size:10.5px;">话术已自动复制，去发给一个愿意抱抱你的人吧~</p>
     <div class="row" style="gap:8px;">
@@ -1165,11 +1166,13 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
 /* 图标资源已外置到 icons.js（defer 加载，加速首屏） */
 /* 保险：icons.js 万一没加载成功，也不让整站崩溃 */
 if(typeof IMG === 'undefined'){ window.IMG = {}; }
+/* 贴纸素材取图（STK 未加载时返回空，不崩溃） */
+function stk(id){ try{ if(typeof STK!=='undefined' && STK && STK[id]) return STK[id]; }catch(e){} return ''; }
 
 // ===== config =====
 const STATE_MAP = {high:'高能冲刺',normal:'按部就班',low:'低电量模式',down:'低谷休息'};
 const STATE_IC = {high:'stateHigh',normal:'stateNormal',low:'stateLow',down:'stateDown'};
-const MOODS = [{k:'down',n:'低落',ic:'moodDown'},{k:'meh',n:'无感',ic:'moodMeh'},{k:'ok',n:'还行',ic:'moodOk'},{k:'happy',n:'高兴',ic:'moodHappy'}];
+const MOODS = [{k:'down',n:'低落',ic:'s059'},{k:'meh',n:'无感',ic:'s017'},{k:'ok',n:'还行',ic:'s021'},{k:'happy',n:'高兴',ic:'s005'}];
 const MOOD_EMOJI = {down:'🌧️', meh:'😐', ok:'🙂', happy:'😄'};
 const KNOWLEDGE_TREE = [
   {k:'透视',children:[]},
@@ -1274,7 +1277,7 @@ function load(){
   }catch(e){S={};}
 }
 
-const APP_VERSION = '2026-08-15-v11';
+const APP_VERSION = '2026-08-16-v12';
 // 深度消毒：同步合并/旧版本/损坏数据进入后，把每个用到的字段修复成正确类型，防止任意一处 undefined 崩溃
 function deepSanitize(){
   if(!S || typeof S!=='object' || Array.isArray(S)) S={};
@@ -1760,7 +1763,7 @@ function renderReleased(){
 }
 function renderDust(){
   const el = document.getElementById('dustBadge');
-  if(el) el.textContent = '✨ 断舍离星尘 '+(S.dust||0);
+  if(el) el.innerHTML = '<img class="tic" src="'+stk('s050')+'" alt="">断舍离星尘 '+(S.dust||0);
 }
 function renderReleasedPlans(){
   const box = document.getElementById('releasedPlans');
@@ -2169,7 +2172,7 @@ function renderHome(){
   const d = ensureToday();
   document.getElementById('heroTitle').textContent = S.homeNote;
   const mascot = document.getElementById('heroMascot');
-  mascot.src = S.customAvatar || IMG['mascot'+ (1 + Math.floor(Math.random()*3))];
+  mascot.src = S.customAvatar || stk('s010');
   if(!mascot._bound){ bindMascot(mascot); mascot._bound=true; }
   if(!mascot._heartBound){
     mascot._heartBound=true;
@@ -2178,10 +2181,10 @@ function renderHome(){
     mascot.addEventListener('click', tap);
     mascot.addEventListener('touchend', tap, {passive:true});
   }
-  document.getElementById('avImg').src = S.customAvatar || IMG.mascot1;
-  document.getElementById('statusIc').src = d.checkin ? IMG.statusHead2 : IMG.statusHead1;
+  document.getElementById('avImg').src = S.customAvatar || stk('s010');
+  document.getElementById('statusIc').src = d.checkin ? stk('s002') : stk('s008');
   const qw=document.getElementById('qicWake'), qg=document.getElementById('qicGrowth'), qc=document.getElementById('qicCourse');
-  if(qw) qw.src = IMG.navWake; if(qg) qg.src = IMG.navGrowth; if(qc) qc.src = IMG.navCourse;
+  if(qw) qw.src = stk('s136'); if(qg) qg.src = stk('s156'); if(qc) qc.src = stk('s165');
   showBubble(randomBubble());
   renderCompass();
   renderHomePlan();
@@ -2259,12 +2262,12 @@ function randomBubble(){
 function renderCompass(){
   const d = ensureToday();
   const box = document.getElementById('compass');
-  const ic = {high:'stateHigh', normal:'stateNormal', low:'stateLow', down:'stateDown'};
+  const ic = {high:'s067', normal:'s119', low:'s111', down:'s007'};
   let html='';
   for(const k of ['high','normal','low','down']){
     const on = d.state===k ? ' on':'';
     html += '<div class="state-opt'+on+'" onclick="setState(\''+k+'\')">';
-    html += '<span class="state-ic"><img src="'+IMG[ic[k]]+'" alt=""></span><small>'+STATE_MAP[k]+'</small></div>';
+    html += '<span class="state-ic"><img src="'+stk(ic[k])+'" alt=""></span><small>'+STATE_MAP[k]+'</small></div>';
   }
   box.innerHTML = html;
 }
@@ -2338,7 +2341,7 @@ function renderMoodRow(){
   MOODS.forEach((m,i)=>{
     const on = d.mood===m.k?' on':'';
     html += '<div class="mood-opt'+on+'" onclick="setMood(\''+m.k+'\')">';
-    html += '<span class="mood-ic"><img src="'+IMG['mood'+m.k[0].toUpperCase()+m.k.slice(1)]+'" alt=""></span><small>'+m.n+'</small></div>';
+    html += '<span class="mood-ic"><img src="'+stk(m.ic)+'" alt=""></span><small>'+m.n+'</small></div>';
   });
   document.getElementById('moodRow').innerHTML = html;
 }
@@ -3041,7 +3044,7 @@ function saveCreation(input){
 function renderCreations(){
   const el = document.getElementById('creationList');
   el.classList.toggle('mosaic', !!S.mosaic);
-  const mb=document.getElementById('mosaicBtn'); if(mb) mb.textContent='🖼 马赛克模式：'+(S.mosaic?'开':'关');
+  const mb=document.getElementById('mosaicBtn'); if(mb) mb.innerHTML='<img class="tic" src="'+stk('s025')+'" alt="">马赛克模式：'+(S.mosaic?'开':'关');
   if(!S.creations||S.creations.length===0){ el.innerHTML='<div class="muted">还没有创作输出，完成创作后传上来吧~</div>'; return; }
   const creLimit = _createShowAll ? S.creations.length : Math.min(12, S.creations.length);
   el.innerHTML = S.creations.slice(0, creLimit).map((c,i)=>{
@@ -3353,7 +3356,7 @@ function renderBody(){
   });
   html += '<div class="row"><input id="newMed" placeholder="添加保健品"><button class="btn sm" onclick="addMed()">添加</button></div>';
   html += '</div>';
-  html += '<div class="card"><h3>🌙 入睡 · 💧 喝水</h3>';
+  html += '<div class="card"><h3><img class="tic" src="'+stk('s040')+'" alt="">入睡 · 喝水</h3>';
   html += '<div class="sw-fold"><div class="sw-head" onclick="toggleSwFold()"><span>今日记录</span><span class="sw-today">'+(S.sleep.time||'未记录入睡')+' · 💧 '+(S.water.cups||0)+' 杯</span><span class="chev">▸</span></div>';
   html += '<div class="sw-body" id="swBody" style="display:none;">';
   html += '<div class="sw-row"><span>昨晚入睡</span><input type="time" id="sleepTime" value="'+(S.sleep.time||'')+'"></div>';
@@ -3361,7 +3364,7 @@ function renderBody(){
   html += '<button class="btn sm" style="width:100%;margin-top:10px;" onclick="saveSleepWater()">✓ 记录今日（入睡 + 喝水）</button>';
   html += '<div id="swLog" style="margin-top:10px;"></div>';
   html += '</div></div></div>';
-  html += '<div class="card"><h3>🩹 身体记录</h3><p class="muted">记录皮肤、疲劳、状态等，会自动带上日期，之后可以回看~</p>';
+  html += '<div class="card"><h3><img class="tic" src="'+stk('s045')+'" alt="">身体记录</h3><p class="muted">记录皮肤、疲劳、状态等，会自动带上日期，之后可以回看~</p>';
   html += '<textarea id="bodyNote" rows="3" placeholder="今天身体感觉怎么样？"></textarea>';
   html += '<div class="row"><button class="btn sm" onclick="saveBody()">保存今天的记录</button></div>';
   html += '<div id="bodyLogList"></div>';
@@ -3536,7 +3539,7 @@ function renderMilestones(){
   const achieved = MILESTONES.filter(m=>S.ms[m.id]);
   let html = '';
   if(achieved.length>0){
-    html += '<div class="ms-achieved"><div class="mc">🏆 已达成成就（'+achieved.length+'）</div><div class="ms-ach-list">';
+    html += '<div class="ms-achieved"><div class="mc"><img class="tic" src="'+stk('s167')+'" alt="">已达成成就（'+achieved.length+'）</div><div class="ms-ach-list">';
     achieved.forEach(m=>{
       let tx=m.text;
       if(m.id==='course1' && S.ms.course1){ const dc=S.courses.filter(c=>(c.total||0)>0 && (c.current||0)>=(c.total||0)).length; tx='已完成 '+dc+' 门课程 · 下一目标：第 '+(dc+1)+' 门'; }
@@ -3724,7 +3727,9 @@ function saveMemo(){
   toast('随手记已收进梦境素材~');
   if(S.page==='inspo') renderInspo();
 }
+const PRAISE_STK = ['s033','s055','s078','s109','s113','s117','s177','s179','s187','s185'];
 function showPraise(reason){
+  try{ const pi=document.getElementById('praiseImg'); if(pi && typeof STK!=='undefined' && STK) pi.src = STK[PRAISE_STK[Math.floor(Math.random()*PRAISE_STK.length)]]; }catch(e){}
   const seed = reason + todayStr() + Math.random();
   let h=0; for(let i=0;i<seed.length;i++) h=(h*31+seed.charCodeAt(i))%PRAISE_POOL.length;
   document.getElementById('praiseText').textContent = PRAISE_POOL[h];
@@ -3742,41 +3747,41 @@ function renderPlan(){
   const box=document.getElementById('planInner'); if(!box) return;
   let h='';
   // 年计划
-  h+='<div class="card"><h3>📅 年度计划（12 个月方格）<button class="btn sm ghost" style="margin-left:auto;" onclick="releasePlan(\'year\')">🕊️ 放生</button></h3>';
+  h+='<div class="card"><h3><img class="tic" src="'+stk('s099')+'" alt="">年度计划（12 个月方格）<button class="btn sm ghost" style="margin-left:auto;" onclick="releasePlan(\'year\')">🕊️ 放生</button></h3>';
   h+='<label>今年总方向</label><textarea id="yearGoal" rows="2" placeholder="写一句今年的大方向~">'+esc(S.yearPlan.goal||'')+'</textarea>';
   h+='<div class="row" style="margin-top:6px;"><button class="btn sm" onclick="saveYearGoal()">保存年目标</button></div>';
   h+='<div class="grid12">';
   for(let m=1;m<=12;m++){ const g=S.yearPlan.months[m]||''; h+='<div class="mg-cell'+(g?' on':'')+'" onclick="editMonthGoal('+m+')"><div class="mg-m">'+m+'月</div><div class="mg-t">'+esc(g?(g.length>10?g.slice(0,10)+'…':g):'点我写')+'</div></div>'; }
   h+='</div></div>';
   // 月计划
-  h+='<div class="card"><h3>🗓️ 月度计划（当月日历方格）<button class="btn sm ghost" style="margin-left:auto;" onclick="releasePlan(\'month\')">🕊️ 放生</button></h3>';
+  h+='<div class="card"><h3><img class="tic" src="'+stk('s098')+'" alt="">月度计划（当月日历方格）<button class="btn sm ghost" style="margin-left:auto;" onclick="releasePlan(\'month\')">🕊️ 放生</button></h3>';
   h+='<div class="month-nav"><button class="btn ghost sm" onclick="shiftPlanMonth(-1)">‹ 上月</button><span id="planYMLabel" class="muted"></span><button class="btn ghost sm" onclick="shiftPlanMonth(1)">下月 ›</button></div>';
   h+='<label>本月目标</label><textarea id="monthGoal" rows="2" placeholder="这个月想完成什么~"></textarea>';
   h+='<div class="row" style="margin-top:6px;"><button class="btn sm" onclick="saveMonthGoal()">保存月目标</button></div>';
   h+='<div class="cal-grid" id="monthCal" style="margin-top:10px;"></div>';
   h+='<div class="day-detail" id="monthDayDetail" style="display:none;"></div></div>';
   // 周计划
-  h+='<div class="card"><h3>📆 周计划（推荐模板）<button class="btn sm ghost" style="margin-left:auto;" onclick="releasePlan(\'week\')">🕊️ 放生</button></h3>';
+  h+='<div class="card"><h3><img class="tic" src="'+stk('s051')+'" alt="">周计划（推荐模板）<button class="btn sm ghost" style="margin-left:auto;" onclick="releasePlan(\'week\')">🕊️ 放生</button></h3>';
   h+='<label>本周主线</label><textarea id="weekGoal" rows="2" placeholder="这周的主线任务~">'+esc(S.weekPlan.goal||'')+'</textarea>';
   h+='<div class="week-grid" id="weekGrid" style="margin-top:8px;"></div>';
   h+='<div class="row" style="margin-top:6px;"><button class="btn sm" onclick="saveWeekPlan()">保存周计划</button></div></div>';
   // 复盘专区
-  h+='<div class="card"><h3>🔍 复盘专区</h3>';
-  h+='<div class="rev-sub">📝 月度复盘</div>';
+  h+='<div class="card"><h3><img class="tic" src="'+stk('s052')+'" alt="">复盘专区</h3>';
+  h+='<div class="rev-sub"><img class="tic" src="'+stk('s053')+'" alt="">月度复盘</div>';
   h+='<label>这个月对我来说最重要的是</label><textarea id="rvM1" rows="2"></textarea>';
   h+='<label>完成了什么（哪怕很小）</label><textarea id="rvM2" rows="2"></textarea>';
   h+='<label>卡在哪 / 没做到的</label><textarea id="rvM3" rows="2"></textarea>';
   h+='<label>下个月想怎么调整</label><textarea id="rvM4" rows="2"></textarea>';
   h+='<label>想对自己说的一句话</label><input id="rvM5" placeholder="例如：你已经很努力了">';
   h+='<div class="row" style="margin-top:6px;"><button class="btn sm" onclick="saveReview(\'month\')">保存月度复盘</button></div>';
-  h+='<div class="rev-sub" style="margin-top:12px;">📝 周度复盘</div>';
+  h+='<div class="rev-sub" style="margin-top:12px;"><img class="tic" src="'+stk('s116')+'" alt="">周度复盘</div>';
   h+='<label>本周完成</label><textarea id="rvW1" rows="2"></textarea>';
   h+='<label>下周计划</label><textarea id="rvW2" rows="2"></textarea>';
   h+='<label>状态回顾（能量 / 情绪）</label><textarea id="rvW3" rows="2"></textarea>';
   h+='<div class="row" style="margin-top:6px;"><button class="btn sm" onclick="saveReview(\'week\')">保存周度复盘</button></div>';
   h+='<div id="revList" style="margin-top:10px;"></div>';
   h+='</div>';
-  h+='<div class="card release-section"><h3>🕊️ 已释怀 · 计划</h3><div id="releasedPlans"></div></div>';
+  h+='<div class="card release-section"><h3><img class="tic" src="'+stk('s056')+'" alt="">已释怀 · 计划</h3><div id="releasedPlans"></div></div>';
   box.innerHTML=h;
   renderMonthCal(); renderWeekGrid(); renderReviewList(); renderReleasedPlans();
 }
@@ -3821,7 +3826,7 @@ function saveReview(type){
 function renderReviewList(){
   const box=document.getElementById('revList'); if(!box) return;
   if(!S.reviews.length){ box.innerHTML='<div class="muted">还没有复盘记录，写下第一篇吧~</div>'; return; }
-  let h='<div class="rev-sub" style="margin:10px 0 6px;">📚 我的复盘记录</div>';
+  let h='<div class="rev-sub" style="margin:10px 0 6px;"><img class="tic" src="'+stk('s001')+'" alt="">我的复盘记录</div>';
   S.reviews.forEach((r,i)=>{
     const fields = r.type==='month'
       ? [['重要的',r.q1],['完成',r.q2],['卡点',r.q3],['调整',r.q4],['对自己',r.q5]]
@@ -3838,15 +3843,15 @@ function delReview(i){ S.reviews.splice(i,1); save(); renderReviewList(); }
 function renderMood(){
   const box=document.getElementById('moodInner'); if(!box) return;
   const d=todayStr(); const cur=S.moodDiary[d]||{mood:'',text:''};
-  let h='<div class="card"><h3>💭 情绪日记</h3>';
+  let h='<div class="card"><h3><img class="tic" src="'+stk('s027')+'" alt="">情绪日记</h3>';
   h+='<p class="muted">今天的心情，和想说的话，小啾啾都帮你收着~</p>';
   h+='<div class="mood-row" id="moodPick">';
-  MOODS.forEach(m=>{ h+='<div class="mood-opt'+(cur.mood===m.k?' on':'')+'" onclick="pickMood(\''+m.k+'\')"><span class="state-ic-emoji">'+(MOOD_EMOJI[m.k]||'')+'</span><small>'+m.n+'</small></div>'; });
+  MOODS.forEach(m=>{ h+='<div class="mood-opt'+(cur.mood===m.k?' on':'')+'" onclick="pickMood(\''+m.k+'\')"><span class="state-ic-emoji"><img src="'+stk(m.ic)+'" alt=""></span><small>'+m.n+'</small></div>'; });
   h+='</div>';
   h+='<label style="margin-top:10px;">今天想写点什么</label><textarea id="moodText" rows="4" placeholder="随便写，不开心也可以说~">'+(cur.text||'')+'</textarea>';
   h+='<div class="row" style="margin-top:6px;"><button class="btn sm" onclick="saveMoodDiary()">保存今天的情绪日记</button></div>';
   const keys=Object.keys(S.moodDiary).sort().reverse().slice(0,60);
-  if(keys.length){ h+='<div class="rev-sub" style="margin:12px 0 6px;">📚 过往记录（可编辑）</div>'; }
+  if(keys.length){ h+='<div class="rev-sub" style="margin:12px 0 6px;"><img class="tic" src="'+stk('s001')+'" alt="">过往记录（可编辑）</div>'; }
   keys.forEach(k=>{ const e=S.moodDiary[k]; const mn=(MOODS.find(x=>x.k===e.mood)||{}).n||''; h+='<div class="memo-card"><div class="muted">'+k+(mn?' · '+mn:'')+'<button class="mood-edit" onclick="editMoodEntry(\''+k+'\')">编辑</button></div>'+(e.text?esc(e.text):'<span class="muted">（只选了心情）</span>')+'</div>'; });
   h+='</div>';
   box.innerHTML=h;
@@ -3866,17 +3871,17 @@ function renderDiet(){
   const box=document.getElementById('dietInner'); if(!box) return;
   const d=todayStr(); const cur=S.diet[d]||{breakfast:'',lunch:'',dinner:'',snack:'',water:0,note:''};
   if(!S.diet[d]) S.diet[d]=cur;
-  let h='<div class="card"><h3>🍱 饮食 / 营养</h3>';
+  let h='<div class="card"><h3><img class="tic" src="'+stk('s049')+'" alt="">饮食 / 营养</h3>';
   h+='<p class="muted">记录今天吃了什么，慢慢养出舒服的饮食节奏~</p>';
   h+='<div class="diet-grid">';
-  const meals=[['breakfast','🌅 早餐'],['lunch','☀️ 午餐'],['dinner','🌙 晚餐'],['snack','🍎 加餐']];
+  const meals=[['breakfast','<img class="tic" src="'+stk('s044')+'" alt="">早餐'],['lunch','<img class="tic" src="'+stk('s064')+'" alt="">午餐'],['dinner','<img class="tic" src="'+stk('s046')+'" alt="">晚餐'],['snack','<img class="tic" src="'+stk('s130')+'" alt="">加餐']];
   meals.forEach(m=>{ h+='<div class="diet-col"><div class="diet-h">'+m[1]+'</div><textarea class="diet-ta" data-k="'+m[0]+'" rows="3" placeholder="吃了…">'+(cur[m[0]]||'')+'</textarea></div>'; });
   h+='</div>';
-  h+='<div class="diet-water"><span>💧 喝水：</span><div class="stepper"><button onclick="adjWater(-1)">−</button><span id="waterN">'+cur.water+'</span><button onclick="adjWater(1)">＋</button></div><span class="muted"> 杯</span></div>';
+  h+='<div class="diet-water"><span><img class="tic" src="'+stk('s170')+'" alt="">喝水：</span><div class="stepper"><button onclick="adjWater(-1)">−</button><span id="waterN">'+cur.water+'</span><button onclick="adjWater(1)">＋</button></div><span class="muted"> 杯</span></div>';
   h+='<label style="margin-top:8px;">今日营养小记 / 备注</label><textarea id="dietNote" rows="2" placeholder="比如：今天蔬菜吃少了 / 蛋白质够">'+(cur.note||'')+'</textarea>';
   h+='<div class="row" style="margin-top:6px;"><button class="btn sm" onclick="saveDiet()">保存今日饮食</button></div>';
   const keys=Object.keys(S.diet).sort().reverse();
-  if(keys.length>1){ h+='<div class="rev-sub" style="margin:12px 0 6px;">📚 近期记录</div>'; }
+  if(keys.length>1){ h+='<div class="rev-sub" style="margin:12px 0 6px;"><img class="tic" src="'+stk('s001')+'" alt="">近期记录</div>'; }
   keys.slice(1,15).forEach(k=>{ const e=S.diet[k]; const parts=[]; if(e.breakfast)parts.push('早:'+e.breakfast); if(e.lunch)parts.push('午:'+e.lunch); if(e.dinner)parts.push('晚:'+e.dinner); if(e.snack)parts.push('加:'+e.snack); const line=parts.join('  '); h+='<div class="memo-card"><div class="muted">'+k+(e.water?' · 💧'+e.water+'杯':'')+'</div>'+(line?esc(line):'<span class="muted">（无记录）</span>')+'</div>'; });
   h+='</div>';
   box.innerHTML=h;
@@ -3951,8 +3956,16 @@ async function callAI(text){
 function delCustomBg(){ if(!confirm('清除自定义背景图？')) return; S.customBg=''; S.bg='none'; save(); applyBg(); renderSettings(); toast('背景已清除~'); }
 function addFutureFromName(name){ if(S.futureCourses.indexOf(name)<0){ S.futureCourses.push(name); save(); renderFutureCourses(); if(S.page==='courses') renderCourses(); toast('已收进「未来想报课程」~🌟'); } else { toast('已经在里面啦~'); } }
 // ===== init =====
+function fillStk(){
+  try{
+    document.querySelectorAll('[data-stk]').forEach(function(el){
+      var id = el.getAttribute('data-stk');
+      if(id && typeof STK!=='undefined' && STK && STK[id]) el.src = STK[id];
+    });
+  }catch(e){}
+}
 function initAll(){
-  load(); ensureDefaults();
+  load(); ensureDefaults(); fillStk();
   try{ const lp = localStorage.getItem('dajiuwan_page'); if(lp && ['home','courses','micro','know','dance','body','mood','growth','settings'].indexOf(lp)>=0) S.page = lp; }catch(e){}
   buildThemes();
   applyTheme();
@@ -4041,6 +4054,6 @@ document.addEventListener('DOMContentLoaded', initAll);
     </div>
   </div>
 </div>
-<button id="sosBtn" class="sos-btn" onclick="sosMessage()" style="display:none;">🆘 一键求救</button>
+<button id="sosBtn" class="sos-btn" onclick="sosMessage()" style="display:none;"><img class="tic" data-stk="s144" alt="">一键求救</button>
 </body>
 </html>
