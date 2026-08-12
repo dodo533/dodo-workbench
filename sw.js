@@ -1,6 +1,6 @@
-﻿/* 呆啾丸 · Service Worker（PWA 离线可用 + 内部自动更新） */
-const CACHE = 'dajiuwan-v14-20260816';
-const ASSETS = ['./', './index.html', './gallery.html', './manifest.webmanifest', './icons.js', './stickers.js', './icon-192.png', './icon-512.png'];
+/* 呆啾丸 · Service Worker（PWA 离线可用 + 秒开刷新 + 自动更新） */
+const CACHE = 'dajiuwan-v15-20260816';
+const ASSETS = ['./', './index.html', './gallery.html', './manifest.webmanifest', './icons.js', './stickers.js', './firebase-app.js', './firebase-db.js', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', function(e){
   e.waitUntil(
@@ -17,33 +17,40 @@ self.addEventListener('activate', function(e){
 self.addEventListener('message', function(e){
   if(e.data && e.data.type === 'SKIP_WAITING') self.skipWaiting();
 });
+
+function sameResponse(a, b){
+  try{
+    const la=a.headers.get('last-modified'), lb=b.headers.get('last-modified');
+    const ca=a.headers.get('content-length'), cb=b.headers.get('content-length');
+    if(la && lb && la !== lb) return false;
+    if(la && lb && la === lb) return true;
+    if(ca && cb && ca === cb) return true;
+    return a.clone().text().then(function(ta){ return b.clone().text().then(function(tb){ return ta === tb; }); });
+  }catch(e){ return Promise.resolve(true); }
+}
+
 self.addEventListener('fetch', function(e){
-  var req = e.request;
+  const req = e.request;
   if(req.method !== 'GET') return;
-  var url;
+  let url;
   try{ url = new URL(req.url); }catch(err){ return; }
   if(url.origin !== self.location.origin) return;
-  // 关键页面：网络优先（保证每次更新生效），断网时回退缓存
-  if(url.pathname.endsWith('/') || url.pathname.endsWith('index.html') || url.pathname.endsWith('gallery.html')){
-    e.respondWith(
-      fetch(req).then(function(res){
-        var copy = res.clone();
-        caches.open(CACHE).then(function(c){ c.put(req, copy); });
-        return res;
-      }).catch(function(){ return caches.match(req); })
-    );
-    return;
-  }
-  // 静态资源：缓存优先
-  e.respondWith(
-    caches.match(req).then(function(hit){
-      return hit || fetch(req).then(function(res){
-        var copy = res.clone();
-        caches.open(CACHE).then(function(c){ c.put(req, copy); });
-        return res;
-      });
-    })
-  );
+  e.respondWith((async function(){
+    const cache = await caches.open(CACHE);
+    const cached = await cache.match(req, { ignoreSearch: true });
+    const network = fetch(req).then(async function(res){
+      if(res && res.ok){
+        try{ await cache.put(req, res.clone()); }catch(err){}
+        if(url.pathname === '/' || url.pathname.endsWith('index.html')){
+          const same = await sameResponse(cached, res);
+          if(cached && !same){
+            const clients = await self.clients.matchAll();
+            clients.forEach(function(cl){ cl.postMessage({ type: 'UPDATE_AVAILABLE' }); });
+          }
+        }
+      }
+      return res;
+    }).catch(function(){ return cached; });
+    return cached || network;
+  })());
 });
-
-
