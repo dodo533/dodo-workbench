@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script src="icons.js" async></script>
 <script src="stickers.js" async></script>
-<title>呆啾丸 · 绘画自律工作台 v13</title>
+<title>呆啾丸 · 绘画自律工作台 v14</title>
 <style>
 
 :root{
@@ -102,6 +102,7 @@ h1,h2,h3,h4,b,strong{font-weight:300;}
 .card.glass{background:linear-gradient(160deg,rgba(255,255,255,0.22),rgba(255,255,255,0.04));}
 .card h3{margin:0 0 10px;font-size:14px;color:var(--text);display:flex;align-items:center;gap:6px;font-weight:300;}
 .card h3 img{width:20px;height:20px;object-fit:contain;}
+.tic{width:14px;height:14px;object-fit:contain;display:inline-block;vertical-align:-2px;}
 .muted{color:var(--sub);font-size:12px;}
 .btn{background:linear-gradient(160deg,var(--pink),var(--primary));color:#fff;border:none;border-radius:13px;padding:8px 14px;font-weight:300;font-size:12.5px;cursor:pointer;box-shadow:0 6px 16px rgba(255,156,191,0.40), inset 0 1px 0 rgba(255,255,255,0.35);transition:.15s;}
 .btn:active{transform:scale(0.96);}
@@ -1064,7 +1065,7 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
             <button class="btn sm ghost" onclick="disconnectSync()">断开</button>
           </div>
           <p class="sync-status" id="syncStatus">未连接</p>
-          <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-16-v13</b></p>
+          <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-16-v14</b></p>
           <label>数据</label>
           <div class="row">
             <button class="btn ghost" onclick="exportData()">导出</button>
@@ -1072,17 +1073,7 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
             <input type="file" id="imIn" style="display:none;" onchange="importData(this)">
           </div>
         </div>
-        <div class="card">
-          <h3><img class="tic" data-stk="s003" alt="">白噪音 · 专注</h3>
-          <p class="muted">雨声 / 海浪 / 篝火 / 棕色噪音，全部本地生成，不用联网~</p>
-          <div class="row" id="noiseBtns" style="flex-wrap:wrap;">
-            <button class="btn sm ghost" data-noise="rain" onclick="toggleNoise('rain',this)"><img class="tic" data-stk="s061" alt="">雨声</button>
-            <button class="btn sm ghost" data-noise="wave" onclick="toggleNoise('wave',this)"><img class="tic" data-stk="s004" alt="">海浪</button>
-            <button class="btn sm ghost" data-noise="fire" onclick="toggleNoise('fire',this)"><img class="tic" data-stk="s006" alt="">篝火</button>
-            <button class="btn sm ghost" data-noise="brown" onclick="toggleNoise('brown',this)"><img class="tic" data-stk="s009" alt="">棕色噪音</button>
-          </div>
-          <div id="noiseStatus" class="muted" style="font-size:11px;margin-top:6px;">未播放</div>
-        </div>
+        
       </section>
 
     </div>
@@ -1277,7 +1268,7 @@ function load(){
   }catch(e){S={};}
 }
 
-const APP_VERSION = '2026-08-16-v13';
+const APP_VERSION = '2026-08-16-v14';
 // 深度消毒：同步合并/旧版本/损坏数据进入后，把每个用到的字段修复成正确类型，防止任意一处 undefined 崩溃
 function deepSanitize(){
   if(!S || typeof S!=='object' || Array.isArray(S)) S={};
@@ -3631,62 +3622,6 @@ function checkMilestones(){
   S.ms.create100 = S.creations.length >= 100;
   save();
   }catch(e){ /* 里程碑只是荣誉展示，异常不应导致页面报错 */ }
-}
-
-// ===== 白噪音（Web Audio 本地合成，无外部文件）=====
-let _noiseCtx=null, _noiseSrc=null, _noiseType=null;
-function noiseCtx(){
-  if(!_noiseCtx){
-    const AC = window.AudioContext || window.webkitAudioContext;
-    if(!AC){ toast('当前浏览器不支持音频~'); return null; }
-    _noiseCtx = new AC();
-  }
-  if(_noiseCtx.state === 'suspended') _noiseCtx.resume();
-  return _noiseCtx;
-}
-function toggleNoise(type, btn){
-  const ctx = noiseCtx(); if(!ctx) return;
-  if(_noiseType===type && _noiseSrc){ stopNoise(); return; }
-  if(_noiseSrc) stopNoise();
-  const len = 2*ctx.sampleRate;
-  const buf = ctx.createBuffer(1, len, ctx.sampleRate);
-  const data = buf.getChannelData(0);
-  let lastOut=0, brown=0;
-  for(let i=0;i<len;i++){
-    const white = Math.random()*2-1;
-    if(type==='rain'){
-      lastOut = (white*0.55 + lastOut*0.45);
-      data[i] = lastOut + (Math.random()<0.002 ? 0.7*Math.random() : 0);
-    } else if(type==='wave'){
-      brown = (white + brown*0.97)*0.97;
-      const swell = 0.55 + 0.45*Math.sin(2*Math.PI*(i/ctx.sampleRate)*0.09);
-      data[i] = brown*0.4*swell;
-    } else if(type==='fire'){
-      lastOut = (white - lastOut*0.75)*0.6;
-      data[i] = lastOut + (Math.random()<0.012 ? (Math.random()*0.8-0.4) : 0);
-    } else {
-      brown = (white + brown*0.95)*0.95;
-      data[i] = brown*0.5;
-    }
-  }
-  const src = ctx.createBufferSource();
-  src.buffer = buf; src.loop = true;
-  const gain = ctx.createGain(); gain.gain.value = 0.45;
-  src.connect(gain); gain.connect(ctx.destination);
-  src.start();
-  _noiseSrc = src; _noiseType = type;
-  document.querySelectorAll('#noiseBtns button').forEach(function(b){ b.classList.remove('on'); });
-  if(btn) btn.classList.add('on');
-  const st = document.getElementById('noiseStatus');
-  if(st) st.textContent = {rain:'🌧 雨声播放中',wave:'🌊 海浪播放中',fire:'🔥 篝火播放中',brown:'🤎 棕色噪音播放中'}[type];
-  toast('已开始播放~');
-}
-function stopNoise(){
-  try{ if(_noiseSrc) _noiseSrc.stop(); }catch(e){}
-  _noiseSrc=null; _noiseType=null;
-  document.querySelectorAll('#noiseBtns button').forEach(function(b){ b.classList.remove('on'); });
-  const st = document.getElementById('noiseStatus');
-  if(st) st.textContent='未播放';
 }
 
 // ===== settings / data =====
