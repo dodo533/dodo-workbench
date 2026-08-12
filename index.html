@@ -2143,9 +2143,9 @@ function afterLocalLogin(email, code){
   if(!syncReady()) return;
   const db=syncRef(); if(!db) return;
   const tasks=[db.once('value')];
-  if(oldCode && oldCode!==code && window.__djwDb) tasks.push(window.__djwDb.ref('dajiuwan/'+oldCode).once('value'));
+  if(oldCode && oldCode!==code){ const r=syncRef('dajiuwan/'+oldCode); if(r) tasks.push(r.once('value')); else tasks.push(Promise.resolve({ val: function(){ return null; } })); }
   else tasks.push(Promise.resolve({ val: function(){ return null; } }));
-  if(oldUid && ('uid_'+oldUid)!==code && window.__djwDb) tasks.push(window.__djwDb.ref('dajiuwan/uid_'+oldUid).once('value'));
+  if(oldUid && ('uid_'+oldUid)!==code){ const r=syncRef('dajiuwan/uid_'+oldUid); if(r) tasks.push(r.once('value')); else tasks.push(Promise.resolve({ val: function(){ return null; } })); }
   else tasks.push(Promise.resolve({ val: function(){ return null; } }));
   Promise.all(tasks).then(function(results){
     const cur=results[0].val();
@@ -2189,8 +2189,9 @@ function recoverFromCode(){
   const code=((inp&&inp.value)||'').trim().toUpperCase()||(S.sync&&(S.sync.oldCode||S.sync.code))||'';
   if(!code){ toast('先填旧同步码（在旧设备设置页可以看到）~'); return; }
   if(!syncReady()){ toast('还没配置 Firebase，无法找回~'); return; }
-  if(!window.__djwDb){ toast('同步未连接~'); return; }
-  window.__djwDb.ref('dajiuwan/'+code).once('value').then(function(s2){
+  const rr = syncRef('dajiuwan/'+code);
+  if(!rr){ toast('同步未连接~'); return; }
+  rr.once('value').then(function(s2){
     const oldv=s2.val();
     if(!oldv || !oldv._meta){ toast('这个同步码下没有找到数据~'); return; }
     const w=dataWeight(oldv);
@@ -2500,21 +2501,28 @@ function syncAppName(){
   for(let i=0;i<s.length;i++) h=(h*31+s.charCodeAt(i))>>>0;
   return 'djw_'+h.toString(36)+((S.sync&&S.sync.code)||'x').replace(/[^A-Za-z0-9]/g,'');
 }
-function syncRef(){
+function initSyncDb(){
+  const cfg = JSON.parse(S.sync.config);
+  let app = null;
+  try{ app = firebase.app(syncAppName()); }catch(e){ app = firebase.initializeApp(cfg, syncAppName()); }
+  window.__djwDb = firebase.database(app);
+  return window.__djwDb;
+}
+function syncRef(path){
   if(!syncReady()) return null;
-  if(!window.__djwDb){
-    try{
-      const cfg = JSON.parse(S.sync.config);
-      let app = null;
-      try{ app = firebase.app(syncAppName()); }catch(e){ app = firebase.initializeApp(cfg, syncAppName()); }
-      window.__djwDb = firebase.database(app);
-    }catch(e){ return null; }
+  const p = path || ('dajiuwan/'+syncCodePath());
+  try{
+    if(!window.__djwDb) initSyncDb();
+    return window.__djwDb.ref(p);
+  }catch(e){
+    try{ return initSyncDb().ref(p); }
+    catch(e2){ window.__djwDb = null; return null; }
   }
-  return window.__djwDb.ref('dajiuwan/'+syncCodePath());
 }
 function resetSyncApp(){
+  try{ if(_syncListenerRef){ _syncListenerRef.off(); _syncListenerRef=null; } }catch(e){}
   try{
-    (firebase.apps||[]).forEach(a=>{ try{ if(String(a.name).indexOf('djw_')===0) a.delete(); }catch(e){} });
+    (firebase.apps||[]).forEach(a=>{ try{ if(String(a.name).indexOf('djw_')===0 && a.name!=='djw_auth') a.delete().catch(function(){}); }catch(e){} });
   }catch(e){}
   window.__djwDb = null;
 }
