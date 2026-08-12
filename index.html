@@ -1179,6 +1179,7 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
             <button class="btn sm ghost" onclick="disconnectSync()">断开</button>
           </div>
           <p class="sync-status" id="syncStatus">未连接</p>
+          <p class="muted" id="syncPathInfo" style="font-size:11px;margin-top:4px;"></p>
           <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-12-v16</b></p>
           <label>数据</label>
           <div class="row">
@@ -2531,6 +2532,8 @@ function updateSyncStatus(txt, cls){
   if(!el) return;
   el.textContent = txt || '未连接';
   el.className = 'sync-status'+(cls?' '+cls:'');
+  const pe = document.getElementById('syncPathInfo');
+  if(pe) pe.textContent = syncReady() ? ('同步路径：dajiuwan/'+syncCodePath()) : '';
 }
 function scheduleSyncPush(){
   if(!S.sync) S.sync={};
@@ -2545,6 +2548,7 @@ function pushToServer(){
   try{
     const payload = JSON.parse(JSON.stringify(S));
     if(payload.sync) delete payload.sync._pendingAt;
+    if(payload._meta) payload._meta.updatedAt = firebase.database.ServerValue.TIMESTAMP;
     syncRef().set(payload)
       .then(()=>{
         if(S.sync){ S.sync._pendingAt=0; S.sync.lastSync=Date.now(); }
@@ -2577,8 +2581,8 @@ function startSyncListener(){
       const rt = v._meta.updatedAt||0;
       const lt = (S._meta&&S._meta.updatedAt)||0;
       const pending = (S.sync&&S.sync._pendingAt)||0;
-      if(rt>lt && pending<=rt) mergeRemoteData(v);
-      else if(rt>lt && pending>rt) pushToServer();
+      if(pending > 0) return;   // 本机有写入在途：等它落定，下次事件再追远端
+      if(rt > lt) mergeRemoteData(v);
     });
     updateSyncStatus('已连接 · 同步码 '+(S.sync.code||''));
   }catch(e){ updateSyncStatus('连接失败','err'); }
@@ -2602,7 +2606,7 @@ function mergeRemoteData(remote){
   const lt = (S._meta&&S._meta.updatedAt)||0;
   if(rt <= lt) return;
   const pending = (S.sync&&S.sync._pendingAt)||0;
-  if(pending > rt){ pushToServer(); return; }
+  if(pending > 0) return;
   const merged = JSON.parse(JSON.stringify(remote));
   applyTombstones(merged);
   if(!merged.sync) merged.sync={};
