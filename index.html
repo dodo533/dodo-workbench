@@ -822,7 +822,7 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
   <div class="auth-box">
     <img id="authLogo" src="" alt="">
     <div class="auth-title">呆啾丸 · 私人工作台</div>
-    <div class="auth-sub" id="authSub">登录后，数据跟随账号三端自动同步</div>
+    <div class="auth-sub" id="authSub">邮箱+密码 = 你的钥匙 · 本地生成 · 多端同步（无需代理）</div>
     <input id="authEmail" type="email" placeholder="邮箱" autocomplete="email">
     <input id="authPass" type="password" placeholder="密码（至少 6 位）" autocomplete="current-password">
     <div id="authMsg"></div>
@@ -1992,6 +1992,7 @@ function clearAiChat(){
 
 // ===== v16 新增：邮箱登录（Firebase Auth） =====
 function syncCodePath(){
+  if(S.sync && S.sync.authLocal && S.sync.authLocal.code) return S.sync.authLocal.code;
   if(S.sync && S.sync.uid) return 'uid_'+S.sync.uid;
   return (S.sync&&S.sync.code)||'x';
 }
@@ -2039,6 +2040,14 @@ function authToggleMode(){
   const ap=document.getElementById('authPass'); if(ap) ap.setAttribute('autocomplete', isLogin?'new-password':'current-password');
   showAuthMsg('');
 }
+function localHash(email, pass){
+  const data=(email||'').trim().toLowerCase()+'|'+pass;
+  return crypto.subtle.digest('SHA-256', new TextEncoder().encode(data)).then(function(buf){
+    const arr=Array.from(new Uint8Array(buf));
+    let hex=''; for(const b of arr) hex+=b.toString(16).padStart(2,'0');
+    return 'L'+hex.slice(0,15).toUpperCase();
+  });
+}
 function authSubmit(){
   const btn=document.getElementById('authBtn');
   const email=(document.getElementById('authEmail').value||'').trim();
@@ -2052,40 +2061,33 @@ function authSubmit(){
     try{ JSON.parse(c); }catch(e){ showAuthMsg('配置不是合法 JSON'); return; }
     S.sync.config=c; save();
   }
-  const app=authApp(); if(!app){ showAuthMsg('Firebase 初始化失败（配置可能不对）'); return; }
-  const a=firebase.auth(app);
-  const isLogin=(btn&&btn.textContent.indexOf('登录')>=0);
-  if(btn){ btn.disabled=true; btn.textContent=isLogin?'登录中…':'注册中…'; }
-  showAuthMsg('正在连接 Firebase…');
-  const p = isLogin ? a.signInWithEmailAndPassword(email,pass) : a.createUserWithEmailAndPassword(email,pass);
-  const timer=setTimeout(function(){
-    if(btn){ btn.disabled=false; btn.textContent=isLogin?'登录':'注册'; }
-    showAuthMsg('⚠️ 连接超时（25秒）：请检查网络，或确认 Firebase 已开启 Email/Password 登录');
-  }, 25000);
-  p.then(function(u){
-    clearTimeout(timer);
-    if(btn){ btn.disabled=false; btn.textContent=isLogin?'登录':'注册'; }
-    S.sync.uid=u.user?u.user.uid:u.uid; save();
+  if(!window.crypto || !crypto.subtle){ showAuthMsg('当前浏览器不支持本地加密，请用最新版 Safari/Chrome'); return; }
+  if(btn){ btn.disabled=true; btn.textContent='处理中…'; }
+  showAuthMsg('正在本地生成钥匙…');
+  localHash(email, pass).then(function(code){
+    if(btn){ btn.disabled=false; btn.textContent='登录'; }
+    S.sync.authLocal={email:email, code:code};
+    S.sync.code=code;
+    save();
     hideAuthOverlay();
-    toast(isLogin?'欢迎回来~':'注册成功，欢迎来到呆啾丸~');
-    afterLoginSync();
+    toast('登录成功，欢迎回来~');
+    afterLocalLogin(email, code);
     renderSettings();
   }).catch(function(err){
-    clearTimeout(timer);
-    if(btn){ btn.disabled=false; btn.textContent=isLogin?'登录':'注册'; }
-    showAuthMsg(prettyAuthErr(err));
+    if(btn){ btn.disabled=false; btn.textContent='登录'; }
+    showAuthMsg('本地加密失败：'+(err&&err.message||err));
   });
 }
 function authLogout(){
-  if(!confirm('退出登录？本机数据会保留，下次登录同一账号可继续同步。')) return;
+  if(!confirm('退出登录？本机数据会保留，下次用同一邮箱+密码登录可继续同步。')) return;
   const app=authApp();
-  if(!app){ S.sync.uid=''; save(); renderSettings(); return; }
-  firebase.auth(app).signOut().then(function(){
-    S.sync.uid=''; save();
-    renderSettings();
-    toast('已退出登录');
-    showAuthOverlay();
-  }).catch(function(){});
+  try{ if(app && firebase.auth(app)) firebase.auth(app).signOut(); }catch(e){}
+  delete S.sync.authLocal;
+  S.sync.uid='';
+  S.sync.oldCode=(S.sync&&S.sync.code)||'';
+  save(); renderSettings();
+  toast('已退出登录');
+  showAuthOverlay();
 }
 let _authWired=false;
 function wireAuth(){
@@ -2112,7 +2114,9 @@ function wireAuth(){
 function initAuthFlow(){
   try{ const l=document.getElementById('splashLogo'); if(l && typeof stk==='function') l.src=stk('s087'); }catch(e){}
   try{ const l=document.getElementById('authLogo'); if(l && typeof stk==='function') l.src=stk('s087'); }catch(e){}
-  wireAuth();
+  if(S.sync && S.sync.config && !(S.sync.authLocal&&S.sync.authLocal.code) && !S.sync.uid){
+    setTimeout(function(){ showAuthOverlay(); }, 600);
+  }
 }
 function hideSplash(){
   const sp=document.getElementById('splash'); if(!sp) return;
@@ -2132,44 +2136,50 @@ function dataWeight(s){
   w+=Object.keys(s.inspo||{}).length;
   return w;
 }
-function afterLoginSync(){
-  const uid=(S.sync&&S.sync.uid)||'';
-  if(!uid) return;
-  const oldCode=(S.sync&&(S.sync.oldCode||S.sync.code))||'';
+function afterLocalLogin(email, code){
+  const oldCode=(S.sync&&(S.sync.oldCode||''))||'';
+  const oldUid=(S.sync&&S.sync.uid)||'';
   resetSyncApp();
   if(!syncReady()) return;
   const db=syncRef(); if(!db) return;
-  const uidTask = db.once('value');
-  const oldTask = (oldCode && oldCode!==syncCodePath() && window.__djwDb)
-    ? window.__djwDb.ref('dajiuwan/'+oldCode).once('value')
-    : Promise.resolve({ val: function(){ return null; } });
-  Promise.all([uidTask, oldTask]).then(function(results){
-    const v=results[0].val();
+  const tasks=[db.once('value')];
+  if(oldCode && oldCode!==code && window.__djwDb) tasks.push(window.__djwDb.ref('dajiuwan/'+oldCode).once('value'));
+  else tasks.push(Promise.resolve({ val: function(){ return null; } }));
+  if(oldUid && ('uid_'+oldUid)!==code && window.__djwDb) tasks.push(window.__djwDb.ref('dajiuwan/uid_'+oldUid).once('value'));
+  else tasks.push(Promise.resolve({ val: function(){ return null; } }));
+  Promise.all(tasks).then(function(results){
+    const cur=results[0].val();
     const oldv=results[1].val();
-    const uidW=v?dataWeight(v):0;
+    const uidv=results[2].val();
+    const curW=cur?dataWeight(cur):0;
     const oldW=oldv?dataWeight(oldv):0;
+    const uidW=uidv?dataWeight(uidv):0;
     const localW=dataWeight(S);
-    if(oldW>0 && (oldW>uidW || uidW===0)){
-      try{ const cur=localStorage.getItem('dajiuwan_v5'); if(cur) localStorage.setItem('dajiuwan_v5_backup', cur); }catch(e){}
-      S=oldv; applyTombstones(S);
+    let src=null, srcName='';
+    if(oldW>0 && oldW>=curW && oldW>=uidW){ src=oldv; srcName='旧同步码'; }
+    else if(uidW>0 && uidW>=curW){ src=uidv; srcName='原账号'; }
+    else if(curW>0){ src=cur; srcName='已同步'; }
+    if(src){
+      try{ const b=localStorage.getItem('dajiuwan_v5'); if(b) localStorage.setItem('dajiuwan_v5_backup', b); }catch(e){}
+      S=src; applyTombstones(S);
+      try{ ensureDefaults(); }catch(e){}
       if(!S.sync) S.sync={};
-      S.sync.config=(oldv.sync&&oldv.sync.config)||S.sync.config;
-      S.sync.uid=uid; S.sync.code=oldCode; S.sync.oldCode=oldCode;
+      S.sync.config=(src.sync&&src.sync.config)||S.sync.config;
+      S.sync.authLocal={email:email, code:code};
+      S.sync.code=code; S.sync.oldCode=oldCode; S.sync.uid=oldUid;
       localStorage.setItem('dajiuwan_v5',JSON.stringify(S));
       pushToServer();
-      toast('已把旧同步码数据迁移到你的账号~');
-    } else if(uidW>0){
-      mergeRemoteData(v);
-      toast('已同步账号数据~');
+      toast('已恢复'+srcName+'的数据~');
     } else if(localW>0){
       pushToServer();
-      toast('已把你的本机数据同步到账号~');
+      toast('已把你的本机数据同步~');
     } else {
-      toast('账号里还没有数据，先去使用吧~');
+      toast('登录成功，这里还没有数据，先去使用吧~');
     }
     startSyncListener();
   }).catch(function(){ startSyncListener(); });
 }
+function afterLoginSync(){ afterLocalLogin('', syncCodePath()); }
 function skipAuth(){
   hideAuthOverlay();
   toast('已跳过登录，数据只保存在本机');
@@ -2187,6 +2197,7 @@ function recoverFromCode(){
     if(w===0){ toast('找到的是空数据，没有可恢复内容~'); return; }
     try{ const cur=localStorage.getItem('dajiuwan_v5'); if(cur) localStorage.setItem('dajiuwan_v5_backup', cur); }catch(e){}
     S=oldv; applyTombstones(S);
+    try{ ensureDefaults(); }catch(e){}
     if(!S.sync) S.sync={};
     const uid=(S.sync&&S.sync.uid)||'';
     S.sync.code=code; S.sync.oldCode=code;
@@ -2204,6 +2215,8 @@ function renderAuthStatus(){
   const b2=document.getElementById('authBtn2');
   const lo=document.getElementById('logoutBtn');
   if(!st) return;
+  const local=(S.sync&&S.sync.authLocal);
+  if(local && local.email){ st.textContent='已登录：'+local.email+'（本地登录）'; st.className='sync-status ok'; if(b2) b2.style.display='none'; if(lo) lo.style.display='inline-block'; const sc2=document.getElementById('syncCard'); if(sc2) sc2.style.display='none'; return; }
   const u=authCurrent();
   if(u){
     st.textContent='已登录：'+(u.email||u.uid);
