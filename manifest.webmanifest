@@ -2,22 +2,65 @@
   "id": "dodo-workbench",
   "name": "呆啾丸 · 绘画自律工作台",
   "short_name": "呆啾丸",
-  "description": "绘画自律与成长记录工作台：四大根基像素树、课程、情绪与身体记录",
+  "description": "绘画自律与成长记录工作台：四大根基像素树、课程、收藏、随手记与 AI 整理",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "display_override": ["standalone", "minimal-ui"],
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
   "orientation": "any",
   "background_color": "#fff7fc",
   "theme_color": "#FFB7D0",
-  "categories": ["productivity", "lifestyle"],
+  "categories": [
+    "productivity",
+    "lifestyle"
+  ],
   "icons": [
-    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
   ],
   "shortcuts": [
-    { "name": "课程", "url": "./index.html?p=courses", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] },
-    { "name": "微创作", "url": "./index.html?p=micro", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] },
-    { "name": "情绪日记", "url": "./index.html?p=mood", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] }
+    {
+      "name": "课程",
+      "url": "./index.html?p=courses",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "微创作",
+      "url": "./index.html?p=micro",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "收藏",
+      "url": "./index.html?p=fav",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
   ]
 }

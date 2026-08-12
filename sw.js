@@ -1,6 +1,6 @@
 /* 呆啾丸 · Service Worker（PWA 离线可用 + 秒开刷新 + 自动更新） */
-const CACHE = 'dajiuwan-v15-20260816';
-const ASSETS = ['./', './index.html', './gallery.html', './manifest.webmanifest', './icons.js', './stickers.js', './firebase-app.js', './firebase-db.js', './icon-192.png', './icon-512.png'];
+const CACHE = 'dajiuwan-v16-20260812';
+const ASSETS = ['./', './index.html', './gallery.html', './manifest.webmanifest', './icons.js', './stickers.js', './firebase-app.js', './firebase-auth.js', './firebase-db.js', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', function(e){
   e.waitUntil(

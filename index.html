@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script src="icons.js" async></script>
 <script src="stickers.js" async></script>
-<title>呆啾丸 · 绘画自律工作台 v15</title>
+<title>呆啾丸 · 绘画自律工作台 v16</title>
 <style>
 
 :root{
@@ -749,11 +749,91 @@ body.night input::placeholder,body.night textarea::placeholder{color:rgba(255,25
 body.night .mood-opt.on,body.night .state-opt.on,body.night .day-chip.on,body.night .plan-tab.on,body.night .nav-item.on,body.night .mg-cell.on{color:var(--pink);}
 body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2px rgba(255,133,170,.35);}
 
+
+/* ===== v16 新增：splash / auth / search / fav / memo ===== */
+#splash{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:linear-gradient(160deg,#FFF8FA,#FFF0F5);transition:opacity .55s;}
+#splash.hide{opacity:0;pointer-events:none;}
+#splashLogo{width:96px;height:96px;object-fit:contain;animation:splashPop .9s ease;}
+@keyframes splashPop{0%{transform:scale(.55);opacity:0}60%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+#splashName{font-size:20px;color:var(--pink);letter-spacing:.18em;}
+#splashTip{font-size:11px;color:var(--sub);animation:blink 1.4s infinite;}
+@keyframes blink{50%{opacity:.35}}
+body.night #splash{background:linear-gradient(160deg,#3a2532,#2b1b28);}
+body.night #splashName{color:#ffc9dc;}
+body.night #splashTip{color:#c79aae;}
+#authOverlay{position:fixed;inset:0;z-index:9000;display:none;align-items:center;justify-content:center;background:rgba(255,240,246,.5);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);padding:16px;}
+#authOverlay.on{display:flex;}
+.auth-box{width:min(340px,92vw);background:linear-gradient(160deg,rgba(255,255,255,.78),rgba(255,255,255,.38));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.72);border-radius:24px;padding:26px 22px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px;text-align:center;}
+.auth-box img{width:72px;height:72px;margin:0 auto;object-fit:contain;}
+.auth-title{font-size:16px;color:var(--text);}
+.auth-sub{font-size:11px;color:var(--sub);margin-top:-6px;}
+.auth-box input,.auth-box textarea{width:100%;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,156,191,.4);background:rgba(255,255,255,.72);font-size:13px;color:var(--text);outline:none;box-sizing:border-box;}
+.auth-box input:focus,.auth-box textarea:focus{border-color:var(--pink);}
+.auth-box button{width:100%;}
+#authMsg{font-size:11px;color:#e05a7a;min-height:15px;}
+#authConfigWrap{text-align:left;font-size:11px;color:var(--sub);}
+#authConfigWrap textarea{min-height:70px;margin-top:6px;}
+.icon-btn{background:var(--glass);border:1px solid rgba(255,255,255,.55);border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:6px;padding:0;}
+.icon-btn .tic{width:16px;height:16px;}
+#searchOverlay{position:fixed;inset:0;z-index:8800;display:none;flex-direction:column;background:rgba(255,248,250,.9);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);padding:18px;box-sizing:border-box;}
+#searchOverlay.on{display:flex;}
+.search-head{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+#searchBox{flex:1;padding:12px 16px;border-radius:16px;border:1px solid rgba(255,156,191,.45);background:rgba(255,255,255,.88);font-size:15px;color:var(--text);outline:none;}
+#searchClose{background:var(--glass);border:1px solid rgba(255,255,255,.55);border-radius:50%;width:34px;height:34px;cursor:pointer;color:var(--text);font-size:14px;}
+.search-results{flex:1;overflow-y:auto;margin-top:10px;}
+.sr-item{background:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.65);border-radius:14px;padding:10px 12px;margin-bottom:8px;cursor:pointer;box-shadow:var(--shadow);}
+.sr-item:active{transform:scale(.98);}
+.sr-item .sr-k{font-size:10px;color:var(--sub);}
+.sr-item .sr-t{font-size:13px;color:var(--text);margin-top:2px;word-break:break-all;}
+.sr-empty{text-align:center;color:var(--sub);font-size:12px;padding:30px 0;}
+body.night #searchOverlay{background:rgba(40,26,36,.92);}
+body.night .sr-item{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);}
+.fav-item{background:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.65);border-radius:16px;padding:11px 13px;margin-bottom:10px;box-shadow:var(--shadow);}
+.fav-item .fav-top{display:flex;align-items:flex-start;gap:8px;}
+.fav-item .fav-main{flex:1;min-width:0;}
+.fav-item .fav-t{font-size:13px;color:var(--text);word-break:break-all;cursor:pointer;}
+.fav-item .fav-url{font-size:10px;color:var(--sub);word-break:break-all;margin-top:2px;}
+.fav-item .fav-img{width:100%;max-height:180px;object-fit:cover;border-radius:12px;margin-top:8px;}
+.fav-item .fav-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px;}
+.fav-tag{font-size:10px;color:var(--pink);background:rgba(255,156,191,.14);padding:2px 8px;border-radius:20px;}
+.fav-cat{font-size:10px;color:#fff;background:var(--pink);padding:2px 8px;border-radius:20px;}
+.fav-del{margin-left:auto;background:none;border:none;font-size:14px;color:var(--sub);cursor:pointer;padding:2px 6px;}
+.fav-note{font-size:11px;color:var(--sub);margin-top:6px;white-space:pre-wrap;}
+.chip{background:rgba(255,255,255,.7);border:1px solid rgba(255,156,191,.35);border-radius:20px;padding:6px 12px;font-size:12px;color:var(--text);cursor:pointer;}
+.chip-on{background:var(--pink);color:#fff;border-color:var(--pink);}
+.memo-item{background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.6);border-radius:14px;padding:10px 12px;margin-bottom:8px;}
+.memo-item .memo-h{display:flex;align-items:center;gap:6px;}
+.memo-item .memo-text{font-size:13px;color:var(--text);margin-top:4px;white-space:pre-wrap;word-break:break-all;}
+.memo-item .memo-sum{font-size:11px;color:var(--sub);margin-top:6px;border-left:2px solid rgba(255,156,191,.5);padding-left:8px;}
+.memo-del{background:none;border:none;font-size:13px;color:var(--sub);cursor:pointer;margin-left:auto;padding:2px 6px;}
+.memo-cat{font-size:10px;color:#fff;background:var(--pink);padding:2px 8px;border-radius:20px;}
+.memo-type{font-size:10px;color:var(--sub);}
+.memo-group-h{font-size:13px;color:var(--pink);font-weight:400;margin:14px 0 8px;display:flex;align-items:center;gap:6px;}
+body.night .fav-item,body.night .memo-item{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);}
+body.night .memo-item .memo-sum{color:#c9a8b8;}
+
 </style>
 </head>
 <body>
 
+<div id="splash"><img id="splashLogo" src="" alt=""><div id="splashName">呆啾丸</div><div id="splashTip">正在打开你的小世界…</div></div>
 <div id="appBg"></div>
+<div id="authOverlay">
+  <div class="auth-box">
+    <img id="authLogo" src="" alt="">
+    <div class="auth-title">呆啾丸 · 私人工作台</div>
+    <div class="auth-sub" id="authSub">登录后，数据跟随账号三端自动同步</div>
+    <input id="authEmail" type="email" placeholder="邮箱" autocomplete="email">
+    <input id="authPass" type="password" placeholder="密码（至少 6 位）" autocomplete="current-password">
+    <div id="authMsg"></div>
+    <button class="btn" id="authBtn" onclick="authSubmit()">登录</button>
+    <button class="btn ghost" onclick="authToggleMode()" id="authToggle">没有账号？注册一个</button>
+    <div id="authConfigWrap" style="display:none;">
+      <textarea id="authConfig" rows="3" placeholder='{"apiKey":"...","authDomain":"...","databaseURL":"...","projectId":"...","appId":"..."}'></textarea>
+      <p style="font-size:10.5px;">首次使用：在 Firebase 启用 Email/密码登录，再把配置粘贴到这里。</p>
+    </div>
+  </div>
+</div>
 <div id="app">
   <aside id="sidebar">
     <div class="brand"><img class="logo-img" data-stk="s087" alt=""><span>呆啾丸 · 工作台</span></div>
@@ -767,6 +847,7 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
       <div class="nav-items">
         <div class="nav-item" data-page="home" onclick="go('home')"><span class="ni-ic"><img data-stk="s107" alt=""></span><span>首页</span></div>
         <div class="nav-item" data-page="growth" onclick="go('growth')"><span class="ni-ic"><img data-stk="s105" alt=""></span><span>成长</span></div>
+        <div class="nav-item" data-page="fav" onclick="go('fav')"><span class="ni-ic"><img data-stk="s029" alt=""></span><span>收藏</span></div>
       </div>
     </div>
     <div class="nav-group">
@@ -800,7 +881,8 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
     <div class="topbar">
       <button class="hamb" id="hamb">☰</button>
       <div class="ttl" id="ttl">呆啾丸 · 首页</div>
-      <div class="dt" id="dt"></div>
+      <div class="dt" id="dt"></div><div class="dt" id="dt"></div>
+      <button class="icon-btn" id="searchBtn" onclick="toggleSearch()" title="搜索"><img class="tic" data-stk="s023" alt=""></button>
       <div class="lvbadge" id="lvbadge" onclick="setCustomLv()">
         <img class="lvimg" src="data:image/png;base64,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" alt="等级">
         <div class="lvtxt"><span class="lvNum">Lv1</span><small class="lvTitle">涂鸦小鸡</small></div>
@@ -938,6 +1020,20 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
           </div>
         </div>
         <div class="card">
+          <h3><img class="tic" data-stk="s069" alt="">随手记</h3>
+          <p class="muted">备忘录 / 梦境 / 新奇想法，写完让 AI 自动分类并生成一段总结。</p>
+          <div class="row" style="gap:6px;flex-wrap:wrap;">
+            <button class="chip chip-on" id="memoChip0" onclick="setMemoType(0)">📝 备忘录</button>
+            <button class="chip" id="memoChip1" onclick="setMemoType(1)">🌙 梦境</button>
+            <button class="chip" id="memoChip2" onclick="setMemoType(2)">💡 新奇想法</button>
+          </div>
+          <div class="row" style="margin-top:8px;gap:8px;align-items:center;flex-wrap:wrap;">
+            <input id="memoNew" placeholder="写点什么…（AI 会帮你分类+总结）" style="flex:1;min-width:170px;">
+            <button class="btn sm" onclick="addMemo()">记下</button>
+          </div>
+          <div id="memoList" style="margin-top:12px;"></div>
+        </div>
+        <div class="card">
           <h3><img class="tic" data-stk="s089" alt="">灵感与素材</h3>
           <div class="inspo-cols">
             <div class="inspo-col">
@@ -1030,8 +1126,25 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
 
       
 
-      <section class="panel" id="p-settings">
+      <section class="panel" id="p-fav">
         <div class="card">
+          <h3><img class="tic" data-stk="s029" alt="">收藏夹</h3>
+          <p class="muted">把想留的链接、文字、图片一键存进来，AI 自动帮你归类。以后一个搜索框全找到，不用再去各大平台翻。</p>
+          <div class="row" style="gap:8px;flex-wrap:wrap;">
+            <input id="favInput" placeholder="粘贴链接或写一句话…" style="flex:1;min-width:180px;">
+            <button class="btn sm" onclick="addFav()">＋ 收藏</button>
+            <button class="btn sm ghost" onclick="document.getElementById('favImgIn').click()">＋ 图片</button>
+            <input type="file" id="favImgIn" accept="image/*" style="display:none;" onchange="addFavImage(this)">
+          </div>
+          <div class="row" style="margin-top:8px;flex-wrap:wrap;gap:8px;">
+            <button class="btn sm ghost" onclick="aiClassifyAllFav()"><img class="tic" data-stk="s050" alt="">AI 全部归类</button>
+            <span class="muted" style="font-size:11px;">未配 AI Key 时，按手动类型简单归类</span>
+          </div>
+          <div id="favList" style="margin-top:12px;"></div>
+        </div>
+      </section>
+        <section class="panel" id="p-settings">
+        <div class="card" id="syncCard">
           <h3><img src="data:image/png;base64,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"> 设置</h3>
           <label>皮肤配色</label>
           <div class="theme-row" id="themeRow2" style="padding:4px 0;"></div>
@@ -1065,7 +1178,7 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
             <button class="btn sm ghost" onclick="disconnectSync()">断开</button>
           </div>
           <p class="sync-status" id="syncStatus">未连接</p>
-          <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-16-v15</b></p>
+          <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-12-v16</b></p>
           <label>数据</label>
           <div class="row">
             <button class="btn ghost" onclick="exportData()">导出</button>
@@ -1075,6 +1188,37 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
         </div>
         
       
+        <div class="card">
+          <h3><img class="tic" data-stk="s100" alt="">账号</h3>
+          <p class="muted">登录后数据跟随账号，手机/平板/电脑三端自动同步，不再需要同步码。</p>
+          <p class="sync-status" id="authStatus">未登录</p>
+          <div class="row">
+            <button class="btn sm" id="authBtn2" onclick="showAuthOverlay()">登录 / 注册</button>
+            <button class="btn sm ghost" id="logoutBtn" onclick="authLogout()" style="display:none;">退出登录</button>
+          </div>
+        </div>
+        <div class="card">
+          <h3><img class="tic" data-stk="s022" alt="">AI 助手</h3>
+          <p class="muted">填入 DeepSeek API Key 后，随手记自动分类+总结、收藏自动归类都可用。Key 只存在本机，不会同步到云端。</p>
+          <input id="aiKey" type="password" placeholder="sk-…（platform.deepseek.com 获取）" style="width:100%;">
+          <div class="row" style="margin-top:8px;align-items:center;">
+            <select id="aiModel" style="flex:1;min-width:0;">
+              <option value="deepseek-chat">Flash · 便宜（日常）</option>
+              <option value="deepseek-reasoner">Pro · 更强（深度）</option>
+            </select>
+            <button class="btn sm" onclick="saveAiKey()">保存</button>
+            <button class="btn sm ghost" onclick="testAi()">测试</button>
+          </div>
+          <p class="muted" id="aiStatus" style="font-size:11px;margin-top:6px;"></p>
+        </div>
+        <div class="card">
+          <h3><img class="tic" data-stk="s040" alt="">提醒</h3>
+          <p class="muted">到点后 App 打开时会提醒你（系统级推送后续配置）。</p>
+          <div class="row"><label style="flex:0 0 70px;">护眼</label><input type="time" id="remEye" style="flex:1;min-width:0;"></div>
+          <div class="row"><label style="flex:0 0 70px;">课程打卡</label><input type="time" id="remCourse" style="flex:1;min-width:0;"></div>
+          <div class="row"><label style="flex:0 0 70px;">茶饮</label><input type="time" id="remTea" style="flex:1;min-width:0;"></div>
+          <div class="row"><button class="btn sm" onclick="saveReminders()">保存提醒</button></div>
+        </div>
         <div class="card">
           <h3><img class="tic" data-stk="s087" alt="">安装为 App</h3>
           <p class="muted" id="installHint">把工作台安装成 App，像手机应用一样打开，以后更新自动同步，不用再记网址~</p>
@@ -1089,6 +1233,13 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
   </div>
 </div>
 
+<div id="searchOverlay" onclick="if(event.target===this)closeSearch()">
+  <div class="search-head">
+    <input id="searchBox" placeholder="搜索课程 / 收藏 / 随手记 / 素材 / 复盘…" oninput="doSearch()">
+    <button id="searchClose" onclick="closeSearch()">✕</button>
+  </div>
+  <div class="search-results" id="searchRes"></div>
+</div>
 <div class="modal" id="memoModal" onclick="if(event.target===this)closeMemo()">
   <div class="modal-box">
     <h4>随手记</h4>
@@ -1145,6 +1296,7 @@ body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2p
 </div>
 
 <script src="firebase-app.js" defer></script>
+<script src="firebase-auth.js" defer></script>
 <script src="firebase-db.js" defer></script>
 <script>
 /* 图标资源已外置到 icons.js（defer 加载，加速首屏） */
@@ -1261,17 +1413,17 @@ function load(){
   }catch(e){S={};}
 }
 
-const APP_VERSION = '2026-08-16-v15';
+const APP_VERSION = '2026-08-12-v16';
 // 深度消毒：同步合并/旧版本/损坏数据进入后，把每个用到的字段修复成正确类型，防止任意一处 undefined 崩溃
 function deepSanitize(){
   if(!S || typeof S!=='object' || Array.isArray(S)) S={};
   // ---- 数组字段 ----
-  ['courses','futureCourses','archives','creations','memos','reviews','aiChat','released','bodyLog','courseLog','weekReports'].forEach(function(k){
+  ['courses','futureCourses','archives','creations','memos','reviews','aiChat','released','bodyLog','courseLog','weekReports','favs'].forEach(function(k){
     if(!Array.isArray(S[k])) S[k]=[];
   });
   if(!Array.isArray(S.meds)) S.meds=[{name:'复合维生素B',done:false},{name:'护肝片',done:false}];
   // ---- 普通对象字段 ----
-  ['refs','know','moodDiary','diet','ms','_meta','planSel','yearPlans','weekPlans'].forEach(function(k){
+  ['refs','know','moodDiary','diet','ms','_meta','planSel','yearPlans','weekPlans','reminders'].forEach(function(k){
     if(!S[k]||typeof S[k]!=='object'||Array.isArray(S[k])) S[k]={};
   });
   // ---- 字典对象字段 ----
@@ -1285,7 +1437,7 @@ function deepSanitize(){
   if(typeof S.dust!=='number'||S.dust<0) S.dust=0;
   if(typeof S.mosaic!=='boolean') S.mosaic=false;
   if(typeof S.firstVisit!=='boolean') S.firstVisit=false;
-  var VALID_PAGES=['home','courses','micro','know','dance','body','mood','growth','settings'];
+  var VALID_PAGES=['home','courses','micro','know','dance','body','mood','growth','fav','settings'];
   if(typeof S.page!=='string' || VALID_PAGES.indexOf(S.page)<0) S.page='home';
   ['homeNote','theme','nightMode','bg','blur','lastCheckin','customBg','customAvatar','bodyNote','planTab'].forEach(function(k){
     if(typeof S[k]!=='string') S[k]='';
@@ -1831,12 +1983,433 @@ function clearAiChat(){
   if(confirm('清空和 AI 朋友的对话？')){ S.aiChat=[]; save(); renderAiMsgs(); }
 }
 
+
+// ===== v16 新增：邮箱登录（Firebase Auth） =====
+function syncCodePath(){
+  if(S.sync && S.sync.uid) return 'uid_'+S.sync.uid;
+  return (S.sync&&S.sync.code)||'x';
+}
+function authApp(){
+  if(typeof firebase==='undefined' || !firebase.auth) return null;
+  try{
+    const cfg = JSON.parse((S.sync&&S.sync.config)||'{}');
+    if(!cfg || !cfg.apiKey || !cfg.projectId || !cfg.databaseURL) return null;
+    let app=null;
+    try{ app = firebase.app('djw_auth'); }catch(e){}
+    if(!app){ try{ app = firebase.initializeApp(cfg,'djw_auth'); }catch(e){ return null; } }
+    return app;
+  }catch(e){ return null; }
+}
+function authCurrent(){ try{ const a=authApp(); return a? firebase.auth(a).currentUser : null; }catch(e){ return null; } }
+function prettyAuthErr(err){
+  const c=(err&&err.code)||'';
+  if(c.indexOf('invalid-email')>=0) return '邮箱格式不对~';
+  if(c.indexOf('wrong-password')>=0||c.indexOf('invalid-credential')>=0) return '密码不对，再试试~';
+  if(c.indexOf('user-not-found')>=0) return '没有这个账号，先注册一个~';
+  if(c.indexOf('email-already-in-use')>=0) return '这个邮箱已注册过，直接登录~';
+  if(c.indexOf('weak-password')>=0) return '密码太短（至少 6 位）~';
+  if(c.indexOf('too-many-requests')>=0) return '尝试次数太多，稍后再试~';
+  if(c.indexOf('operation-not-allowed')>=0) return 'Firebase 还没开启邮箱登录：请在 Firebase 控制台 Authentication → 登录方式 里开启 Email/密码';
+  if(c.indexOf('network')>=0) return '网络连不上，请检查网络~';
+  return (err&&err.message)||'出错了~';
+}
+function showAuthMsg(m){ const el=document.getElementById('authMsg'); if(el) el.textContent=m; }
+function showAuthOverlay(){
+  const ov=document.getElementById('authOverlay'); if(!ov) return;
+  try{ const l=document.getElementById('authLogo'); if(l && typeof stk==='function') l.src=stk('s087'); }catch(e){}
+  const hasCfg = !!(S.sync && S.sync.config);
+  const cw=document.getElementById('authConfigWrap'); if(cw) cw.style.display=hasCfg?'none':'block';
+  const sb=document.getElementById('authSub'); if(sb) sb.textContent=hasCfg?'登录后，数据跟随账号三端自动同步':'首次使用：先粘贴 Firebase 配置，再注册账号';
+  showAuthMsg('');
+  ov.classList.add('on');
+  setTimeout(()=>{ const e=document.getElementById('authEmail'); if(e) e.focus(); },100);
+}
+function hideAuthOverlay(){ const ov=document.getElementById('authOverlay'); if(ov) ov.classList.remove('on'); }
+function authToggleMode(){
+  const btn=document.getElementById('authBtn'); const tg=document.getElementById('authToggle');
+  const isLogin=(btn&&btn.textContent.indexOf('登录')>=0);
+  if(btn) btn.textContent=isLogin?'注册':'登录';
+  if(tg) tg.textContent=isLogin?'已有账号？去登录':'没有账号？注册一个';
+  const ap=document.getElementById('authPass'); if(ap) ap.setAttribute('autocomplete', isLogin?'new-password':'current-password');
+  showAuthMsg('');
+}
+function authSubmit(){
+  const email=(document.getElementById('authEmail').value||'').trim();
+  const pass=document.getElementById('authPass').value||'';
+  if(!email||!pass){ showAuthMsg('请填写邮箱和密码'); return; }
+  if(pass.length<6){ showAuthMsg('密码至少 6 位'); return; }
+  if(!S.sync) S.sync={};
+  if(!S.sync.config){
+    const c=(document.getElementById('authConfig').value||'').trim();
+    if(!c){ showAuthMsg('请先粘贴 Firebase 配置'); return; }
+    try{ JSON.parse(c); }catch(e){ showAuthMsg('配置不是合法 JSON'); return; }
+    S.sync.config=c; save();
+  }
+  const app=authApp(); if(!app){ showAuthMsg('Firebase 初始化失败'); return; }
+  const a=firebase.auth(app);
+  const isLogin=(document.getElementById('authBtn').textContent.indexOf('登录')>=0);
+  const p = isLogin ? a.signInWithEmailAndPassword(email,pass) : a.createUserWithEmailAndPassword(email,pass);
+  p.then(function(u){
+    S.sync.uid=u.user?u.user.uid:u.uid; save();
+    hideAuthOverlay();
+    toast(isLogin?'欢迎回来~':'注册成功，欢迎来到呆啾丸~');
+    afterLoginSync();
+    renderSettings();
+  }).catch(function(err){ showAuthMsg(prettyAuthErr(err)); });
+}
+function authLogout(){
+  if(!confirm('退出登录？本机数据会保留，下次登录同一账号可继续同步。')) return;
+  const app=authApp();
+  if(!app){ S.sync.uid=''; save(); renderSettings(); return; }
+  firebase.auth(app).signOut().then(function(){
+    S.sync.uid=''; save();
+    renderSettings();
+    toast('已退出登录');
+    showAuthOverlay();
+  }).catch(function(){});
+}
+let _authWired=false;
+function wireAuth(){
+  if(_authWired) return;
+  const app=authApp();
+  if(!app) return;
+  _authWired=true;
+  try{
+  firebase.auth(app).onAuthStateChanged(function(user){
+    if(user){
+      if(!S.sync) S.sync={};
+      const changed = S.sync.uid!==user.uid;
+      S.sync.uid=user.uid;
+      if(changed){ save(); afterLoginSync(); }
+      hideAuthOverlay();
+      renderSettings();
+    } else {
+      if(S.sync && S.sync.uid){ S.sync.uid=''; save(); }
+      if(S.sync && S.sync.config) showAuthOverlay();
+    }
+  });
+  }catch(e){}
+}
+function initAuthFlow(){
+  try{ const l=document.getElementById('splashLogo'); if(l && typeof stk==='function') l.src=stk('s087'); }catch(e){}
+  try{ const l=document.getElementById('authLogo'); if(l && typeof stk==='function') l.src=stk('s087'); }catch(e){}
+  wireAuth();
+}
+function hideSplash(){
+  const sp=document.getElementById('splash'); if(!sp) return;
+  setTimeout(function(){ sp.classList.add('hide'); setTimeout(function(){ if(sp.parentNode) sp.parentNode.removeChild(sp); },650); },800);
+}
+function afterLoginSync(){
+  const uid=(S.sync&&S.sync.uid)||'';
+  if(!uid) return;
+  const oldCode=(S.sync&&S.sync.code)||'';
+  resetSyncApp();
+  if(!syncReady()) return;
+  const db=syncRef();
+  if(!db) return;
+  db.once('value').then(function(snap){
+    const v=snap.val();
+    if(v && v._meta){ mergeRemoteData(v); startSyncListener(); toast('已同步账号数据~'); return; }
+    if(oldCode && oldCode!==syncCodePath() && window.__djwDb){
+      window.__djwDb.ref('dajiuwan/'+oldCode).once('value').then(function(s2){
+        const oldv=s2.val();
+        if(oldv && oldv._meta){
+          try{ const cur=localStorage.getItem('dajiuwan_v5'); if(cur) localStorage.setItem('dajiuwan_v5_backup', cur); }catch(e){}
+          S=oldv; applyTombstones(S);
+          if(!S.sync) S.sync={};
+          S.sync.config=oldv.sync&&oldv.sync.config||S.sync.config;
+          S.sync.uid=uid; S.sync.code=oldCode; S.sync.oldCode=oldCode;
+          localStorage.setItem('dajiuwan_v5',JSON.stringify(S));
+          pushToServer();
+          toast('已把旧同步码数据迁移到你的账号~');
+        } else { pushToServer(); }
+        startSyncListener();
+      }).catch(function(){ pushToServer(); startSyncListener(); });
+    } else { pushToServer(); startSyncListener(); }
+  }).catch(function(){ pushToServer(); startSyncListener(); });
+}
+function renderAuthStatus(){
+  const st=document.getElementById('authStatus');
+  const b2=document.getElementById('authBtn2');
+  const lo=document.getElementById('logoutBtn');
+  if(!st) return;
+  const u=authCurrent();
+  if(u){
+    st.textContent='已登录：'+(u.email||u.uid);
+    st.className='sync-status ok';
+    if(b2) b2.style.display='none';
+    if(lo) lo.style.display='inline-block';
+    const sc=document.getElementById('syncCard'); if(sc) sc.style.display='none';
+  } else {
+    st.textContent='未登录（用邮箱登录，三端自动同步）';
+    st.className='sync-status';
+    if(b2) b2.style.display='inline-block';
+    if(lo) lo.style.display='none';
+    const sc=document.getElementById('syncCard'); if(sc) sc.style.display='';
+  }
+}
+
+// ===== v16 新增：AI 助手（DeepSeek） =====
+function aiKey(){ try{ return localStorage.getItem('djw_ai_key')||''; }catch(e){ return ''; } }
+function aiModel(){ try{ return localStorage.getItem('djw_ai_model')||'deepseek-chat'; }catch(e){ return 'deepseek-chat'; } }
+function renderAiSettings(){
+  const k=document.getElementById('aiKey'); if(k) k.value=aiKey();
+  const m=document.getElementById('aiModel'); if(m) m.value=aiModel();
+  const s=document.getElementById('aiStatus');
+  if(s) s.textContent=aiKey()? '✓ 已配置（Key 只存在本机）':'未配置 Key，随手记自动分类等功能暂不可用';
+}
+function saveAiKey(){
+  const k=(document.getElementById('aiKey').value||'').trim();
+  const m=document.getElementById('aiModel').value;
+  localStorage.setItem('djw_ai_key',k);
+  localStorage.setItem('djw_ai_model',m);
+  toast(k? 'AI Key 已保存~':'已清除 AI Key');
+  renderAiSettings();
+}
+function testAi(){
+  if(!aiKey()){ toast('先填 Key 再测试~'); return; }
+  const s=document.getElementById('aiStatus'); if(s) s.textContent='测试中…';
+  callAI([{role:'user',content:'请回复四个字：呆啾丸好'}], function(txt){
+    const s=document.getElementById('aiStatus');
+    if(s) s.textContent='✓ 连接成功：'+(txt||'').slice(0,40);
+    toast('AI 连接成功~');
+  }, function(err){
+    const s=document.getElementById('aiStatus');
+    if(s) s.textContent='✗ 失败：'+(err&&err.message||err);
+  });
+}
+function callAI(messages, ok, fail){
+  if(!aiKey()){ if(fail) fail(new Error('未配置 API Key')); return; }
+  const body={model:aiModel(),messages:messages,stream:false,max_tokens:900,temperature:0.7};
+  fetch('https://api.deepseek.com/chat/completions',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Authorization':'Bearer '+aiKey()},
+    body:JSON.stringify(body)
+  }).then(function(r){
+    if(!r.ok){ return r.json().then(function(j){ throw new Error((j&&j.error&&j.error.message)||('HTTP '+r.status)); }); }
+    return r.json();
+  }).then(function(d){
+    const txt=(d&&d.choices&&d.choices[0]&&d.choices[0].message&&d.choices[0].message.content)||'';
+    if(ok) ok(txt.trim());
+  }).catch(function(e){ if(fail) fail(e); });
+}
+
+// ===== v16 新增：随手记（备忘录/梦境/新奇想法 + AI 分类总结） =====
+let _memoType=0;
+const MEMO_TYPES=['备忘录','梦境','新奇想法'];
+const MEMO_ICONS=['📝','🌙','💡'];
+function setMemoType(i){
+  _memoType=i;
+  for(let k=0;k<3;k++){ const c=document.getElementById('memoChip'+k); if(c) c.classList.toggle('chip-on',k===i); }
+}
+function addMemo(){
+  const inp=document.getElementById('memoNew');
+  const t=(inp&&inp.value||'').trim();
+  if(!t){ toast('先写点什么~'); return; }
+  const item={id:'m'+Date.now()+Math.random().toString(36).slice(2,7), date:todayStr(), ts:Date.now(), type:_memoType, text:t, cat:'', tags:[], summary:''};
+  if(!Array.isArray(S.memos)) S.memos=[];
+  S.memos.unshift(item);
+  save();
+  if(inp) inp.value='';
+  renderMemo();
+  toast('记下啦~');
+  if(aiKey()) aiClassifyMemo(item);
+}
+function aiClassifyMemo(item){
+  callAI([
+    {role:'system',content:'你是呆啾丸的私人整理助手。用户写了一条随手记（备忘录/梦境/新奇想法/灵感/情绪等都可能）。请：1) 给出一个简短分类名（2-6字，可自由创建新分类，如：灵感、梦境、待办、情绪、观察、创作、学习、生活）；2) 用一句不超过45字的话总结。输出严格为一行：分类|总结'},
+    {role:'user',content:item.text}
+  ], function(txt){
+    const i=txt.indexOf('|');
+    const cat=(i>=0?txt.slice(0,i):txt).trim()||'随手记';
+    const sum=(i>=0?txt.slice(i+1):txt).trim();
+    const it=(S.memos||[]).find(function(m){ return m.id===item.id; });
+    if(it){ it.cat=cat; it.summary=sum; save(); renderMemo(); toast('AI 已分类：'+cat); }
+  }, function(){});
+}
+function renderMemo(){
+  const box=document.getElementById('memoList'); if(!box) return;
+  const arr=S.memos||[];
+  if(!arr.length){ box.innerHTML='<div class="sr-empty">还没有随手记，写一条吧~</div>'; return; }
+  const groups={};
+  arr.forEach(function(m){
+    const key=m.cat||MEMO_TYPES[m.type]||'随手记';
+    if(!groups[key]) groups[key]=[];
+    groups[key].push(m);
+  });
+  let h='';
+  Object.keys(groups).forEach(function(g){
+    h+='<div class="memo-group-h">✨ '+escHtml(g)+'</div>';
+    groups[g].forEach(function(m){
+      h+='<div class="memo-item"><div class="memo-h"><span class="memo-type">'+(MEMO_ICONS[m.type]||'📝')+' '+(m.date||'')+'</span>';
+      if(m.cat) h+='<span class="memo-cat">'+escHtml(m.cat)+'</span>';
+      h+='<button class="memo-del" onclick="deleteMemo(\''+m.id+'\')">✕</button></div>';
+      h+='<div class="memo-text">'+escHtml(m.text)+'</div>';
+      if(m.summary) h+='<div class="memo-sum">✨ '+escHtml(m.summary)+'</div>';
+      h+='</div>';
+    });
+  });
+  box.innerHTML=h;
+}
+function deleteMemo(id){
+  S.memos=(S.memos||[]).filter(function(m){ return m.id!==id; });
+  save(); renderMemo(); toast('已删除');
+}
+
+// ===== v16 新增：收藏夹 =====
+function renderFav(){
+  const box=document.getElementById('favList'); if(!box) return;
+  const arr=S.favs||[];
+  if(!arr.length){ box.innerHTML='<div class="sr-empty">收藏夹空空的，把想留的链接/文字/图片存进来吧~</div>'; return; }
+  let h='';
+  arr.forEach(function(f){
+    h+='<div class="fav-item"><div class="fav-top">';
+    if(f.cat) h+='<span class="fav-cat">'+escHtml(f.cat)+'</span>';
+    h+='<div class="fav-main">';
+    if(f.type==='link') h+='<div class="fav-t" onclick="openFav(\''+f.id+'\')">🔗 '+escHtml(f.title)+'</div><div class="fav-url">'+escHtml(f.url)+'</div>';
+    else h+='<div class="fav-t">'+(f.img?'🖼 ':'📝 ')+escHtml(f.title)+'</div>';
+    h+='</div><button class="fav-del" onclick="deleteFav(\''+f.id+'\')">✕</button></div>';
+    if(f.img) h+='<img class="fav-img" src="'+f.img+'" alt="收藏图片">';
+    if(f.note) h+='<div class="fav-note">'+escHtml(f.note)+'</div>';
+    if(f.tags&&f.tags.length) h+='<div class="fav-tags">'+f.tags.map(function(t){ return '<span class="fav-tag">#'+escHtml(t)+'</span>'; }).join('')+'</div>';
+    h+='<div class="muted" style="font-size:10px;margin-top:6px;">'+new Date(f.ts||Date.now()).toLocaleString('zh-CN')+'</div>';
+    h+='</div>';
+  });
+  box.innerHTML=h;
+}
+function addFav(){
+  const inp=document.getElementById('favInput');
+  const t=(inp&&inp.value||'').trim();
+  if(!t){ toast('粘贴链接或写点内容~'); return; }
+  const isLink=/^https?:\/\//i.test(t);
+  const f={id:'f'+Date.now()+Math.random().toString(36).slice(2,7), type:isLink?'link':'text', title:t, url:isLink?t:'', img:'', note:'', tags:[], cat:'', ts:Date.now(), date:todayStr()};
+  if(!Array.isArray(S.favs)) S.favs=[];
+  S.favs.unshift(f);
+  save(); renderFav();
+  if(inp) inp.value='';
+  toast('已收藏~');
+  if(aiKey()) aiClassifyFav(f);
+}
+function addFavImage(input){
+  const f=input.files&&input.files[0]; if(!f) return;
+  compressImage(f, 900, function(data){
+    const it={id:'f'+Date.now()+Math.random().toString(36).slice(2,7), type:'image', title:(f.name||'图片').replace(/\.[a-zA-Z0-9]+$/,''), url:'', img:data, note:'', tags:[], cat:'', ts:Date.now(), date:todayStr()};
+    if(!Array.isArray(S.favs)) S.favs=[];
+    S.favs.unshift(it); save(); renderFav(); toast('图片已收藏~');
+    if(aiKey()) aiClassifyFav(it);
+  });
+  input.value='';
+}
+function aiClassifyFav(item){
+  callAI([
+    {role:'system',content:'你是呆啾丸的私人收藏整理助手。用户收藏了一条内容。请：1) 给出简短分类名（2-6字，可自由创建，如：绘画参考、配色、灵感、教程、素材、审美、文案、生活）；2) 给1-3个标签，逗号分隔，每个不超过6字。输出严格为一行：分类|标签1,标签2'},
+    {role:'user',content:item.title}
+  ], function(txt){
+    const i=txt.indexOf('|');
+    const cat=(i>=0?txt.slice(0,i):txt).trim()||'收藏';
+    const tags=(i>=0?txt.slice(i+1):txt).split(/[,，]/).map(function(s){ return s.trim(); }).filter(Boolean).slice(0,3);
+    const it=(S.favs||[]).find(function(x){ return x.id===item.id; });
+    if(it){ it.cat=cat; it.tags=tags; save(); renderFav(); toast('AI 已归类：'+cat); }
+  }, function(){});
+}
+function aiClassifyAllFav(){
+  if(!aiKey()){ toast('先在设置里配置 AI Key~'); return; }
+  const arr=S.favs||[];
+  if(!arr.length){ toast('收藏夹是空的~'); return; }
+  let n=0;
+  arr.forEach(function(f){ if(!f.cat){ aiClassifyFav(f); n++; } });
+  toast(n? ('正在归类 '+n+' 条…'):'都已归类好啦~');
+}
+function deleteFav(id){
+  S.favs=(S.favs||[]).filter(function(f){ return f.id!==id; });
+  save(); renderFav(); toast('已删除');
+}
+function openFav(id){
+  const f=(S.favs||[]).find(function(x){ return x.id===id; });
+  if(f && f.url) window.open(f.url,'_blank');
+}
+
+// ===== v16 新增：全站搜索 =====
+let _sr=[];
+function toggleSearch(){
+  const o=document.getElementById('searchOverlay'); if(!o) return;
+  if(o.classList.contains('on')){ closeSearch(); return; }
+  o.classList.add('on');
+  const b=document.getElementById('searchBox'); if(b){ b.value=''; }
+  doSearch();
+  setTimeout(function(){ const b=document.getElementById('searchBox'); if(b) b.focus(); },80);
+}
+function closeSearch(){ const o=document.getElementById('searchOverlay'); if(o) o.classList.remove('on'); }
+function matchQ(s,q){ return String(s==null?'':s).toLowerCase().indexOf(q)>=0; }
+function doSearch(){
+  const box=document.getElementById('searchBox');
+  const q=(box?box.value:'').trim().toLowerCase();
+  const res=document.getElementById('searchRes'); if(!res) return;
+  if(!q){ _sr=[]; res.innerHTML='<div class="sr-empty">输入关键词，搜索 课程 / 收藏 / 随手记 / 素材 / 复盘…</div>'; return; }
+  const out=[];
+  (S.courses||[]).forEach(function(c){ if(matchQ(c.name,q)) out.push({k:'课程', t:c.name, go:function(){ closeSearch(); go('courses'); }}); });
+  (S.futureCourses||[]).forEach(function(c){ if(matchQ(c.name,q)) out.push({k:'未来想报', t:c.name, go:function(){ closeSearch(); go('courses'); }}); });
+  (S.favs||[]).forEach(function(f){ if(matchQ(f.title,q)||matchQ(f.cat,q)||(f.tags||[]).some(function(t){ return matchQ(t,q); })) out.push({k:'收藏 · '+(f.cat||'未分类'), t:f.title, go:function(){ closeSearch(); go('fav'); }}); });
+  (S.memos||[]).forEach(function(m){ if(matchQ(m.text,q)||matchQ(m.cat,q)) out.push({k:'随手记 · '+(m.cat||''), t:m.text, go:function(){ closeSearch(); go('micro'); }}); });
+  ((S.inspo&&S.inspo.material)||[]).forEach(function(m){ if(matchQ(m.text,q)||matchQ(m.link,q)) out.push({k:'素材', t:m.text||m.link, go:function(){ closeSearch(); go('micro'); }}); });
+  ((S.inspo&&S.inspo.dream)||[]).forEach(function(m){ if(matchQ(m.text,q)) out.push({k:'随手记·梦境', t:m.text, go:function(){ closeSearch(); go('micro'); }}); });
+  (S.reviews||[]).forEach(function(r){ if(matchQ(r.content,q)||matchQ(r.type,q)) out.push({k:'复盘 · '+(r.type||''), t:String(r.content||'').slice(0,60), go:function(){ closeSearch(); go('growth'); }}); });
+  (S.creations||[]).forEach(function(c){ if(matchQ(c.title,q)||matchQ(c.course,q)) out.push({k:'作品', t:c.title||('作品 '+ (c.date||'')), go:function(){ closeSearch(); go('growth'); }}); });
+  if(!out.length){ _sr=[]; res.innerHTML='<div class="sr-empty">没有找到和「'+escHtml(q)+'」相关的内容~</div>'; return; }
+  _sr=out;
+  res.innerHTML=out.slice(0,40).map(function(o,i){
+    return '<div class="sr-item" onclick="goSearchResult('+i+')"><div class="sr-k">'+escHtml(o.k)+'</div><div class="sr-t">'+escHtml(String(o.t).slice(0,80))+'</div></div>';
+  }).join('');
+}
+function goSearchResult(i){
+  const o=_sr[i]; if(o&&o.go) o.go();
+}
+
+// ===== v16 新增：提醒 =====
+function renderReminderSettings(){
+  const r=S.reminders||{};
+  [['eye','remEye'],['course','remCourse'],['tea','remTea']].forEach(function(p){
+    const el=document.getElementById(p[1]); if(el) el.value=r[p[0]]||'';
+  });
+}
+function saveReminders(){
+  if(!S.reminders) S.reminders={};
+  [['eye','remEye'],['course','remCourse'],['tea','remTea']].forEach(function(p){
+    const el=document.getElementById(p[1]); if(el) S.reminders[p[0]]=el.value;
+  });
+  save(); toast('提醒已保存~');
+}
+function enableNotify(){
+  if(!('Notification' in window)){ toast('此设备不支持系统通知'); return; }
+  Notification.requestPermission().then(function(p){ toast(p==='granted'?'系统通知已开启~':'未授权通知'); });
+}
+function checkReminders(){
+  const r=S.reminders||{};
+  const now=new Date();
+  const hm=('0'+now.getHours()).slice(-2)+':'+('0'+now.getMinutes()).slice(-2);
+  const today=todayStr();
+  const msgs={eye:'👀 画了这么久，让眼睛歇一歇吧~',course:'📚 今天的课程打卡别忘了哦~',tea:'🍵 喝口热茶，缓一缓~'};
+  ['eye','course','tea'].forEach(function(k){
+    const t=r[k];
+    if(!t) return;
+    if(hm===t){
+      if(!r._last) r._last={};
+      if(r._last[k]!==today){
+        r._last[k]=today; save();
+        try{ if('Notification' in window && Notification.permission==='granted') new Notification('呆啾丸提醒',{body:msgs[k]}); }catch(e){}
+        toast(msgs[k]);
+      }
+    }
+  });
+}
+function escHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g, function(c){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"\'":'&#39;'})[c]; }); }
+
 // ===== v6 新增：多端同步（Firebase 同步码） =====
 let _syncTimer=null, _syncBusy=false, _syncListenerRef=null, _applyingRemote=false;
 let _createShowAll=false, _inspoShowAll=false, _archShowAll=false;
 function syncReady(){
   try{
-    return typeof firebase!=='undefined' && !!firebase.database && !!S.sync && !!S.sync.config && !!S.sync.code;
+    return typeof firebase!=='undefined' && !!firebase.database && !!S.sync && !!S.sync.config && (!!S.sync.code || !!S.sync.uid);
   }catch(e){ return false; }
 }
 function syncAppName(){
@@ -1854,7 +2427,7 @@ function syncRef(){
       window.__djwDb = firebase.database(app);
     }catch(e){ return null; }
   }
-  return window.__djwDb.ref('dajiuwan/'+S.sync.code);
+  return window.__djwDb.ref('dajiuwan/'+syncCodePath());
 }
 function resetSyncApp(){
   try{
@@ -2044,7 +2617,7 @@ function restoreBackup(){
 }
 
 // ===== navigation =====
-const PAGE_TITLES = {home:'首页',courses:'课程',micro:'微创作',know:'知识树',dance:'跳舞',body:'身体',mood:'情绪日记',growth:'成长',settings:'设置'};
+const PAGE_TITLES = {home:'首页',courses:'课程',micro:'微创作',know:'知识树',dance:'跳舞',body:'身体',mood:'情绪日记',growth:'成长',fav:'收藏',settings:'设置'};
 function go(page){
   haptic();
   if(!document.getElementById('p-'+page)) page='home'; // 已删除页面回退首页
@@ -2064,6 +2637,7 @@ function go(page){
     if(page==='body') renderBody();
     if(page==='mood') renderMood();
     if(page==='growth') renderGrowth();
+    if(page==='fav') renderFav();
   }catch(err){ showPageError(page, err); }
   if(page==='settings') renderSettings();
   if(window.innerWidth <= 760){
@@ -3626,6 +4200,9 @@ function renderSettings(){
   const sco=document.getElementById('syncCode'); if(sco) sco.value=(S.sync&&S.sync.code)||'';
   updateSyncStatus();
   updateInstallHint();
+  renderAuthStatus();
+  renderAiSettings();
+  renderReminderSettings();
 }
 function exportData(){
   const d=JSON.parse(JSON.stringify(S));
@@ -3908,8 +4485,8 @@ function assetsReady(){
 }
 function initAll(){
   load(); ensureDefaults(); fillStk();
-  try{ const lp = localStorage.getItem('dajiuwan_page'); if(lp && ['home','courses','micro','know','dance','body','mood','growth','settings'].indexOf(lp)>=0) S.page = lp; }catch(e){}
-  try{ const qp=new URLSearchParams(location.search).get('p'); if(qp && ['home','courses','micro','know','dance','body','mood','growth','settings'].indexOf(qp)>=0) S.page = qp; }catch(e){}
+  try{ const lp = localStorage.getItem('dajiuwan_page'); if(lp && ['home','courses','micro','know','dance','body','mood','growth','fav','settings'].indexOf(lp)>=0) S.page = lp; }catch(e){}
+  try{ const qp=new URLSearchParams(location.search).get('p'); if(qp && ['home','courses','micro','know','dance','body','mood','growth','fav','settings'].indexOf(qp)>=0) S.page = qp; }catch(e){}
   buildThemes();
   applyTheme();
   initNavGroups();
@@ -3934,6 +4511,10 @@ function initAll(){
   renderDust();
   try{ startSyncListener(); }catch(e){}
   registerSW();
+  initAuthFlow();
+  hideSplash();
+  checkReminders();
+  setInterval(checkReminders, 30000);
 }
 
 
