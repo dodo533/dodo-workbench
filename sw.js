@@ -1,5 +1,5 @@
-/* 呆啾丸 · Service Worker（PWA 离线可用 + 秒开刷新 + 自动更新） */
-const CACHE = 'dajiuwan-v16-20260812';
+/* DJW Workbench Service Worker: offline + fast start + auto update (network-first for HTML) */
+const CACHE = 'dajiuwan-v1632-20260812';
 const ASSETS = ['./', './index.html', './gallery.html', './manifest.webmanifest', './icons.js', './stickers.js', './firebase-app.js', './firebase-auth.js', './firebase-db.js', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', function(e){
@@ -18,6 +18,10 @@ self.addEventListener('message', function(e){
   if(e.data && e.data.type === 'SKIP_WAITING') self.skipWaiting();
 });
 
+function isNav(req, url){
+  return req.mode === 'navigate' || url.pathname === '/' || url.pathname.endsWith('index.html');
+}
+
 function sameResponse(a, b){
   try{
     const la=a.headers.get('last-modified'), lb=b.headers.get('last-modified');
@@ -35,20 +39,30 @@ self.addEventListener('fetch', function(e){
   let url;
   try{ url = new URL(req.url); }catch(err){ return; }
   if(url.origin !== self.location.origin) return;
+
+  // App shell (HTML): network-first so the installed app always gets the latest version when online
+  if(isNav(req, url)){
+    e.respondWith((async function(){
+      const cache = await caches.open(CACHE);
+      const cached = await cache.match(req, { ignoreSearch: true });
+      try{
+        const res = await fetch(req);
+        if(res && res.ok){
+          try{ await cache.put(req, res.clone()); }catch(err){}
+          return res;
+        }
+      }catch(err){}
+      return cached;
+    })());
+    return;
+  }
+
+  // Static assets: cache-first with background refresh
   e.respondWith((async function(){
     const cache = await caches.open(CACHE);
     const cached = await cache.match(req, { ignoreSearch: true });
-    const network = fetch(req).then(async function(res){
-      if(res && res.ok){
-        try{ await cache.put(req, res.clone()); }catch(err){}
-        if(url.pathname === '/' || url.pathname.endsWith('index.html')){
-          const same = await sameResponse(cached, res);
-          if(cached && !same){
-            const clients = await self.clients.matchAll();
-            clients.forEach(function(cl){ cl.postMessage({ type: 'UPDATE_AVAILABLE' }); });
-          }
-        }
-      }
+    const network = fetch(req).then(function(res){
+      if(res && res.ok){ try{ cache.put(req, res.clone()); }catch(err){} }
       return res;
     }).catch(function(){ return cached; });
     return cached || network;

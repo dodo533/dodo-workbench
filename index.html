@@ -4593,7 +4593,6 @@ function initAll(){
   assetsReady();
   renderDust();
   try{ startSyncListener(); }catch(e){}
-  registerSW();
   initAuthFlow();
   hideSplash();
   checkReminders();
@@ -4639,6 +4638,7 @@ function registerSW(){
     }
   });
   navigator.serviceWorker.register('sw.js').then(reg=>{
+    setInterval(function(){ reg.update().catch(function(){}); }, 60000);
     reg.addEventListener('updatefound', ()=>{
       const nw = reg.installing;
       if(!nw) return;
@@ -4652,6 +4652,7 @@ function registerSW(){
   }).catch(()=>{});
   navigator.serviceWorker.addEventListener('controllerchange', ()=>{ doReload(); });
 }
+registerSW();
 
 function showPageError(page, err){
   const panel = document.getElementById('p-'+page);
