@@ -282,21 +282,6 @@ input[type=file]{color:#5a5a5a;font-size:12px;}
 .diet-ta{width:100%;font-size:10.5px;padding:5px;line-height:1.3;border-radius:8px;}
 .diet-water{display:flex;align-items:center;gap:8px;margin-top:10px;}
 .ai-card{display:flex;flex-direction:column;max-height:80vh;}
-.ai-msgs{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:6px 2px;min-height:200px;}
-.ai-msg{background:var(--glass);border:1px solid var(--line);border-radius:14px;padding:8px 11px;font-size:12.5px;line-height:1.5;color:var(--text);max-width:85%;align-self:flex-start;white-space:pre-wrap;}
-.ai-msg.me{background:var(--pink);color:#fff;border-color:var(--pink);align-self:flex-end;}
-.ai-empty{color:var(--sub);font-size:12px;text-align:center;padding:20px 0;}
-.ai-fab{position:fixed;right:16px;bottom:24px;width:54px;height:54px;border-radius:50%;background:var(--pink);border:none;box-shadow:0 6px 18px rgba(179,82,124,.42);z-index:997;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;}
-.ai-fab img{width:36px;height:36px;border-radius:50%;object-fit:cover;}
-.ai-win{position:fixed;right:16px;bottom:90px;width:320px;max-width:calc(100vw - 24px);height:min(460px,62vh);background:var(--card);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);z-index:998;display:none;flex-direction:column;overflow:hidden;}
-.ai-win.on{display:flex;}
-.ai-head{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--panel);cursor:grab;border-bottom:1px solid var(--line);user-select:none;-webkit-user-select:none;}
-.ai-head:active{cursor:grabbing;}
-.ai-title{display:flex;align-items:center;gap:6px;font-weight:bold;font-size:13px;color:var(--text);}
-.ai-title img{width:22px;height:22px;border-radius:50%;}
-.ai-min{cursor:pointer;color:var(--sub);padding:0 6px;font-size:16px;line-height:1;}
-.ai-foot{display:flex;gap:6px;padding:8px;border-top:1px solid var(--line);}
-.ai-foot input{flex:1;min-width:0;}
 .ai-input{display:flex;gap:8px;margin-top:8px;}
 .ai-input input{flex:1;}
 .hot-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;background:var(--glass);border-radius:12px;margin-top:6px;}
@@ -453,9 +438,6 @@ body.gentle .content>.panel>.grid2{opacity:.92;}
   backdrop-filter:blur(10px);border-radius:12px;padding:8px;margin-top:8px;}
 
 /* AI 助手 */
-.ai-chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0;}
-.ai-chip{font-size:11px;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.5);border-radius:18px;padding:5px 11px;cursor:pointer;color:var(--text);}
-.ai-chip:hover{background:var(--panel);}
 .ai-toolbar{display:flex;justify-content:flex-end;margin-bottom:4px;}
 
 /* 首页小树林 */
@@ -527,6 +509,13 @@ body.gentle .content>.panel>.grid2{opacity:.92;}
 .week-report .wr-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dashed var(--line);}
 .week-report .wr-row:last-child{border-bottom:none;}
 .week-report b{color:var(--pink);font-weight:400;}
+.week-report .wr-row.ai{display:block;text-align:left;}
+.state-advice{background:rgba(255,255,255,0.5);border:1px dashed var(--pink);border-radius:12px;padding:7px 10px;font-size:11.5px;color:var(--sub);margin-bottom:8px;line-height:1.5;}
+.low-hint{background:rgba(255,228,246,0.75);border:1px solid #f6abd3;border-radius:14px;padding:10px 12px;margin:10px 0;font-size:12px;color:var(--text);}
+.low-hint .lh-t{margin:6px 0 8px;font-size:11.5px;color:var(--sub);line-height:1.5;}
+.low-hint .lh-btns{display:flex;gap:8px;flex-wrap:wrap;}
+.dream-card{background:rgba(227,238,255,0.55);border:1px solid #b6cdf5;border-radius:12px;padding:8px 10px;margin-top:6px;font-size:11px;color:var(--text);line-height:1.7;}
+.dream-card .dc-h{font-weight:bold;color:#5b7fc7;margin-bottom:2px;}
 /* 跳舞页 */
 .dance-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px;}
 @media(max-width:760px){.dance-grid{grid-template-columns:1fr;}}
@@ -931,6 +920,7 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
           </div>
         </div>
 
+        <div id="homeLowHint"></div>
         <div class="home-cols">
           <div class="card mix-card">
             <div class="mix-top">
@@ -1213,12 +1203,12 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
         </div>
         <div class="card">
           <h3><img class="tic" data-stk="s022" alt="">AI 助手</h3>
-          <p class="muted">填入 DeepSeek API Key 后，随手记自动分类+总结、收藏自动归类都可用。Key 只存在本机，不会同步到云端。</p>
+          <p class="muted">填入 DeepSeek API Key 后：随手记/收藏自动分类、每周周报总结、梦境灵感卡都可用。Key 只存在本机，不会同步到云端。</p>
           <input id="aiKey" type="password" placeholder="sk-…（platform.deepseek.com 获取）" style="width:100%;">
           <div class="row" style="margin-top:8px;align-items:center;">
             <select id="aiModel" style="flex:1;min-width:0;">
-              <option value="deepseek-chat">Flash · 便宜（日常）</option>
-              <option value="deepseek-reasoner">Pro · 更强（深度）</option>
+              <option value="deepseek-v4-flash">Flash · 便宜（日常）</option>
+              <option value="deepseek-v4-pro">Pro · 更强（深度）</option>
             </select>
             <button class="btn sm" onclick="saveAiKey()">保存</button>
             <button class="btn sm ghost" onclick="testAi()">测试</button>
@@ -1307,15 +1297,6 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
       <button class="btn ghost" onclick="document.getElementById('sosModal').classList.remove('on')">收好</button>
     </div>
   </div>
-</div>
-
-<!-- AI 悬浮窗 -->
-<button class="ai-fab" id="aiFab" onclick="aiToggle()"><img class="tic" data-stk="s087" alt=""></button>
-<div class="ai-win" id="aiWin">
-  <div class="ai-head" id="aiDrag"><span class="ai-title"><img class="tic" data-stk="s087" alt="">小啾啾·AI 朋友</span><span class="ai-min" onclick="aiToggle()">—</span></div>
-  <div class="ai-msgs" id="aiMsgs"></div>
-  <div class="ai-chips" id="aiChips"></div>
-  <div class="ai-foot"><input id="aiInput" placeholder="随便聊聊，或让我帮你分类总结…"><button class="btn sm" onclick="sendAI()">发送</button></div>
 </div>
 
 <script src="firebase-app.js" defer></script>
@@ -1441,7 +1422,7 @@ const APP_VERSION = '2026-08-12-v16';
 function deepSanitize(){
   if(!S || typeof S!=='object' || Array.isArray(S)) S={};
   // ---- 数组字段 ----
-  ['courses','futureCourses','archives','creations','memos','reviews','aiChat','released','bodyLog','courseLog','weekReports','favs'].forEach(function(k){
+  ['courses','futureCourses','archives','creations','memos','reviews','released','bodyLog','courseLog','weekReports','favs'].forEach(function(k){
     if(!Array.isArray(S[k])) S[k]=[];
   });
   if(!Array.isArray(S.meds)) S.meds=[{name:'复合维生素B',done:false},{name:'护肝片',done:false}];
@@ -1610,7 +1591,6 @@ function ensureDefaults(){
   if(!S.moodDiary||typeof S.moodDiary!=='object') S.moodDiary={};
   if(!S.diet||typeof S.diet!=='object') S.diet={};
   if(!S.ai||typeof S.ai!=='object') S.ai={endpoint:'https://api.deepseek.com/v1/chat/completions',key:'',model:'deepseek-chat'};
-  if(!Array.isArray(S.aiChat)) S.aiChat=[];
   if(!S.customBg) S.customBg='';
   if(!S.customAvatar) S.customAvatar='';
   if(!S.found) S.found={};
@@ -1991,22 +1971,6 @@ function confirmJudge(ok){
   save();
 }
 
-// ===== v6 新增：AI 助手快捷提问 =====
-const AI_CHIPS = ['今天没什么动力，怎么办？','夸夸我今天愿意打开它','画得丑，我是不是不适合画画？','帮我安排一个 5 分钟的轻量练习','我今天电量很低，只想要抱抱','帮我挑一门课开始学'];
-function renderAiChips(){
-  const box = document.getElementById('aiChips');
-  if(!box) return;
-  box.innerHTML = AI_CHIPS.map(t=>'<button class="ai-chip" onclick="fillAi(this.dataset.t)" data-t="'+esc(t)+'">'+esc(t)+'</button>').join('');
-}
-function fillAi(text){
-  const inp = document.getElementById('aiInput');
-  if(inp){ inp.value = text; inp.focus(); }
-}
-function clearAiChat(){
-  if(confirm('清空和 AI 朋友的对话？')){ S.aiChat=[]; save(); renderAiMsgs(); }
-}
-
-
 // ===== v16 新增：邮箱登录（Firebase Auth） =====
 function syncCodePath(){
   if(S.sync && S.sync.authLocal && S.sync.authLocal.code) return S.sync.authLocal.code;
@@ -2256,12 +2220,20 @@ function renderAuthStatus(){
 
 // ===== v16 新增：AI 助手（DeepSeek） =====
 function aiKey(){ try{ return localStorage.getItem('djw_ai_key')||''; }catch(e){ return ''; } }
-function aiModel(){ try{ return localStorage.getItem('djw_ai_model')||'deepseek-chat'; }catch(e){ return 'deepseek-chat'; } }
+function aiModel(){
+  try{
+    const raw = localStorage.getItem('djw_ai_model')||'';
+    let m = raw || 'deepseek-v4-flash';
+    if(m==='deepseek-chat') m='deepseek-v4-flash';
+    if(m==='deepseek-reasoner') m='deepseek-v4-pro';
+    return m;
+  }catch(e){ return 'deepseek-v4-flash'; }
+}
 function renderAiSettings(){
   const k=document.getElementById('aiKey'); if(k) k.value=aiKey();
   const m=document.getElementById('aiModel'); if(m) m.value=aiModel();
   const s=document.getElementById('aiStatus');
-  if(s) s.textContent=aiKey()? '✓ 已配置（Key 只存在本机）':'未配置 Key，随手记自动分类等功能暂不可用';
+  if(s) s.textContent=aiKey()? '✓ 已配置（Key 只存在本机）':'未配置 Key，随手记分类/周报总结/梦境卡等功能暂不可用';
 }
 function saveAiKey(){
   const k=(document.getElementById('aiKey').value||'').trim();
@@ -2319,6 +2291,7 @@ function addMemo(){
   renderMemo();
   toast('记下啦~');
   if(aiKey()) aiClassifyMemo(item);
+  if(item.type===1 && aiKey()) aiExtractDream(item);
 }
 function aiClassifyMemo(item){
   callAI([
@@ -2331,6 +2304,33 @@ function aiClassifyMemo(item){
     const it=(S.memos||[]).find(function(m){ return m.id===item.id; });
     if(it){ it.cat=cat; it.summary=sum; save(); renderMemo(); toast('AI 已分类：'+cat); }
   }, function(){});
+}
+function aiExtractDreamById(id){
+  const it=(S.memos||[]).find(function(m){ return m.id===id; });
+  if(!it) return;
+  if(!aiKey()){ toast('先在设置里配置 AI Key~'); return; }
+  it.dreamBusy = true; renderMemo();
+  aiExtractDream(it);
+}
+function aiExtractDream(item){
+  if(!aiKey()) return;
+  callAI([
+    {role:'system',content:'你是呆啾丸的梦境灵感提取器。用户写了一段梦境，请提取三行，用 | 分隔：\n1) 核心画面关键词（3~6 个，逗号分隔，如：暗红走廊,漂浮的镜子）\n2) 可画元素清单（3~6 个，逗号分隔）\n3) 建议色彩氛围（2~4 个颜色词，末尾加一句氛围，如：暗红,墨黑,冷蓝,压抑潮湿）\n严格只输出三行。'},
+    {role:'user',content:item.text}
+  ], function(txt){
+    const p = String(txt||'').split('|').map(function(s){ return s.trim(); });
+    const it=(S.memos||[]).find(function(m){ return m.id===item.id; });
+    if(it && p.length){
+      it.dreamCard = {kw:p[0]||'', elems:p[1]||'', colors:p[2]||''};
+      it.dreamBusy = false;
+      save(); renderMemo();
+      toast('梦境灵感卡生成好啦~');
+    }
+  }, function(){
+    const it2=(S.memos||[]).find(function(m){ return m.id===item.id; });
+    if(it2) it2.dreamBusy=false;
+    renderMemo();
+  });
 }
 function renderMemo(){
   const box=document.getElementById('memoList'); if(!box) return;
@@ -2351,6 +2351,17 @@ function renderMemo(){
       h+='<button class="memo-del" onclick="deleteMemo(\''+m.id+'\')">✕</button></div>';
       h+='<div class="memo-text">'+escHtml(m.text)+'</div>';
       if(m.summary) h+='<div class="memo-sum">✨ '+escHtml(m.summary)+'</div>';
+      if(m.type===1){
+        if(m.dreamCard && (m.dreamCard.kw||m.dreamCard.elems||m.dreamCard.colors)){
+          h+='<div class="dream-card"><div class="dc-h">🌙 梦境灵感卡</div>';
+          if(m.dreamCard.kw) h+='<div>🎯 核心画面：'+escHtml(m.dreamCard.kw)+'</div>';
+          if(m.dreamCard.elems) h+='<div>✏️ 可画元素：'+escHtml(m.dreamCard.elems)+'</div>';
+          if(m.dreamCard.colors) h+='<div>🎨 建议色彩：'+escHtml(m.dreamCard.colors)+'</div>';
+          h+='</div>';
+        } else {
+          h+='<div class="dream-card"><div class="dc-h">🌙 梦境灵感卡</div>'+(m.dreamBusy?'<div class="muted" style="font-size:10.5px;">正在提取…</div>':(aiKey()?'<button class="btn sm ghost" onclick="aiExtractDreamById(\''+m.id+'\')">✨ 生成灵感卡</button>':'<div class="muted" style="font-size:10.5px;">配置 AI Key 后，可为梦境自动提取关键词/元素/色彩~</div>'))+'</div>';
+        }
+      }
       h+='</div>';
     });
   });
@@ -2883,6 +2894,7 @@ function renderHome(){
   renderCourseDonut();
   renderHomePlanPreview();
   updateLevelUI();
+  renderLowHint();
 }
 function spawnHearts(mascot){ bigHeartBounce(mascot); }
 function bigHeartBounce(mascot){
@@ -2964,13 +2976,75 @@ function setState(k){
   renderHome(); renderHomePlan();
   toast('切换为 '+STATE_MAP[k]+'~');
 }
+const STATE_ADVICE = {
+  high:{'':'今天电量很足，优先完成 1 节跟画 + 1 张创作，手感会越来越好。','down':'电量高但心情低落？先画 10 分钟，让笔带走情绪，不急着变好。','meh':'电量足但没感觉？先挑最想画的一张动笔，状态会自己跟上。','ok':'状态在线，把今天最想完成的那件事排最前面。','happy':'今天状态超好！趁手感在，把最想画的那张肝完。'},
+  normal:{'':'保持今天节奏：1 节跟画 + 5~10 分钟速写就够了。','down':'今天不用贪多，完成 1 节跟画就是胜利。','meh':'先做 5 分钟再说，5 分钟后还不想做就停。','ok':'正常推进就好，记得每 45 分钟起来活动一下。','happy':'今天心情不错，试着加一张小速写，让手感持续。'},
+  low:{'':'电量低，今天只做 0.5~1 节课，累了就休息。','down':'今天只练 5 分钟速写就够了，画完就夸自己。','meh':'把任务砍到最小：喝水、吃药、画 5 分钟。','ok':'可以试试 1 小节课程，做不到就只画 5 分钟。','happy':'心情还可以，但别逞强，保持轻量就好。'},
+  down:{'':'低谷模式：允许自己发呆，想画就画 3 分钟。','down':'今天什么都不做也可以，先照顾好自己。','meh':'泡杯温水，闭眼休息 5 分钟，再决定要不要画。','ok':'如果愿意，画 3 分钟小速写，不想画就好好休息。','happy':'心情回升了一点？那画 5 分钟当作庆祝~'}
+};
+function stateAdvice(){
+  const d = ensureToday();
+  const st = d.state||'normal';
+  const mo = d.mood||'';
+  const M = STATE_ADVICE[st];
+  return (M && (M[mo]||M[''])) || '';
+}
+const LOW_HINT_LOCAL = ['去楼下走 10 分钟，看看云和树','出门买杯喜欢的热饮，顺便晒晒太阳','去附近便利店买支新笔，透透气','在小区里散步一圈，听一首喜欢的歌','去公园坐 5 分钟，什么都不做也行'];
+let _lowHintBusy=false;
+function last3Low(){
+  for(let i=2;i>=0;i--){
+    const dd = new Date(); dd.setDate(dd.getDate()-i);
+    const ds = dd.toLocaleDateString('sv-SE');
+    const st = (S.days[ds]||{}).state;
+    if(st!=='low' && st!=='down') return false;
+  }
+  return true;
+}
+function renderLowHint(){
+  const box = document.getElementById('homeLowHint'); if(!box) return;
+  const d = ensureToday();
+  if(!last3Low() || d.lowHintShown){ box.innerHTML=''; return; }
+  let h = '<div class="low-hint"><b>🥺 你已经连续 3 天在低谷啦</b>';
+  if(d.lowHint) h += '<p class="lh-t">'+escHtml(d.lowHint)+'</p>';
+  else h += '<p class="lh-t muted">'+(_lowHintBusy?'正在想一个出门小建议…':'要不要出去透透气？')+'</p>';
+  h += '<div class="lh-btns"><button class="btn sm" onclick="lowHintGen()">✨ 生成出门小建议</button>';
+  h += '<button class="btn sm ghost" onclick="lowHintDismiss()">今天先不了</button></div></div>';
+  box.innerHTML = h;
+}
+function lowHintGen(){
+  if(_lowHintBusy) return;
+  const d = ensureToday();
+  _lowHintBusy = true; renderLowHint();
+  if(!aiKey()){
+    d.lowHint = LOW_HINT_LOCAL[Math.floor(Math.random()*LOW_HINT_LOCAL.length)];
+    _lowHintBusy=false; save(); renderLowHint(); return;
+  }
+  const plans = '年度：'+((S.yearPlan&&S.yearPlan.goal)||'无')+'；月度：'+((getMonthPlan(ym()).goal)||'无')+'；本周：'+((S.weekPlan&&S.weekPlan.goal)||'无');
+  callAI([
+    {role:'system',content:'你是呆啾丸的状态陪伴助手。用户已连续 3 天状态低谷，请根据他的计划生成 1 个「出去做某件事」的具体小建议：低成本、5~30 分钟、不评判、具体到动作，不超过 40 字，一行输出，不要解释。'},
+    {role:'user',content:'我的计划：'+plans}
+  ], function(txt){
+    const t = String(txt||'').trim();
+    const d2 = ensureToday();
+    d2.lowHint = t || LOW_HINT_LOCAL[Math.floor(Math.random()*LOW_HINT_LOCAL.length)];
+    _lowHintBusy=false; save(); renderLowHint();
+  }, function(){
+    const d3 = ensureToday();
+    d3.lowHint = LOW_HINT_LOCAL[Math.floor(Math.random()*LOW_HINT_LOCAL.length)];
+    _lowHintBusy=false; save(); renderLowHint();
+  });
+}
+function lowHintDismiss(){
+  ensureToday().lowHintShown = true; save(); renderLowHint();
+}
 function renderHomePlan(){
   const d = ensureToday();
   const basePlan = STATE_PLANS[d.state] || STATE_PLANS.normal;
   const pool = PLAN_POOL[d.state] || PLAN_POOL.normal;
   const seed = todayStr(); let h=0; for(let i=0;i<seed.length;i++) h=(h*31+seed.charCodeAt(i))%pool.length;
   const plan = [...basePlan, pool[h]];
-  let html = '<div class="today-head">今日面板 · '+STATE_MAP[d.state]+'</div><ul class="plan-list">';
+  const adv = stateAdvice();
+  let html = (adv? '<div class="state-advice">💡 '+adv+'</div>':'') + '<div class="today-head">今日面板 · '+STATE_MAP[d.state]+'</div><ul class="plan-list">';
   plan.forEach((p,i)=>{
     const done = d.done && d.done['p'+i];
     html += '<li class="'+(done?'done':'')+'"><label style="display:flex;align-items:center;gap:6px;cursor:pointer;" onclick="togglePlanTask('+i+')">';
@@ -3034,7 +3108,7 @@ function renderMoodRow(){
 }
 function setMood(k){
   haptic();
-  const d = ensureToday(); d.mood = d.mood===k?'':k; save(); renderMoodRow();
+  const d = ensureToday(); d.mood = d.mood===k?'':k; save(); renderMoodRow(); renderHomePlan();
   if(d.mood) showPraise('mood');
 }
 function renderCalendar(){
@@ -3103,6 +3177,7 @@ function showDayDetail(ds){
   if(d.mood) html += '· 心情 '+MOODS.find(x=>x.k===d.mood)?.n+' ';
   if(d.courseCount) html += '· 跟画 '+d.courseCount+'节 ';
   if(d.microCount) html += '· 创作 '+d.microCount+'张 ';
+  if(d.sketchMin) html += '· 速写 '+d.sketchMin+'分钟 ';
   el.innerHTML = html; el.style.display='block';
 }
 
@@ -3365,30 +3440,64 @@ function genWeekReport(){
   const weekKey = now.getFullYear()+'-W'+isoWeek(now);
   const days = [];
   for(let i=6;i>=0;i--){ const dd=new Date(now); dd.setDate(dd.getDate()-i); days.push(dd.toLocaleDateString('sv-SE')); }
-  let checkin=0, water=0, courseDone=0, sprouts=0; const moods=[];
+  let checkin=0, water=0, courseDone=0, sprouts=0, sketchMin=0; const moods=[]; const states={high:0,normal:0,low:0,down:0};
   days.forEach(ds=>{
     const d = S.days[ds];
     if(d && d.checkin) checkin++;
     if(d && d.waterCups) water++;
     if(d && d.mood) moods.push((MOODS.find(x=>x.k===d.mood)||{}).n||d.mood);
+    if(d && d.state && states[d.state]!=null) states[d.state]++;
+    if(d && d.sketchMin) sketchMin += d.sketchMin;
   });
   Object.keys(S.found||{}).forEach(k=>{
     const f = S.found[k];
     Object.keys(f.days||{}).forEach(ds=>{ if(days.indexOf(ds)>=0) sprouts += f.days[ds]||0; });
   });
   courseDone = (S.courseLog||[]).filter(l=>days.indexOf(l.date)>=0).length;
-  const html = '<div class="wr-row">✅ 打卡 '+checkin+' / 7 天</div>'+
+  const lowDays = states.down + states.low;
+  const baseHtml = '<div class="wr-row">✅ 打卡 '+checkin+' / 7 天</div>'+
     '<div class="wr-row">🌱 枝芽 +'+sprouts+'</div>'+
     '<div class="wr-row">📚 完成课程 '+courseDone+' 节</div>'+
+    '<div class="wr-row">⏱ 速写累计 '+sketchMin+' 分钟</div>'+
     '<div class="wr-row">💧 喝水记录 '+water+' 天</div>'+
     (moods.length? '<div class="wr-row">🎭 心情：'+moods.join(' · ')+'</div>':'');
   if(!Array.isArray(S.weekReports)) S.weekReports=[];
   const wkIdx = S.weekReports.findIndex(w=>w && w.week===weekKey);
-  if(wkIdx>=0){ S.weekReports[wkIdx] = {week:weekKey, ts:Date.now(), html}; }
-  else S.weekReports.unshift({week:weekKey, ts:Date.now(), html});
-  if(S.weekReports.length>52) S.weekReports.length=52;
-  save(); renderHomePlanPreview(); renderReleased();
-  renderWeekReports();
+  const saveRep = function(htmlText, aiOn){
+    const rep = {week:weekKey, ts:Date.now(), html:htmlText, ai:!!aiOn};
+    if(wkIdx>=0){ S.weekReports[wkIdx] = rep; }
+    else S.weekReports.unshift(rep);
+    if(S.weekReports.length>52) S.weekReports.length=52;
+    save(); renderHomePlanPreview(); renderReleased();
+    renderWeekReports();
+  };
+  saveRep(baseHtml + weekAdviceLocal(lowDays, checkin), false);
+  if(aiKey()){
+    const moodTxt = moods.length? moods.join('、') : '未记录';
+    callAI([
+      {role:'system',content:'你是呆啾丸的陪伴型周报助手。基于本周真实数据，用温柔、具体、不说教的中文输出三行，用 | 分隔：\n1) 一句本周总结（不超过40字，自然地融入数据）\n2) 下周建议强度（参考本周情绪与状态分布，给具体可执行量，如每天练几分钟、做什么）\n3) 一句针对性鼓励（不空泛）\n严格只输出三行，不要多余文字。'},
+      {role:'user',content:'本周数据：打卡 '+checkin+'/7天；完成课程 '+courseDone+' 节；速写累计 '+sketchMin+' 分钟；枝芽 +'+sprouts+'；心情：'+moodTxt+'；状态分布：高能'+states.high+' 按部就班'+states.normal+' 低电量'+states.low+' 低谷'+states.down}
+    ], function(txt){
+      const parts = String(txt||'').split('|').map(function(s){ return s.trim(); }).filter(Boolean);
+      if(!parts.length) return;
+      let aiHtml = '';
+      if(parts[0]) aiHtml += '<div class="wr-row ai">📝 '+escHtml(parts[0])+'</div>';
+      if(parts[1]) aiHtml += '<div class="wr-row ai">🌤 下周建议：'+escHtml(parts[1])+'</div>';
+      if(parts[2]) aiHtml += '<div class="wr-row ai">💌 '+escHtml(parts[2])+'</div>';
+      if(aiHtml) saveRep(baseHtml + aiHtml, true);
+    }, function(){});
+  }
+}
+function weekAdviceLocal(lowDays, checkin){
+  const strength = lowDays>=4
+    ? '下周请放低强度：每天先从 5 分钟速写或半节课开始，累了就停，身体优先。'
+    : (lowDays>=2
+      ? '下周建议温和推进：每天 1 小节课程 + 5~10 分钟速写，状态差就自动减半。'
+      : (checkin>=5 ? '下周可以保持节奏：每天 1 节课 + 1 张创作，周末给自己放个假。' : '下周从每天 1 小节开始，先把「打开画布」变成习惯。'));
+  const enc = checkin>=5
+    ? '这周你很稳，画画这件事正在变成你的习惯，慢慢来就很了不起。'
+    : (lowDays>=4 ? '这周辛苦了，低谷不是退步，是身体在喊你歇一歇，你已经做得很好了。' : '不用和任何人比，愿意一直画下去，就是最棒的进度。');
+  return '<div class="wr-row ai">🌤 下周建议：'+strength+'</div><div class="wr-row ai">💌 '+enc+'</div>';
 }
 function releasePlanItem(scope, key){
   let label='', text='';
@@ -3662,13 +3771,20 @@ function renderMicro(){
   renderInspo();
 }
 let _upTmr=null, _upSec=0;
+function addSketchMin(m){
+  const d = ensureToday();
+  d.sketchMin = Math.round(((d.sketchMin||0)+m)*10)/10;
+  save();
+}
 function startUpTimer(){
   const el = document.getElementById('upTimer');
   if(!el) return;
   if(_upTmr){
     clearInterval(_upTmr); _upTmr=null;
     el.textContent = '⏱ 正计时 ' + fmtTime(_upSec);
-    toast('正计时暂停于 '+fmtTime(_upSec));
+    if(_upSec>=30){ addSketchMin(_upSec/60); toast('已记入速写时长 +'+(Math.round(_upSec/6)/10)+' 分钟'); }
+    else toast('正计时暂停于 '+fmtTime(_upSec)+'（不足 30 秒不计入速写时长）');
+    _upSec = 0;
     return;
   }
   _upSec = 0;
@@ -3706,7 +3822,7 @@ function startTimer(){
   el.dataset.running='1'; el.textContent='⏳ '+fmtTime(s);
   window._tmr = setInterval(()=>{
     s--; el.textContent='⏳ '+fmtTime(s); el.dataset.sec=s;
-    if(s<=0){ clearInterval(window._tmr); el.dataset.running='0'; el.textContent='⏳ 时间到~'; }
+    if(s<=0){ clearInterval(window._tmr); el.dataset.running='0'; el.textContent='⏳ 时间到~'; addSketchMin(15); toast('15 分钟到！已记入速写时长 +15 分钟~'); }
   },1000);
 }
 function fmtTime(s){ const m=Math.floor(s/60); const sec=s%60; return m+':'+(sec<10?'0':'')+sec; }
@@ -4525,106 +4641,6 @@ function renderDiet(){
 function adjWater(n){ const d=todayStr(); if(!S.diet[d]) S.diet[d]={breakfast:'',lunch:'',dinner:'',snack:'',water:0,note:''}; S.diet[d].water=Math.max(0,(S.diet[d].water||0)+n); if(S.days[d]) S.days[d].waterCups=Math.max(0,(S.days[d].waterCups||0)+n); save(); checkMilestones(); const e=document.getElementById('waterN'); if(e) e.textContent=S.diet[d].water; }
 function saveDiet(){ const d=todayStr(); const e=S.diet[d]||{}; e.note=document.getElementById('dietNote').value; save(); toast('饮食已保存~'); }
 
-// ===== AI 助手（接真实大模型，无 Key 时本地温柔回退） =====
-function renderAi(){ renderAiMsgs(); renderAiChips(); }
-function renderAiMsgs(){
-  const box=document.getElementById('aiMsgs'); if(!box) return;
-  if(!S.aiChat.length){ box.innerHTML='<div class="ai-empty">我是小啾啾的 AI 朋友~ 有任何想说的、想问的，都可以告诉我。慢慢来，我都在。</div>'; return; }
-  box.innerHTML=S.aiChat.map(m=>'<div class="ai-msg'+(m.role==='user'?' me':'')+'">'+esc(m.content)+'</div>').join('');
-  box.scrollTop=box.scrollHeight;
-}
-function aiLocalReply(text){
-  const t = (text||'').toLowerCase();
-  const pick = arr=>arr[Math.floor(Math.random()*arr.length)];
-  if(/课|学|推荐|开始|挑/.test(t)){
-    const unfinished = (S.courses||[]).filter(c=>(c.current||0)<(c.total||0));
-    let tip = '';
-    if(unfinished.length){
-      unfinished.sort((a,b)=>((a.current||0)/(a.total||1))-((b.current||0)/(b.total||1)));
-      const c = unfinished[0];
-      tip = '今天可以从「'+c.name+'」第 '+(c.current+1)+' 节开始，只做一小步就好。';
-    } else if((S.futureCourses||[]).length){
-      tip = '心愿单里的「'+S.futureCourses[0]+'」怎么样？先看一节试试水~';
-    } else if(typeof HOT_COURSES!=='undefined' && HOT_COURSES.length){
-      tip = '可以先试试「'+HOT_COURSES[0][0]+'」——'+HOT_COURSES[0][2]+'。';
-    } else {
-      tip = '随便挑一个想画的，先动笔 5 分钟就好。';
-    }
-    return '好呀~ '+tip;
-  }
-  if(/丑|画不好|不好看|不像|失败/.test(t)){
-    return pick(['画得「丑」是进步的证据，不是审判的理由。放轻松，下一个更好~','没有人一开始就像大师。你愿意画，就已经赢过昨天了。','丑不丑不重要，重要的是你还在画。小啾啾给你比心~']);
-  }
-  if(/动力|不想|没劲|拖延|累|坚持/.test(t)){
-    return pick(['没动力很正常，先从 3 分钟开始，3 分钟到了还想停就停。','把目标缩小到「打开画布」，做完就算赢~','累的时候不需要逼自己变好，先照顾身体，电量会回来的。']);
-  }
-  if(/焦虑|压力|电量|抱|难过|emo/.test(t)){
-    return pick(['听到你说这些，小啾啾想抱抱你。今天可以只做让自己舒服的事。','电量低的时候，去避难所铺一组色块吧，不评判、不执行。','你不需要立刻好起来，慢慢来，我都在。']);
-  }
-  return pick(['我听到你啦。不管今天顺不顺利，你愿意说出来就很勇敢。','嗯嗯，我陪着你呢。如果觉得累，先歇一会儿也没关系的。','你说得我都记下了~ 慢慢来，不用急着变好，今天已经很好了。','听起来你最近压力不小，抱抱你。要不要先喝口水，深呼吸一下？','这个问题真好。我的想法是：别给自己太大目标，先完成一件小小的事就够啦。']);
-}
-// ===== v16.6 新增：AI 悬浮窗（可拖动） =====
-let _aiDragging=false,_aiOffX=0,_aiOffY=0;
-function aiSavePos(x,y){ try{ localStorage.setItem('djw_ai_pos', JSON.stringify({x:x,y:y})); }catch(e){} }
-function aiLoadPos(){ try{ const p=JSON.parse(localStorage.getItem('djw_ai_pos')||'null'); return (p&&typeof p.x==='number')?p:null; }catch(e){ return null; } }
-function initAiDrag(){
-  const h=document.getElementById('aiDrag'), w=document.getElementById('aiWin');
-  if(!h||!w) return;
-  const pos=aiLoadPos();
-  if(pos && pos.x!=null && pos.y!=null){ w.style.left=pos.x+'px'; w.style.top=pos.y+'px'; w.style.right='auto'; w.style.bottom='auto'; }
-  h.addEventListener('pointerdown',function(e){
-    _aiDragging=true; _aiOffX=e.clientX-w.offsetLeft; _aiOffY=e.clientY-w.offsetTop;
-    try{ h.setPointerCapture(e.pointerId); }catch(err){}
-  });
-  h.addEventListener('pointermove',function(e){
-    if(!_aiDragging) return;
-    let x=e.clientX-_aiOffX, y=e.clientY-_aiOffY;
-    x=Math.max(4,Math.min(window.innerWidth-w.offsetWidth-4,x));
-    y=Math.max(4,Math.min(window.innerHeight-36,y));
-    w.style.left=x+'px'; w.style.top=y+'px'; w.style.right='auto'; w.style.bottom='auto';
-  });
-  h.addEventListener('pointerup',function(){
-    if(!_aiDragging) return;
-    _aiDragging=false;
-    try{ aiSavePos(parseInt(w.style.left)||0, parseInt(w.style.top)||0); }catch(e){}
-  });
-  h.addEventListener('pointercancel',function(){ _aiDragging=false; });
-}
-function aiToggle(){
-  const w=document.getElementById('aiWin');
-  if(!w) return;
-  w.classList.toggle('on');
-  if(w.classList.contains('on')){
-    try{ renderAi(); }catch(e){}
-    const i=document.getElementById('aiInput'); if(i) i.focus();
-  }
-}
-async function sendAI(){
-  const inp=document.getElementById('aiInput'); if(!inp) return;
-  const text=inp.value.trim(); if(!text) return;
-  inp.value='';
-  S.aiChat.push({role:'user',content:text}); if(S.aiChat.length>40) S.aiChat=S.aiChat.slice(-40);
-  renderAiMsgs();
-  const box=document.getElementById('aiMsgs');
-  const think=document.createElement('div'); think.className='ai-msg'; think.id='aiThink'; think.textContent='小啾啾的 AI 朋友正在想…'; box.appendChild(think); box.scrollTop=box.scrollHeight;
-  const reply=await aiChatReply(text);
-  const t2=document.getElementById('aiThink'); if(t2) t2.remove();
-  S.aiChat.push({role:'assistant',content:reply}); if(S.aiChat.length>40) S.aiChat=S.aiChat.slice(-40);
-  save(); renderAiMsgs();
-}
-async function aiChatReply(text){
-  const key=aiKey();
-  if(!key) return aiLocalReply(text);
-  try{
-    const res=await fetch('https://api.deepseek.com/chat/completions',{ method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
-      body:JSON.stringify({ model:aiModel()||'deepseek-chat',
-        messages:[{role:'system',content:'你是“小啾啾的AI朋友”，陪伴一位有些焦虑、ADHD、刚毕业在学画画的用户。语气温柔、简短、不评判，不用专业术语，多给鼓励和接纳，偶尔用可爱语气。用户问什么都可以认真回答。'},
-          ...S.aiChat.slice(0,-1).map(m=>({role:m.role,content:m.content})), {role:'user',content:text}] }) });
-    if(!res.ok) return '（接口返回 '+res.status+'，可能是 Key 或跨域限制。先给你一句：你已经很棒了，咱们慢慢来~）';
-    const data=await res.json();
-    return (data.choices&&data.choices[0]&&data.choices[0].message&&data.choices[0].message.content) || aiLocalReply(text);
-  }catch(err){ return '（连接失败了，可能是浏览器跨域 CORS 限制。先给你一句温柔的：今天也辛苦啦，别急，我们慢慢来~）'; }
-}
 function delCustomBg(){ if(!confirm('清除自定义背景图？')) return; S.customBg=''; S.bg='none'; save(); applyBg(); renderSettings(); toast('背景已清除~'); }
 function addFutureFromName(name){ if(S.futureCourses.indexOf(name)<0){ S.futureCourses.push(name); save(); renderFutureCourses(); if(S.page==='courses') renderCourses(); toast('已收进「未来想报课程」~🌟'); } else { toast('已经在里面啦~'); } }
 // ===== init =====
@@ -4675,7 +4691,6 @@ function initAll(){
   go(S.page || 'home');
   assetsReady();
   renderDust();
-  try{ initAiDrag(); }catch(e){}
   try{ startSyncListener(); }catch(e){}
   initAuthFlow();
   hideSplash();
