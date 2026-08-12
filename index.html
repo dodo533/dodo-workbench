@@ -2034,6 +2034,7 @@ function authToggleMode(){
   showAuthMsg('');
 }
 function authSubmit(){
+  const btn=document.getElementById('authBtn');
   const email=(document.getElementById('authEmail').value||'').trim();
   const pass=document.getElementById('authPass').value||'';
   if(!email||!pass){ showAuthMsg('请填写邮箱和密码'); return; }
@@ -2045,17 +2046,29 @@ function authSubmit(){
     try{ JSON.parse(c); }catch(e){ showAuthMsg('配置不是合法 JSON'); return; }
     S.sync.config=c; save();
   }
-  const app=authApp(); if(!app){ showAuthMsg('Firebase 初始化失败'); return; }
+  const app=authApp(); if(!app){ showAuthMsg('Firebase 初始化失败（配置可能不对）'); return; }
   const a=firebase.auth(app);
-  const isLogin=(document.getElementById('authBtn').textContent.indexOf('登录')>=0);
+  const isLogin=(btn&&btn.textContent.indexOf('登录')>=0);
+  if(btn){ btn.disabled=true; btn.textContent=isLogin?'登录中…':'注册中…'; }
+  showAuthMsg('正在连接 Firebase…');
   const p = isLogin ? a.signInWithEmailAndPassword(email,pass) : a.createUserWithEmailAndPassword(email,pass);
+  const timer=setTimeout(function(){
+    if(btn){ btn.disabled=false; btn.textContent=isLogin?'登录':'注册'; }
+    showAuthMsg('⚠️ 连接超时（25秒）：请检查网络，或确认 Firebase 已开启 Email/Password 登录');
+  }, 25000);
   p.then(function(u){
+    clearTimeout(timer);
+    if(btn){ btn.disabled=false; btn.textContent=isLogin?'登录':'注册'; }
     S.sync.uid=u.user?u.user.uid:u.uid; save();
     hideAuthOverlay();
     toast(isLogin?'欢迎回来~':'注册成功，欢迎来到呆啾丸~');
     afterLoginSync();
     renderSettings();
-  }).catch(function(err){ showAuthMsg(prettyAuthErr(err)); });
+  }).catch(function(err){
+    clearTimeout(timer);
+    if(btn){ btn.disabled=false; btn.textContent=isLogin?'登录':'注册'; }
+    showAuthMsg(prettyAuthErr(err));
+  });
 }
 function authLogout(){
   if(!confirm('退出登录？本机数据会保留，下次登录同一账号可继续同步。')) return;
