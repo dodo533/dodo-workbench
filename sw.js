@@ -1,5 +1,5 @@
 /* DJW Workbench Service Worker: offline + fast start + auto update (network-first for HTML) */
-const CACHE = 'dajiuwan-v29-20260813';
+const CACHE = 'dajiuwan-v30-20260813';
 const ASSETS = ['./', './index.html', './gallery.html', './manifest.webmanifest', './icons.js', './stickers.js', './firebase-app.js', './firebase-auth.js', './firebase-db.js', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', function(e){
