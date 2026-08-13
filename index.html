@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script src="icons.js" async></script>
 <script src="stickers.js" async></script>
-<title>呆啾丸 · 绘画自律工作台 v24</title>
+<title>呆啾丸 · 绘画自律工作台 v25</title>
 <style>
 
 :root{
@@ -73,11 +73,14 @@ h1,h2,h3,h4,b,strong{font-weight:300;}
 .theme-row{margin-top:auto;display:flex;gap:6px;padding:10px 4px 2px;flex-wrap:wrap;}
 .sw{width:20px;height:20px;border-radius:50%;cursor:pointer;border:2px solid #fff;box-shadow:var(--shadow);}
 .side-foot{font-size:10px;color:var(--sub);text-align:center;padding-top:6px;font-weight:200;}
+@media(min-width:761px){
+  body.sideHidden #sidebar{display:none;}
+}
 #main{flex:1;min-width:0;display:flex;flex-direction:column;}
 .topbar{display:flex;align-items:center;gap:10px;padding:11px 16px;position:sticky;top:0;z-index:20;
   background:linear-gradient(180deg,rgba(255,255,255,0.22),rgba(255,255,255,0.08));
   backdrop-filter:blur(10px) saturate(150%);-webkit-backdrop-filter:blur(10px) saturate(150%);border-bottom:1px solid rgba(255,255,255,0.45);}
-.hamb{display:none;font-size:22px;cursor:pointer;background:none;border:none;color:var(--text);}
+.hamb{display:block;font-size:22px;cursor:pointer;background:none;border:none;color:var(--text);}
 .topbar .ttl{font-weight:300;font-size:14px;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .topbar .dt{font-size:11px;color:var(--sub);}
 .lvbadge{display:flex;align-items:center;gap:6px;background:var(--glass);padding:4px 10px 4px 4px;border-radius:30px;box-shadow:var(--shadow);cursor:pointer;}
@@ -344,7 +347,6 @@ body.gentle .content>.panel>.grid2{opacity:.92;}
 @media(max-width:760px){
   #sidebar{position:fixed;left:0;top:0;bottom:0;z-index:40;transform:translateX(-100%);transition:transform .28s;box-shadow:var(--shadow);width:220px;}
   #sidebar.open{transform:translateX(0);}
-  .hamb{display:block;}
   .mobile-mask{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:35;}
   .mobile-mask.on{display:block;}
   .content{padding:12px;}
@@ -1527,7 +1529,7 @@ body.cardBgBorder.hasCardImg .card::before{background-image:var(--cardImg),var(-
               <button class="btn ghost" onclick="document.getElementById('imIn').click()">导入</button>
               <input type="file" id="imIn" style="display:none;" onchange="importData(this)">
             </div>
-            <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-13-v24</b></p>
+            <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-13-v25</b></p>
           </div>
         </div>
         <div class="card">
@@ -1778,7 +1780,7 @@ function load(){
   }catch(e){S={};}
 }
 
-const APP_VERSION = '2026-08-13-v24';
+const APP_VERSION = '2026-08-13-v25';
 // 深度消毒：同步合并/旧版本/损坏数据进入后，把每个用到的字段修复成正确类型，防止任意一处 undefined 崩溃
 function deepSanitize(){
   if(!S || typeof S!=='object' || Array.isArray(S)) S={};
@@ -5382,6 +5384,7 @@ function assetsReady(){
 }
 function initAll(){
   load();
+  try{ if(window.innerWidth>760 && localStorage.getItem('dajiuwan_sideHidden')==='1') document.body.classList.add('sideHidden'); }catch(err){}
   try{
     const lastVer = localStorage.getItem('dajiuwan_ver');
     if(lastVer && lastVer!==APP_VERSION){
@@ -5406,8 +5409,13 @@ function initAll(){
   }catch(e){}
   document.getElementById('hamb').onclick = ()=>{
     haptic();
-    document.getElementById('sidebar').classList.toggle('open');
-    document.getElementById('mobileMask').classList.toggle('on');
+    if(window.innerWidth <= 760){
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('mobileMask').classList.toggle('on');
+    } else {
+      document.body.classList.toggle('sideHidden');
+      try{ localStorage.setItem('dajiuwan_sideHidden', document.body.classList.contains('sideHidden') ? '1' : '0'); }catch(err){}
+    }
   };
   document.getElementById('mobileMask').onclick = ()=>{
     document.getElementById('sidebar').classList.remove('open');
