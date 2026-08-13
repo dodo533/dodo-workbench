@@ -3696,10 +3696,16 @@ function applyNight(){
 function setNight(v){ S.nightMode=v; save(); applyNight(); applyBg(); haptic(); }
 function devType(){
   const w = window.innerWidth;
-  let coarse=false;
-  try{ coarse = !!(window.matchMedia && window.matchMedia('(pointer:coarse)').matches); }catch(e){}
+  let coarse=false, touch=false, ipad=false;
+  try{
+    coarse = !!(window.matchMedia && window.matchMedia('(pointer:coarse)').matches);
+    touch = (navigator.maxTouchPoints||0) > 0;
+    const ua=(navigator.userAgent||'').toLowerCase();
+    const plat=(navigator.platform||'').toLowerCase();
+    ipad = ua.indexOf('ipad')>=0 || (plat.indexOf('mac')>=0 && touch);
+  }catch(e){}
   if(w <= 760) return 'phone';
-  if(coarse || w < 1100) return 'tablet';
+  if(coarse || ipad || w < 1100) return 'tablet';
   return 'desktop';
 }
 function applyBg(){
