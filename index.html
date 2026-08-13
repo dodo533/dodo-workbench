@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script src="icons.js" async></script>
 <script src="stickers.js" async></script>
-<title>呆啾丸 · 绘画自律工作台 v28</title>
+<title>呆啾丸 · 绘画自律工作台 v29</title>
 <style>
 
 :root{
@@ -129,6 +129,7 @@ label{font-size:11.5px;color:var(--sub);font-weight:300;display:block;margin-top
 .mascot-wrap.shake{animation:shake .4s;}
 .card-tag{position:absolute;top:7px;right:9px;z-index:3;width:18px;height:18px;pointer-events:none;opacity:.75;display:block;}
 .card-tag img{width:100%;height:100%;object-fit:contain;}
+body.cardBgBorder .card-tag{display:none;}
 .mascot-btn{position:absolute;width:26px;height:26px;border-radius:50%;border:none;background:var(--panel);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:var(--shadow);font-size:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .15s,background .2s;color:var(--text);z-index:5;}
 .mascot-btn:hover{transform:scale(1.1);background:var(--card);}
 .mascot-btn.av-btn{right:-4px;bottom:-4px;}
@@ -161,6 +162,8 @@ label{font-size:11.5px;color:var(--sub);font-weight:300;display:block;margin-top
 .state-opt{background:var(--glass);border:1px solid var(--line);border-radius:14px;padding:10px 4px;text-align:center;cursor:pointer;transition:.2s;color:var(--text);}
 .state-opt img{width:28px;height:28px;object-fit:contain;margin-bottom:2px;}
 .state-opt small{display:block;font-size:9px;color:var(--sub);margin-top:2px;}
+#compass .state-opt{font-weight:600;}
+#compass .state-opt small{font-weight:600;}
 .state-opt:active{transform:scale(0.96);}
 .state-opt.on{background:rgba(255,255,255,0.22);backdrop-filter:blur(8px) saturate(150%);-webkit-backdrop-filter:blur(8px) saturate(150%);border:1.5px solid rgba(255,255,255,0.55);color:var(--pink);box-shadow:0 5px 16px rgba(255,156,191,0.22);}
 .today-head{margin-top:10px;font-size:14px;color:var(--pink);font-weight:500;}
@@ -431,13 +434,6 @@ body.gentle .content>.panel>.grid2{opacity:.92;}
   box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,0.8);}
 .slime-box h3{margin:0 0 8px;font-size:16px;color:var(--text);}
 .slime-box p{font-size:12.5px;color:var(--text);line-height:1.6;margin:0 0 14px;}
-.sos-btn{position:fixed;left:16px;bottom:16px;z-index:60;border:none;cursor:pointer;
-  background:linear-gradient(160deg,rgba(255,255,255,0.5),rgba(255,255,255,0.24));
-  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  border:1px solid rgba(255,255,255,0.6);border-radius:30px;padding:10px 16px;font-size:12.5px;color:var(--text);
-  box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,0.7);}
-.sos-btn:hover{transform:translateY(-2px);}
-@media(max-width:760px){.sos-btn{left:10px;bottom:12px;padding:9px 12px;font-size:11.5px;}}
 
 /* 作品集马赛克 */
 .creation-list.mosaic .creation img{filter:blur(4px) saturate(1.1);transform:scale(1.7);transform-origin:center;image-rendering:pixelated;}
@@ -977,6 +973,8 @@ body.night.hasBgImg::before{background:rgba(28,18,26,0.22);}
 .home-more-panel .chk-row{padding:5px 2px;}
 .decor-banner-card{padding:8px 12px;margin-bottom:10px;text-align:center;}
 .decor-banner{font-size:13px;color:var(--pink);margin:0;font-weight:300;}
+.decor-banner-card::before{opacity:0!important;}
+.decor-banner-card::after{display:none!important;}
 .mascot-wrap img.avatar-acc{position:absolute;left:calc(50% + var(--accLeft,0)*1%);width:var(--accSizePx,88px);height:auto;border-radius:0;object-fit:contain;pointer-events:none;z-index:6;display:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18));}
 body.accModeTop .avatar-acc{top:calc(0% + var(--accOff,0)*1%);transform:translate(-50%,-100%);}
 body.accModeCenter .avatar-acc{top:calc(50% + var(--accOff,0)*1%);transform:translate(-50%,-50%);}
@@ -990,13 +988,12 @@ body.decorPlain .card,body.decorPlain .found-card,body.decorPlain .modal-box,bod
 body.decorPlain .card::after,body.decorPlain .found-card::after{display:none;}
 body.decorPlain .qbtn,body.decorPlain .btn{background:var(--panel);}
 body.decorPlain .card::before{opacity:0!important;}
-body.decorSolid .card,body.decorSolid .found-card,body.decorSolid .modal-box,body.decorSolid .haven-card,body.decorSolid .slime-box,body.decorSolid .wake-picker-box,body.decorSolid .lv-pop,body.decorSolid .slime-banner{background:rgba(255,253,249,0.96);backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:0 10px 30px rgba(150,110,130,0.18);}
+body.decorSolid .card,body.decorSolid .found-card,body.decorSolid .modal-box,body.decorSolid .haven-card,body.decorSolid .slime-box,body.decorSolid .wake-picker-box,body.decorSolid .lv-pop,body.decorSolid .slime-banner{background:var(--solidBg, rgba(255,253,249,0.96));backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:0 10px 30px rgba(150,110,130,0.18);}
 body.decorSolid .card::after,body.decorSolid .found-card::after{display:none;}
-body.night.decorSolid .card,body.night.decorSolid .found-card,body.night.decorSolid .modal-box,body.night.decorSolid .haven-card,body.night.decorSolid .slime-box,body.night.decorSolid .wake-picker-box,body.night.decorSolid .lv-pop,body.night.decorSolid .slime-banner{background:rgba(42,30,38,0.97);}
+body.night.decorSolid .card,body.night.decorSolid .found-card,body.night.decorSolid .modal-box,body.night.decorSolid .haven-card,body.night.decorSolid .slime-box,body.night.decorSolid .wake-picker-box,body.night.decorSolid .lv-pop,body.night.decorSolid .slime-banner{background:var(--solidBgNight, rgba(42,30,38,0.97));}
 body.cardBgFill [data-decor]{background-size:cover!important;}
-body.decorOuter .card{box-shadow:0 0 0 2px var(--pink),0 0 0 4px rgba(255,255,255,.55),0 10px 28px rgba(180,130,150,.20);}
-body.cardBgBorder [data-decor]{background-size:var(--cardLaceCornerW) auto,var(--cardLaceCornerW) auto,var(--cardLaceCornerW) auto,var(--cardLaceCornerW) auto,auto var(--cardLaceEdgeH),auto var(--cardLaceEdgeH)!important;background-repeat:no-repeat,no-repeat,no-repeat,no-repeat,repeat-x,repeat-x!important;background-position:var(--cardBgGap) var(--cardBgGap),calc(100% - var(--cardBgGap)) var(--cardBgGap),var(--cardBgGap) calc(100% - var(--cardBgGap)),calc(100% - var(--cardBgGap)) calc(100% - var(--cardBgGap)),center var(--cardBgGap),center calc(100% - var(--cardBgGap))!important;}
-body.cardBgBorder.hasCardImg .card::before{background-image:var(--cardImg),var(--cardImg),var(--cardImg),var(--cardImg),var(--cardImg),var(--cardImg);background-size:var(--cardLaceCornerW) auto,var(--cardLaceCornerW) auto,var(--cardLaceCornerW) auto,var(--cardLaceCornerW) auto,auto var(--cardLaceEdgeH),auto var(--cardLaceEdgeH);background-repeat:no-repeat,no-repeat,no-repeat,no-repeat,repeat-x,repeat-x;background-position:var(--cardBgGap) var(--cardBgGap),calc(100% - var(--cardBgGap)) var(--cardBgGap),var(--cardBgGap) calc(100% - var(--cardBgGap)),calc(100% - var(--cardBgGap)) calc(100% - var(--cardBgGap)),center var(--cardBgGap),center calc(100% - var(--cardBgGap));background-origin:padding-box,padding-box,padding-box,padding-box,content-box,content-box;}
+body.cardBgBorder [data-decor]{background-size:var(--cardLaceCornerW) auto,var(--cardLaceCornerW) auto,var(--cardLaceCornerW) auto,var(--cardLaceCornerW) auto,calc(100% - var(--cardBgGap) - var(--cardBgGap) - var(--cardLaceCornerW) - var(--cardLaceCornerW) - var(--cardLaceGap) - var(--cardLaceGap)) var(--cardLaceEdgeH),calc(100% - var(--cardBgGap) - var(--cardBgGap) - var(--cardLaceCornerW) - var(--cardLaceCornerW) - var(--cardLaceGap) - var(--cardLaceGap)) var(--cardLaceEdgeH)!important;background-repeat:no-repeat,no-repeat,no-repeat,no-repeat,repeat-x,repeat-x!important;background-position:var(--cardBgGap) var(--cardBgGap),calc(100% - var(--cardBgGap)) var(--cardBgGap),var(--cardBgGap) calc(100% - var(--cardBgGap)),calc(100% - var(--cardBgGap)) calc(100% - var(--cardBgGap)),center var(--cardBgGap),center calc(100% - var(--cardBgGap))!important;}
+body.cardBgBorder.hasCardImg .card::before{background-image:var(--cardImg),var(--cardImg),var(--cardImg),var(--cardImg),var(--cardImg),var(--cardImg);background-size:var(--cardLaceCornerW) auto,var(--cardLaceCornerW) auto,var(--cardLaceCornerW) auto,var(--cardLaceCornerW) auto,calc(100% - var(--cardBgGap) - var(--cardBgGap) - var(--cardLaceCornerW) - var(--cardLaceCornerW) - var(--cardLaceGap) - var(--cardLaceGap)) var(--cardLaceEdgeH),calc(100% - var(--cardBgGap) - var(--cardBgGap) - var(--cardLaceCornerW) - var(--cardLaceCornerW) - var(--cardLaceGap) - var(--cardLaceGap)) var(--cardLaceEdgeH);background-repeat:no-repeat,no-repeat,no-repeat,no-repeat,repeat-x,repeat-x;background-position:var(--cardBgGap) var(--cardBgGap),calc(100% - var(--cardBgGap)) var(--cardBgGap),var(--cardBgGap) calc(100% - var(--cardBgGap)),calc(100% - var(--cardBgGap)) calc(100% - var(--cardBgGap)),center var(--cardBgGap),center calc(100% - var(--cardBgGap));background-origin:padding-box,padding-box,padding-box,padding-box,content-box,content-box;}
 body.cardBgBorder.hasCardImg .card.card-folded::before{background-image:var(--cardImg);background-size:auto var(--cardLaceEdgeH);background-repeat:repeat-x;background-position:center var(--cardBgGap);padding:0;background-origin:padding-box;background-clip:border-box;}
 @media(max-width:760px){
   .bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:66%;max-width:340px;bottom:calc(18px + env(safe-area-inset-bottom));border-radius:27px;background:rgba(255,255,255,0.5);backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);border:1px solid rgba(255,255,255,0.65);box-shadow:0 10px 30px rgba(120,80,100,0.28);height:52px;padding:4px 6px;}
@@ -1103,7 +1100,6 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{background-image:var(--ca
         <div class="nav-item" data-page="settings" onclick="go('settings')"><span class="ni-ic"><img data-stk="s032" alt=""></span><span>设置</span></div>
       </div>
     </div>
-    <div class="theme-row" id="themeRow"></div>
     <div class="side-foot">呆啾丸 · 陪小啾啾慢慢来</div>
   </aside>
   <div class="mobile-mask" id="mobileMask"></div>
@@ -1438,9 +1434,10 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{background-image:var(--ca
           <div class="fold-bar" onclick="toggleFold('setAppear')"><h3>外观</h3><span class="fold-ch" data-foldch="setAppear">▾</span></div>
           <div class="fold-body" data-fold="setAppear">
             <label>皮肤配色</label>
-            <div class="theme-row" id="themeRow2" style="padding:4px 0;"></div>
             <label>界面风格</label>
             <div class="row"><select id="decorStyle" onchange="setDecorStyle(this.value)"><option value="glass">液态玻璃</option><option value="solid">实心底（不透明更清晰）</option><option value="plain">纯净背景（只显示背景）</option></select></div>
+            <div id="decorSolidColorRow" style="display:none;"><label>实心底颜色</label>
+            <div class="row"><input type="color" id="decorSolidColor" value="#fdfcf9" onchange="setDecorSolidColor(this.value)"></div></div>
             <label>玻璃透明度</label>
             <div class="row"><input type="range" id="glassRange" min="20" max="100" value="100" oninput="setGlass(this.value)" style="flex:1;"><span id="glassVal" style="width:42px;text-align:right;">100%</span></div>
             <label>夜间模式</label>
@@ -1489,16 +1486,13 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{background-image:var(--ca
             </div>
             <label>卡片小标签（右上角小图标）</label>
             <div class="row"><select id="decorCardTag" onchange="setDecorCardTag(this.value)"><option value="on">开启</option><option value="off">关闭</option></select></div>
-            <label>外扩双线边框</label>
-            <div class="row"><select id="decorOuter" onchange="setDecorOuter(this.value)"><option value="off">关闭</option><option value="on">开启（粉色外扩）</option></select></div>
             <label>卡片边框</label>
             <div class="row"><select id="decorBorder" onchange="setDecorBorder(this.value)"><option value="solid">实线</option><option value="dashed">虚线</option><option value="dot">圆点</option><option value="lace">花边</option></select></div>
             <label>卡片圆角</label>
             <div class="row"><input type="range" id="decorRadius" min="6" max="28" value="16" oninput="setDecorRadius(this.value)" style="flex:1;"><span id="decorRadiusVal" style="width:42px;text-align:right;">16px</span></div>
-            <label>头像挂件实时预览（与首页头像同步）</label>
             <div class="row" style="gap:12px;align-items:center;">
               <div class="mascot-wrap" id="avAccPreview" style="animation:none;flex:0 0 auto;position:relative;">
-                <img id="avAccPreviewImg" src="" alt="" style="width:88px;height:88px;border-radius:18px;object-fit:contain;display:block;">
+                <img id="avAccPreviewImg" src="" alt="" style="object-fit:contain;display:block;">
                 <img id="avAccPreviewAcc" class="avatar-acc" src="" alt="">
               </div>
             </div>
@@ -1559,7 +1553,7 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{background-image:var(--ca
               <button class="btn ghost" onclick="document.getElementById('imIn').click()">导入</button>
               <input type="file" id="imIn" style="display:none;" onchange="importData(this)">
             </div>
-            <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-13-v28</b></p>
+            <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-13-v29</b></p>
           </div>
         </div>
         <div class="card">
@@ -1680,17 +1674,6 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{background-image:var(--ca
   </div>
 </div>
 
-<div class="modal" id="sosModal" onclick="if(event.target===this)this.classList.remove('on')">
-  <div class="modal-box">
-    <h4><img class="tic" data-stk="s144" alt="">一键求救</h4>
-    <p id="sosText"></p>
-    <p class="muted" style="font-size:10.5px;">话术已自动复制，去发给一个愿意抱抱你的人吧~</p>
-    <div class="row" style="gap:8px;">
-      <button class="btn" onclick="copySos()">复制话术</button>
-      <button class="btn ghost" onclick="document.getElementById('sosModal').classList.remove('on')">收好</button>
-    </div>
-  </div>
-</div>
 
 <script src="firebase-app.js" defer></script>
 <script src="firebase-auth.js" defer></script>
@@ -1810,7 +1793,7 @@ function load(){
   }catch(e){S={};}
 }
 
-const APP_VERSION = '2026-08-13-v28';
+const APP_VERSION = '2026-08-13-v29';
 // 深度消毒：同步合并/旧版本/损坏数据进入后，把每个用到的字段修复成正确类型，防止任意一处 undefined 崩溃
 function deepSanitize(){
   if(!S || typeof S!=='object' || Array.isArray(S)) S={};
@@ -2339,21 +2322,6 @@ function enterHaven(){ closeSlimeOverlay(); go('micro'); }
 function copyColor(c){
   if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(c).catch(()=>{});
   toast('已复制色值 '+c);
-}
-const SOS_MSG = '我今天电量0%，求抱抱，不需要建议';
-function sosMessage(){
-  haptic();
-  const m = document.getElementById('sosModal');
-  if(m){
-    const t = document.getElementById('sosText');
-    if(t) t.textContent = SOS_MSG;
-    m.classList.add('on');
-  }
-  if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(SOS_MSG).catch(()=>{});
-}
-function copySos(){
-  if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(SOS_MSG).catch(()=>{});
-  toast('话术已复制，去发给好朋友吧~');
 }
 
 // ===== v6 新增：作品集审判拦截 / 马赛克 =====
@@ -3245,7 +3213,6 @@ function go(page){
     document.getElementById('mobileMask').classList.remove('on');
   }
   window.scrollTo(0,0);
-  const sos=document.getElementById('sosBtn'); if(sos) sos.style.display=isSlime()?'inline-block':'none';
   if(page==='micro') startJudgeTimer(); else stopJudgeTimer();
 }
 
@@ -3273,19 +3240,6 @@ const THEMES = [
   {name:'海盐蓝',bg1:'#f5f8ff',bg2:'#e3eeff',primary:'#9ab6ef',accent:'#cfdffb',pink:'#7b9ee6',text:'#46587a',sub:'#8aa1c9'},
   {name:'抹茶绿',bg1:'#f8f6fd',bg2:'#e9defa',primary:'#b6a5e7',accent:'#dcd0f6',pink:'#9b85dd',text:'#5a5172',sub:'#9a91ba'}
 ];
-function buildThemes(){
-  const make = (id)=>{
-    const row = document.getElementById(id);
-    row.innerHTML = '';
-    THEMES.forEach((t,i)=>{
-      const sp = document.createElement('span');
-      sp.className='sw'; sp.style.background=t.bg2; sp.title=t.name;
-      sp.onclick = ()=>{S.theme=''+i; save(); applyTheme(); haptic();};
-      row.appendChild(sp);
-    });
-  };
-  make('themeRow'); make('themeRow2');
-}
 function applyTheme(){
   const ct = S.customTheme;
   const t = (ct && ct.bg1 && ct.primary && ct.pink) ? ct : THEMES[parseInt(S.theme)||0];
@@ -3421,9 +3375,11 @@ function applyDecor(){
   r.setProperty('--cardRadius', (d.cardRadius||16)+'px');
   r.setProperty('--cardBgGap', (parseInt(d.cardBgGap,10)||8)+'px');
   r.setProperty('--cardLaceGap', (parseInt(d.cardLaceGap,10)||6)+'px');
+  const _sc = d.solidColor;
+  r.setProperty('--solidBg', _sc||'rgba(255,253,249,0.96)');
+  r.setProperty('--solidBgNight', _sc||'rgba(42,30,38,0.97)');
   document.body.classList.toggle('decorPlain', d.style==='plain');
   document.body.classList.toggle('decorSolid', d.style==='solid');
-  document.body.classList.toggle('decorOuter', !!d.outer);
   document.body.classList.toggle('accStyleFrame', d.accStyle==='frame');
   document.body.classList.toggle('accStyleWreath', d.accStyle==='wreath');
   document.body.classList.toggle('accStyleCharm', d.accStyle==='charm');
@@ -3455,7 +3411,8 @@ function applyDecor(){
   const st=document.getElementById('decorStyle'); if(st) st.value=d.style||'glass';
   const as2=document.getElementById('decorAvAccStyle'); if(as2) as2.value=d.accStyle||'none';
   const ct2=document.getElementById('decorCardTag'); if(ct2) ct2.value=(d.cardTag===false)?'off':'on';
-  const ot=document.getElementById('decorOuter'); if(ot) ot.value=d.outer?'on':'off';
+  const scr=document.getElementById('decorSolidColorRow'); if(scr) scr.style.display=(d.style==='solid')?'':'none';
+  const scc=document.getElementById('decorSolidColor'); if(scc) scc.value=d.solidColor||'#fdfcf9';
   const bd=document.getElementById('decorBorder'); if(bd) bd.value=d.cardBorder||'solid';
   const rr=document.getElementById('decorRadius'); if(rr) rr.value=d.cardRadius||16;
   const rv=document.getElementById('decorRadiusVal'); if(rv) rv.textContent=(d.cardRadius||16)+'px';
@@ -3529,12 +3486,12 @@ function updateAccPx(){
   document.documentElement.style.setProperty('--accSizePx', px+'px');
 }
 function setDecorAvAccStyle(v){ if(!S.decor) S.decor={}; S.decor.accStyle=v; save(); applyDecor(); haptic(); }
+function setDecorSolidColor(v){ if(!S.decor) S.decor={}; S.decor.solidColor=v; save(); applyDecor(); }
 function setDecorCardTag(v){ if(!S.decor) S.decor={}; S.decor.cardTag=(v==='on'); save(); applyCardTags(); toast((v==='on')?'卡片小标签已开启~':'卡片小标签已关闭~'); }
-function setDecorOuter(v){ if(!S.decor) S.decor={}; S.decor.outer=(v==='on'); save(); applyDecor(); haptic(); }
 function applyCardTags(){
   const on = !!(S.decor && S.decor.cardTag!==false);
   const pool=['s033','s055','s078','s109','s113','s117','s177','s179','s187','s185','s087','s010'];
-  document.querySelectorAll('.card').forEach(function(card, i){
+  document.querySelectorAll('.card:not(.decor-banner-card)').forEach(function(card, i){
     let tag=card.querySelector(':scope > .card-tag');
     if(!on){ if(tag) tag.remove(); return; }
     if(!tag){ tag=document.createElement('span'); tag.className='card-tag'; card.insertBefore(tag, card.firstChild); }
@@ -5508,7 +5465,6 @@ function initAll(){
   try{ setTimeout(migrateStoredImages, 1200); }catch(e){}
   try{ const lp = localStorage.getItem('dajiuwan_page'); if(lp && ['home','courses','micro','know','dance','body','mood','growth','fav','settings','mine'].indexOf(lp)>=0) S.page = lp; }catch(e){}
   try{ const qp=new URLSearchParams(location.search).get('p'); if(qp && ['home','courses','micro','know','dance','body','mood','growth','fav','settings','mine'].indexOf(qp)>=0) S.page = qp; }catch(e){}
-  buildThemes();
   applyTheme();
   applyDecor();
   applyCardTags();
@@ -5653,6 +5609,5 @@ document.addEventListener('DOMContentLoaded', initAll);
     </div>
   </div>
 </div>
-<button id="sosBtn" class="sos-btn" onclick="sosMessage()" style="display:none;"><img class="tic" data-stk="s144" alt="">一键求救</button>
 </body>
 </html>
