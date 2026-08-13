@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script src="icons.js" async></script>
 <script src="stickers.js" async></script>
-<title>呆啾丸 · 绘画自律工作台 v19</title>
+<title>呆啾丸 · 绘画自律工作台 v20</title>
 <style>
 
 :root{
@@ -21,7 +21,7 @@
   --panel:rgba(255,255,255,0.40); --card:rgba(255,255,255,0.20); --glass:rgba(255,255,255,0.10);
   --line:rgba(255,255,255,0.52); --shadow:0 14px 40px rgba(180,130,150,0.16);
   --sheen1:rgba(255,255,255,0.55); --sheen2:rgba(255,255,255,0.04);
-  --cardA:0.60; --cardBg:linear-gradient(160deg,rgba(255,255,255,0.30),rgba(255,255,255,0.06));
+  --cardA:0.60; --cardImgDim:0; --cardBg:linear-gradient(160deg,rgba(255,255,255,0.30),rgba(255,255,255,0.06));
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{margin:0;height:100%;}
@@ -94,7 +94,7 @@ h1,h2,h3,h4,b,strong{font-weight:300;}
   border:1px solid rgba(255,255,255,0.55);
   border-radius:22px;
   background:var(--cardBg);
-  background-image:var(--cardImg); background-size:cover; background-position:center;
+  background-image:linear-gradient(rgba(255,255,255,var(--cardImgDim,0)),rgba(255,255,255,var(--cardImgDim,0))),var(--cardImg); background-size:cover; background-position:center;
   border-style:var(--cardBorderStyle); border-radius:var(--cardRadius);
   backdrop-filter:blur(5px) saturate(130%);-webkit-backdrop-filter:blur(5px) saturate(130%);
   padding:15px;margin-bottom:14px;
@@ -584,6 +584,24 @@ body.gentle .plan-list li{opacity:.72;}
   .ov-item{padding:6px 3px;}
   .mm-bar{height:52px;}
 }
+/* 电脑/平板：首页 hero 头像｜星环｜日历 三等分 */
+@media(min-width:761px){
+  .card.home-top{padding:12px 14px 8px;}
+  .hero{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;align-items:center;flex-wrap:nowrap;}
+  .mascot-wrap{display:flex;justify-content:center;}
+  .mascot-wrap img{width:110px;height:110px;border-radius:20px;}
+  .hero-text{order:1;grid-column:1/-1;text-align:center;min-width:0;}
+  .hero-text h2{font-size:14px;margin-bottom:0;}
+  .speech-bubble{display:none;}
+  .ring-hero{transform:none;margin:0;padding:0;width:100%;order:3;}
+  .ring-hero .ring-wrap-lg{width:100%;}
+  .ring-hero .ring-wrap-lg svg{width:100%;height:auto;}
+  .ring-hero .ring-wrap-lg .ring-label{font-size:11px;max-width:none;}
+  .mini-cal{transform:none;margin:0;width:100%;order:4;padding:6px 4px;border-radius:12px;}
+  .cal-grid.cal-mini .cal-d{width:100%;height:20px;font-size:9px;border-radius:6px;}
+  .mini-cal .cal-head span{font-size:11px;}
+}
+
 @media(min-width:761px) and (max-width:1024px){
   .content{max-width:900px;}
   .home-cols{gap:12px;}
@@ -798,6 +816,7 @@ table.tt td input:focus{background:var(--panel);border-radius:6px;}
 body.night{background:#2a1a26;background-image:none;}
 body.night .card,body.night .found-card,body.night .modal-box,body.night .haven-card,body.night .slime-box,body.night .wake-picker-box,body.night .lv-pop,body.night .slime-banner{background:var(--cardBg);}
 body.night .card::after,body.night .found-card::after,body.night .modal-box::after{display:none;}
+body.night .card{background-image:linear-gradient(rgba(20,14,22,var(--cardImgDim,0)),rgba(20,14,22,var(--cardImgDim,0))),var(--cardImg);}
 body.night .topbar,body.night #sidebar{background:rgba(28,18,30,0.42);}
 body.night h1,body.night h2,body.night h3,body.night h4,body.night h5,body.night b,body.night strong,
 body.night .card h3,body.night .found-name,body.night .course .ch .cn,body.night .today-head,
@@ -869,6 +888,7 @@ body.night .sr-item{background:rgba(255,255,255,.08);border-color:rgba(255,255,2
 .fav-tag{font-size:10px;color:var(--pink);background:rgba(255,156,191,.14);padding:2px 8px;border-radius:20px;}
 .fav-cat{font-size:10px;color:#fff;background:var(--pink);padding:2px 8px;border-radius:20px;}
 .fav-del{margin-left:auto;background:none;border:none;font-size:14px;color:var(--sub);cursor:pointer;padding:2px 6px;}
+.fav-copy{background:var(--glass);border:1px solid var(--line);border-radius:8px;color:var(--sub);font-size:10px;padding:2px 8px;cursor:pointer;margin-left:6px;}
 .fav-note{font-size:11px;color:var(--sub);margin-top:6px;white-space:pre-wrap;}
 .chip{background:rgba(255,255,255,.7);border:1px solid rgba(255,156,191,.35);border-radius:20px;padding:6px 12px;font-size:12px;color:var(--text);cursor:pointer;}
 .chip-on{background:var(--pink);color:#fff;border-color:var(--pink);}
@@ -948,10 +968,14 @@ body.custom-bg{background-image:none!important;}
 .home-more-panel{margin-bottom:10px;}
 .home-more-panel .chk-row{padding:5px 2px;}
 .decor-banner{text-align:center;font-size:13px;color:var(--pink);margin:2px 0 6px;font-weight:300;}
-.avatar-acc{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:150%;height:150%;object-fit:contain;pointer-events:none;z-index:6;display:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18));}
+.avatar-acc{position:absolute;left:50%;width:calc(var(--accSize,120)*1%);height:auto;object-fit:contain;pointer-events:none;z-index:6;display:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18));}
+body.accModeTop .avatar-acc{top:calc(0% + var(--accOff,0)*1%);transform:translateX(-50%);}
+body.accModeCenter .avatar-acc{top:calc(50% + var(--accOff,0)*1%);transform:translate(-50%,-50%);}
 body.decorPlain .card,body.decorPlain .found-card,body.decorPlain .modal-box,body.decorPlain .haven-card{background:transparent !important;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none;border-color:transparent;}
 body.decorPlain .card::after,body.decorPlain .found-card::after{display:none;}
 body.decorPlain .qbtn,body.decorPlain .btn{background:var(--panel);}
+body.cardBgBorder .card,body.cardBgBorder [data-decor]{background-size:100% 100%!important;}
+body.cardBgFill .card,body.cardBgFill [data-decor]{background-size:cover!important;}
 @media(max-width:760px){
   .bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:66%;max-width:340px;bottom:calc(18px + env(safe-area-inset-bottom));border-radius:27px;background:rgba(255,255,255,0.5);backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);border:1px solid rgba(255,255,255,0.65);box-shadow:0 10px 30px rgba(120,80,100,0.28);height:52px;padding:4px 6px;}
   .bn-item img{width:26px;height:26px;}
@@ -1424,6 +1448,10 @@ body.decorPlain .qbtn,body.decorPlain .btn{background:var(--panel);}
               <input type="file" id="decorCardBg" accept="image/*" style="display:none;" onchange="uploadDecorCardBg(this)">
               <button class="btn sm ghost" onclick="clearDecorCardBg()">取消底图</button>
             </div>
+            <label>卡片底图显示</label>
+            <div class="row"><select id="decorCardBgMode" onchange="setDecorCardBgMode(this.value)"><option value="fill">铺满整卡</option><option value="border">只显示边框</option></select></div>
+            <label>卡片底图透明度</label>
+            <div class="row"><input type="range" id="decorCardBgOp" min="10" max="100" value="100" oninput="setDecorCardBgOp(this.value)" style="flex:1;"><span id="decorCardBgOpVal" style="width:42px;text-align:right;">100%</span></div>
             <label>单张卡片底图</label>
             <div class="row" style="gap:6px;flex-wrap:wrap;">
               <select id="decorCardSel" style="flex:1;min-width:120px;"></select>
@@ -1441,6 +1469,12 @@ body.decorPlain .qbtn,body.decorPlain .btn{background:var(--panel);}
               <input type="file" id="decorAvAcc" accept="image/*" style="display:none;" onchange="uploadDecorAvAcc(this)">
               <button class="btn sm ghost" onclick="clearDecorAvAcc()">取消挂件</button>
             </div>
+            <label>挂件位置模式</label>
+            <div class="row"><select id="decorAvAccMode" onchange="setDecorAvAccMode(this.value)"><option value="top">顶部（帽子/光环）</option><option value="center">居中（相框）</option></select></div>
+            <label>挂件大小</label>
+            <div class="row"><input type="range" id="decorAvAccSize" min="60" max="200" value="120" oninput="setDecorAvAccSize(this.value)" style="flex:1;"><span id="decorAvAccSizeVal" style="width:42px;text-align:right;">120%</span></div>
+            <label>挂件上下位置</label>
+            <div class="row"><input type="range" id="decorAvAccOff" min="-30" max="30" value="0" oninput="setDecorAvAccOff(this.value)" style="flex:1;"><span id="decorAvAccOffVal" style="width:42px;text-align:right;">0</span></div>
             <label>顶部签名横幅</label>
             <div class="row" style="gap:6px;"><input id="decorBannerInput" placeholder="比如：今天也要温柔~" style="flex:1;"><button class="btn sm" onclick="saveDecorBanner()">保存</button></div>
           </div>
@@ -1482,7 +1516,7 @@ body.decorPlain .qbtn,body.decorPlain .btn{background:var(--panel);}
               <button class="btn ghost" onclick="document.getElementById('imIn').click()">导入</button>
               <input type="file" id="imIn" style="display:none;" onchange="importData(this)">
             </div>
-            <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-12-v19</b></p>
+            <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-13-v20</b></p>
           </div>
         </div>
         <div class="card">
@@ -1733,7 +1767,7 @@ function load(){
   }catch(e){S={};}
 }
 
-const APP_VERSION = '2026-08-12-v19';
+const APP_VERSION = '2026-08-13-v20';
 // 深度消毒：同步合并/旧版本/损坏数据进入后，把每个用到的字段修复成正确类型，防止任意一处 undefined 崩溃
 function deepSanitize(){
   if(!S || typeof S!=='object' || Array.isArray(S)) S={};
@@ -2611,7 +2645,7 @@ const MEMO_TYPES=['备忘录','梦境','新奇想法'];
 const MEMO_ICONS=['📝','🌙','💡'];
 function setMemoType(i){
   _memoType=i;
-  for(let k=0;k<3;k++){ const c=document.getElementById('memoChip'+k); if(c) c.classList.toggle('chip-on',k===i); }
+  for(let k=0;k<3;k++){ const c=document.getElementById('memoTypeChip'+k); if(c) c.classList.toggle('chip-on',k===i); }
 }
 function pushMemoItem(item){
   if(!Array.isArray(S.memos)) S.memos=[];
@@ -2745,8 +2779,8 @@ function renderFav(){
     h+='<div class="fav-item"><div class="fav-top">';
     if(f.cat) h+='<span class="fav-cat">'+escHtml(f.cat)+'</span>';
     h+='<div class="fav-main">';
-    if(f.type==='link') h+='<div class="fav-t" onclick="openFav(\''+f.id+'\')">🔗 '+escHtml(f.title)+'</div><div class="fav-url">'+escHtml(f.url)+'</div>';
-    else h+='<div class="fav-t">'+(f.img?'🖼 ':'📝 ')+escHtml(f.title)+'</div>';
+    if(f.type==='link') h+='<a class="fav-t" href="'+escHtml(f.url)+'" target="_blank" rel="noopener">🔖 '+escHtml(f.title)+'</a> <button class="fav-copy" onclick="copyFav(\''+f.id+'\')">复制</button><div class="fav-url">'+escHtml(f.url)+'</div>';
+    else h+='<div class="fav-t">'+(f.img?'🖇 ':'💬 ')+escHtml(f.title)+'</div>';
     h+='</div><button class="fav-del" onclick="deleteFav(\''+f.id+'\')">✕</button></div>';
     if(f.img) h+='<img class="fav-img" src="'+f.img+'" alt="收藏图片">';
     if(f.note) h+='<div class="fav-note">'+escHtml(f.note)+'</div>';
@@ -2803,9 +2837,12 @@ function deleteFav(id){
   S.favs=(S.favs||[]).filter(function(f){ return f.id!==id; });
   save(); renderFav(); toast('已删除');
 }
-function openFav(id){
+function copyFav(id){
   const f=(S.favs||[]).find(function(x){ return x.id===id; });
-  if(f && f.url) window.open(f.url,'_blank');
+  if(!f || !f.url) return;
+  if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(f.url).catch(function(){});
+  else { const ta=document.createElement('textarea'); ta.value=f.url; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); }catch(e){} document.body.removeChild(ta); }
+  toast('链接已复制~');
 }
 
 // ===== v16 新增：全站搜索 =====
@@ -3322,17 +3359,27 @@ function applyDecor(){
   const d = S.decor||{};
   const r = document.documentElement.style;
   r.setProperty('--cardImg', d.cardBg? "url('"+d.cardBg+"')" : 'var(--cardBg)');
+  const dim = Math.max(0, Math.min(1, 1 - (parseInt(d.cardBgOpacity,10)||100)/100));
+  r.setProperty('--cardImgDim', dim.toFixed(2));
+  const bsize = d.cardBgMode==='border' ? '100% 100%' : 'cover';
+  document.body.classList.toggle('cardBgBorder', d.cardBgMode==='border');
+  document.body.classList.toggle('cardBgFill', d.cardBgMode!=='border');
   r.setProperty('--cardBorderStyle', d.cardBorder||'solid');
   r.setProperty('--cardRadius', (d.cardRadius||16)+'px');
   document.body.classList.toggle('decorPlain', d.style==='plain');
   document.querySelectorAll('[data-decor]').forEach(function(el){
     const key = el.getAttribute('data-decor');
     const bg = d.cardBgPer && d.cardBgPer[key];
-    if(bg){ el.style.backgroundImage = "url('"+bg+"')"; el.style.backgroundSize='cover'; el.style.backgroundPosition='center'; }
+    if(bg){ el.style.backgroundImage = "url('"+bg+"')"; el.style.backgroundSize=bsize; el.style.backgroundPosition='center'; }
     else { el.style.backgroundImage=''; el.style.backgroundSize=''; el.style.backgroundPosition=''; }
   });
   const aa = document.getElementById('avatarAcc');
   if(aa){ aa.src = d.avatarAcc||''; aa.style.display = d.avatarAcc? 'block':'none'; }
+  const am = d.avatarAccMode==='center' ? 'center' : 'top';
+  document.body.classList.toggle('accModeTop', am==='top');
+  document.body.classList.toggle('accModeCenter', am==='center');
+  r.setProperty('--accSize', parseInt(d.avatarAccSize,10)||120);
+  r.setProperty('--accOff', parseInt(d.avatarAccOff,10)||0);
   const hasAny = !!(d.cardBg || (d.cardBgPer && Object.keys(d.cardBgPer).length));
   document.body.classList.toggle('hasCardImg', hasAny);
   const bn = document.getElementById('decorBanner');
@@ -3342,6 +3389,14 @@ function applyDecor(){
   const rr=document.getElementById('decorRadius'); if(rr) rr.value=d.cardRadius||16;
   const rv=document.getElementById('decorRadiusVal'); if(rv) rv.textContent=(d.cardRadius||16)+'px';
   const bni=document.getElementById('decorBannerInput'); if(bni) bni.value=d.banner||'';
+  const cm=document.getElementById('decorCardBgMode'); if(cm) cm.value=d.cardBgMode==='border'?'border':'fill';
+  const co=document.getElementById('decorCardBgOp'); if(co) co.value=parseInt(d.cardBgOpacity,10)||100;
+  const cov=document.getElementById('decorCardBgOpVal'); if(cov) cov.textContent=(parseInt(d.cardBgOpacity,10)||100)+'%';
+  const ams=document.getElementById('decorAvAccMode'); if(ams) ams.value=am;
+  const asz=document.getElementById('decorAvAccSize'); if(asz) asz.value=parseInt(d.avatarAccSize,10)||120;
+  const aszv=document.getElementById('decorAvAccSizeVal'); if(aszv) aszv.textContent=(parseInt(d.avatarAccSize,10)||120)+'%';
+  const aof=document.getElementById('decorAvAccOff'); if(aof) aof.value=parseInt(d.avatarAccOff,10)||0;
+  const aofv=document.getElementById('decorAvAccOffVal'); if(aofv) aofv.textContent=parseInt(d.avatarAccOff,10)||0;
 }
 function setDecorStyle(v){ if(!S.decor) S.decor={}; S.decor.style=v; save(); applyDecor(); haptic(); toast(v==='plain'?'已切换为纯净背景（只显示背景）~':'已切换为液态玻璃~'); }
 function setDecorBorder(v){ if(!S.decor) S.decor={}; S.decor.cardBorder=v; save(); applyDecor(); }
@@ -3366,6 +3421,11 @@ function uploadDecorAvAcc(input){
   const f=input&&input.files&&input.files[0]; if(!f) return;
   compressImage(f, 160, data=>{ if(!S.decor) S.decor={}; S.decor.avatarAcc=data; save(); applyDecor(); toast('头像挂件已添加~'); });
 }
+function setDecorCardBgMode(v){ if(!S.decor) S.decor={}; S.decor.cardBgMode=v; save(); applyDecor(); toast(v==='border'?'已切换为只显示边框~':'已切换为铺满整卡~'); }
+function setDecorCardBgOp(v){ if(!S.decor) S.decor={}; S.decor.cardBgOpacity=parseInt(v||100,10); save(); applyDecor(); }
+function setDecorAvAccMode(v){ if(!S.decor) S.decor={}; S.decor.avatarAccMode=v; save(); applyDecor(); haptic(); }
+function setDecorAvAccSize(v){ if(!S.decor) S.decor={}; S.decor.avatarAccSize=parseInt(v||120,10); save(); applyDecor(); }
+function setDecorAvAccOff(v){ if(!S.decor) S.decor={}; S.decor.avatarAccOff=parseInt(v||0,10); save(); applyDecor(); }
 function clearDecorAvAcc(){ if(!S.decor) return; delete S.decor.avatarAcc; save(); applyDecor(); toast('已取消头像挂件~'); }
 
 // ===== home =====
@@ -3402,7 +3462,7 @@ function renderHome(){
   const hc2 = S.homeCards||{};
   [['hcState','state'],['hcTask','task'],['hcPlan','plan'],['hcCal','cal'],['hcMeds','meds']].forEach(function(x){ const el=document.getElementById(x[0]); if(el) el.checked = hc2[x[1]]!==false; });
   const hm = document.getElementById('homeMoreBtn');
-  if(hm){ hm.style.display = (window.innerWidth<=760) ? 'inline-block' : 'none'; hm.textContent = S.homeMoreOpen ? '收起 ▴' : '更多功能 ▾'; }
+  if(hm){ hm.style.display = 'inline-block'; hm.textContent = S.homeMoreOpen ? '收起 ▴' : '更多功能 ▾'; }
   const hp = document.getElementById('homeMorePanel');
   if(hp) hp.style.display = S.homeMoreOpen ? 'block' : 'none';
 }
@@ -3678,7 +3738,7 @@ function renderRing(){
     '<circle cx="50" cy="50" r="'+R+'" fill="none" stroke="rgba(255,133,170,0.14)" stroke-width="8"/>'+
     '<circle cx="50" cy="50" r="'+R+'" fill="none" stroke="var(--pink)" stroke-width="8" stroke-linecap="round" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'" transform="rotate(-90 50 50)"/>'+
     '<text x="50" y="45" text-anchor="middle" font-size="17" font-weight="700" fill="var(--text)">Lv'+S.level+'</text>'+
-    '<text x="50" y="61" text-anchor="middle" font-size="9" fill="var(--sub)">'+info.stage.slice(0,5)+'</text>'+
+    '<text x="50" y="61" text-anchor="middle" font-size="'+(info.stage.length>5?8:9)+'" fill="var(--sub)">'+info.stage+'</text>'+
     '</svg>'+
     '<div class="ring-label">'+info.title+' · '+S.xp+'/100</div></div>';
 }
@@ -4463,7 +4523,7 @@ function renderInspo(){
     if(it.text){
       html += '<div class="memo-card">'+esc(it.text)+'<div class="muted" style="font-size:10px;margin-top:4px;">'+it.date+'</div></div>';
     } else if(it.link){
-      html += '<div class="memo-card link-card"><a href="'+esc(it.link)+'" target="_blank" rel="noopener">🔗 '+esc(it.link.length>48?it.link.slice(0,48)+'…':it.link)+'</a><div class="muted" style="font-size:10px;margin-top:4px;">'+it.date+'</div><button class="del" onclick="delInspo(\''+currentInspo+'\','+i+')">×</button></div>';
+      html += '<div class="memo-card link-card"><a href="'+esc(it.link)+'" target="_blank" rel="noopener">🔖 '+esc(it.link.length>48?it.link.slice(0,48)+'…':it.link)+'</a><div class="muted" style="font-size:10px;margin-top:4px;">'+it.date+'</div><button class="del" onclick="delInspo(\''+currentInspo+'\','+i+')">×</button></div>';
     } else {
       html += '<div class="g"><img loading="lazy" decoding="async" src="'+it.img+'"><button class="del" onclick="delInspo(\''+currentInspo+'\','+i+')">×</button></div>';
     }

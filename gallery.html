@@ -47,14 +47,14 @@ body.night .btn{background:rgba(255,255,255,0.08);color:#fff;border-color:rgba(2
 <body>
 <div class="wrap">
   <div class="top">
-    <h1>🖼 呆啾丸 · 我的图库</h1>
+    <h1>🪞 呆啾丸 · 我的图库</h1>
     <a href="index.html">← 返回工作台</a>
   </div>
   <div class="card">
-    <h3>🗂 图片集中存放处（素材 / 创作 / 成长记录都会自动汇总到这里）</h3>
+    <h3>🧺 图片集中存放处（素材 / 创作 / 成长记录都会自动汇总到这里）</h3>
     <div class="tabs" id="tabs">
       <button class="tab on" data-t="all">全部</button>
-      <button class="tab" data-t="material">🗂 素材</button>
+      <button class="tab" data-t="material">🧺 素材</button>
       <button class="tab" data-t="creation">🎨 创作</button>
       <button class="tab" data-t="archive">🌱 成长记录</button>
     </div>
@@ -180,7 +180,7 @@ function render(){
   var html = '';
   list.forEach(function(it, k){
     if(it.type==='link'){
-      html += '<div class="linkcard"><button class="del" onclick="delItem('+k+',event)">×</button><a href="'+esc(it.link)+'" target="_blank" rel="noopener">🔗 '+esc(it.link.length>40?it.link.slice(0,40)+'…':it.link)+'</a><span class="dt">'+esc(it.date||'')+'</span></div>';
+      html += '<div class="linkcard"><button class="del" onclick="delItem('+k+',event)">×</button><a href="'+esc(it.link)+'" target="_blank" rel="noopener">🔖 '+esc(it.link.length>40?it.link.slice(0,40)+'…':it.link)+'</a><span class="dt">'+esc(it.date||'')+'</span></div>';
       return;
     }
     html += '<div class="item"><button class="del" onclick="delItem('+k+',event)">×</button><span class="tag">'+it.tag+'</span><img src="'+it.img+'" onclick="openLb('+k+')"><span class="dt">'+esc(it.date||'')+'</span></div>';
