@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script src="icons.js" async></script>
 <script src="stickers.js" async></script>
-<title>呆啾丸 · 绘画自律工作台 v26</title>
+<title>呆啾丸 · 绘画自律工作台 v27</title>
 <style>
 
 :root{
@@ -21,7 +21,7 @@
   --panel:rgba(255,255,255,0.40); --card:rgba(255,255,255,0.20); --glass:rgba(255,255,255,0.10);
   --line:rgba(255,255,255,0.52); --shadow:0 14px 40px rgba(180,130,150,0.16);
   --sheen1:rgba(255,255,255,0.55); --sheen2:rgba(255,255,255,0.04);
-  --cardA:0.60; --cardBgGap:8px; --cardBg:linear-gradient(160deg,rgba(255,255,255,0.30),rgba(255,255,255,0.06));
+  --cardA:0.60; --cardBgGap:8px; --cardLaceGap:6px; --cardLaceCornerW:clamp(20px,5vw,60px); --cardLaceEdgeH:clamp(14px,3vw,30px); --cardBg:linear-gradient(160deg,rgba(255,255,255,0.30),rgba(255,255,255,0.06));
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{margin:0;height:100%;}
@@ -102,7 +102,7 @@ h1,h2,h3,h4,b,strong{font-weight:300;}
   box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,0.65);
   position:relative;
 }
-.card::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background-image:var(--cardImg);background-size:cover;background-position:center;opacity:var(--cardImgOp,1);z-index:0;}
+.card::before{content:"";position:absolute;inset:0;padding:0 calc(var(--cardBgGap) + var(--cardLaceCornerW) + var(--cardLaceGap));border-radius:inherit;pointer-events:none;background-image:var(--cardImg);background-size:cover;background-position:center;opacity:var(--cardImgOp,1);z-index:0;}
 body:not(.hasCardImg) .card::before{opacity:0;}
 .card::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
   background:linear-gradient(135deg,rgba(255,255,255,0.28),rgba(255,255,255,0.02) 45%,rgba(255,255,255,0.16));}
@@ -589,17 +589,17 @@ body.gentle .plan-list li{opacity:.72;}
 /* 电脑/平板：首页 hero 头像｜星环｜日历 三等分 */
 @media(min-width:761px){
   .card.home-top{padding:8px 12px 6px;margin-bottom:10px;}
-  .hero{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;align-items:center;flex-wrap:nowrap;}
-  .mascot-wrap{justify-self:center;order:2;}
-  .mascot-wrap img{width:80px;height:80px;border-radius:16px;}
-  .hero-text{order:1;grid-column:1/-1;text-align:center;min-width:0;}
+  .hero{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-evenly;gap:6px;}
+  .mascot-wrap{order:2;}
+  .mascot-wrap img{width:120px;height:120px;border-radius:20px;}
+  .hero-text{order:1;flex:0 0 100%;width:100%;text-align:center;min-width:0;}
   .hero-text h2{font-size:13px;margin-bottom:0;}
   .speech-bubble{display:none;}
-  .ring-hero{transform:none;margin:0;padding:0;width:auto;order:3;justify-self:center;}
-  .ring-hero .ring-wrap-lg{width:150px;}
-  .ring-hero .ring-wrap-lg svg{width:150px;height:auto;}
-  .ring-hero .ring-wrap-lg .ring-label{font-size:10px;max-width:150px;line-height:1.3;}
-  .mini-cal{transform:none;margin:0;width:100%;order:4;padding:6px 4px;border-radius:12px;}
+  .hero .ring-hero{transform:none;margin:0;padding:0;width:auto;order:3;}
+  .ring-hero .ring-wrap-lg{width:160px;}
+  .ring-hero .ring-wrap-lg svg{width:160px;height:auto;}
+  .ring-hero .ring-wrap-lg .ring-label{font-size:10px;max-width:160px;line-height:1.3;}
+  .mini-cal{transform:none;margin:0;flex:0 0 190px;width:190px;order:4;padding:6px 4px;border-radius:12px;}
   .cal-grid.cal-mini .cal-d{width:100%;height:17px;font-size:9px;border-radius:6px;}
   .mini-cal .cal-head span{font-size:11px;}
 }
@@ -969,8 +969,9 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
 body.custom-bg{background-image:none!important;}
 .home-more-panel{margin-bottom:10px;}
 .home-more-panel .chk-row{padding:5px 2px;}
-.decor-banner{text-align:center;font-size:13px;color:var(--pink);margin:2px 0 6px;font-weight:300;}
-.mascot-wrap img.avatar-acc{position:absolute;left:50%;width:calc(var(--accSize,120)*1%);height:auto;border-radius:0;object-fit:contain;pointer-events:none;z-index:6;display:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18));}
+.decor-banner-card{padding:8px 12px;margin-bottom:10px;text-align:center;}
+.decor-banner{font-size:13px;color:var(--pink);margin:0;font-weight:300;}
+.mascot-wrap img.avatar-acc{position:absolute;left:calc(50% + var(--accLeft,0)*1%);width:calc(var(--accSize,120)*1%);height:auto;border-radius:0;object-fit:contain;pointer-events:none;z-index:6;display:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18));}
 body.accModeTop .avatar-acc{top:calc(0% + var(--accOff,0)*1%);transform:translate(-50%,-100%);}
 body.accModeCenter .avatar-acc{top:calc(50% + var(--accOff,0)*1%);transform:translate(-50%,-50%);}
 body.decorPlain .card,body.decorPlain .found-card,body.decorPlain .modal-box,body.decorPlain .haven-card{background:transparent !important;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none;border-color:transparent;}
@@ -978,8 +979,9 @@ body.decorPlain .card::after,body.decorPlain .found-card::after{display:none;}
 body.decorPlain .qbtn,body.decorPlain .btn{background:var(--panel);}
 body.decorPlain .card::before{opacity:0!important;}
 body.cardBgFill [data-decor]{background-size:cover!important;}
-body.cardBgBorder [data-decor]{background-size:clamp(20px,5vw,60px) auto,clamp(20px,5vw,60px) auto,clamp(20px,5vw,60px) auto,clamp(20px,5vw,60px) auto,auto clamp(14px,3vw,30px),auto clamp(14px,3vw,30px)!important;background-repeat:no-repeat,no-repeat,no-repeat,no-repeat,repeat-x,repeat-x!important;background-position:var(--cardBgGap) var(--cardBgGap),calc(100% - var(--cardBgGap)) var(--cardBgGap),var(--cardBgGap) calc(100% - var(--cardBgGap)),calc(100% - var(--cardBgGap)) calc(100% - var(--cardBgGap)),center var(--cardBgGap),center calc(100% - var(--cardBgGap))!important;}
-body.cardBgBorder.hasCardImg .card::before{background-image:var(--cardImg),var(--cardImg),var(--cardImg),var(--cardImg),var(--cardImg),var(--cardImg);background-size:clamp(20px,5vw,60px) auto,clamp(20px,5vw,60px) auto,clamp(20px,5vw,60px) auto,clamp(20px,5vw,60px) auto,auto clamp(14px,3vw,30px),auto clamp(14px,3vw,30px);background-repeat:no-repeat,no-repeat,no-repeat,no-repeat,repeat-x,repeat-x;background-position:var(--cardBgGap) var(--cardBgGap),calc(100% - var(--cardBgGap)) var(--cardBgGap),var(--cardBgGap) calc(100% - var(--cardBgGap)),calc(100% - var(--cardBgGap)) calc(100% - var(--cardBgGap)),center var(--cardBgGap),center calc(100% - var(--cardBgGap));}
+body.cardBgBorder [data-decor]{background-size:var(--cardLaceCornerW) auto,var(--cardLaceCornerW) auto,var(--cardLaceCornerW) auto,var(--cardLaceCornerW) auto,auto var(--cardLaceEdgeH),auto var(--cardLaceEdgeH)!important;background-repeat:no-repeat,no-repeat,no-repeat,no-repeat,repeat-x,repeat-x!important;background-position:var(--cardBgGap) var(--cardBgGap),calc(100% - var(--cardBgGap)) var(--cardBgGap),var(--cardBgGap) calc(100% - var(--cardBgGap)),calc(100% - var(--cardBgGap)) calc(100% - var(--cardBgGap)),center var(--cardBgGap),center calc(100% - var(--cardBgGap))!important;}
+body.cardBgBorder.hasCardImg .card::before{background-image:var(--cardImg),var(--cardImg),var(--cardImg),var(--cardImg),var(--cardImg),var(--cardImg);background-size:var(--cardLaceCornerW) auto,var(--cardLaceCornerW) auto,var(--cardLaceCornerW) auto,var(--cardLaceCornerW) auto,auto var(--cardLaceEdgeH),auto var(--cardLaceEdgeH);background-repeat:no-repeat,no-repeat,no-repeat,no-repeat,repeat-x,repeat-x;background-position:var(--cardBgGap) var(--cardBgGap),calc(100% - var(--cardBgGap)) var(--cardBgGap),var(--cardBgGap) calc(100% - var(--cardBgGap)),calc(100% - var(--cardBgGap)) calc(100% - var(--cardBgGap)),center var(--cardBgGap),center calc(100% - var(--cardBgGap));background-origin:padding-box,padding-box,padding-box,padding-box,content-box,content-box;}
+body.cardBgBorder.hasCardImg .card.card-folded::before{background-image:var(--cardImg);background-size:auto var(--cardLaceEdgeH);background-repeat:repeat-x;background-position:center var(--cardBgGap);padding:0;background-origin:padding-box;background-clip:border-box;}
 @media(max-width:760px){
   .bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:66%;max-width:340px;bottom:calc(18px + env(safe-area-inset-bottom));border-radius:27px;background:rgba(255,255,255,0.5);backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);border:1px solid rgba(255,255,255,0.65);box-shadow:0 10px 30px rgba(120,80,100,0.28);height:52px;padding:4px 6px;}
   .bn-item img{width:26px;height:26px;}
@@ -1104,8 +1106,10 @@ body.cardBgBorder.hasCardImg .card::before{background-image:var(--cardImg),var(-
     <div class="content">
 
       <section class="panel on" id="p-home">
+        <div class="card decor-banner-card" id="decorBannerCard" style="display:none;">
+          <div id="decorBanner" class="decor-banner"></div>
+        </div>
         <div class="card home-top">
-          <div id="decorBanner" class="decor-banner" style="display:none;"></div>
           <div class="hero">
             <div class="mascot-wrap" id="mascotWrap">
               <img id="heroMascot" src="" alt="小啾啾">
@@ -1456,6 +1460,8 @@ body.cardBgBorder.hasCardImg .card::before{background-image:var(--cardImg),var(-
             <div class="row"><select id="decorCardBgMode" onchange="setDecorCardBgMode(this.value)"><option value="fill">铺满整卡</option><option value="border">边缘花边</option></select></div>
             <label>花边间隙（边距）</label>
             <div class="row"><input type="range" id="decorCardBgGap" min="0" max="40" value="8" oninput="setDecorCardBgGap(this.value)" style="flex:1;"><span id="decorCardBgGapVal" style="width:42px;text-align:right;">8px</span></div>
+            <label>花边间距（角与边条间隔）</label>
+            <div class="row"><input type="range" id="decorCardLaceGap" min="0" max="30" value="6" oninput="setDecorCardLaceGap(this.value)" style="flex:1;"><span id="decorCardLaceGapVal" style="width:42px;text-align:right;">6px</span></div>
             <label>卡片底图透明度</label>
             <div class="row"><input type="range" id="decorCardBgOp" min="10" max="100" value="100" oninput="setDecorCardBgOp(this.value)" style="flex:1;"><span id="decorCardBgOpVal" style="width:42px;text-align:right;">100%</span></div>
             <label>单张卡片底图</label>
@@ -1475,7 +1481,6 @@ body.cardBgBorder.hasCardImg .card::before{background-image:var(--cardImg),var(-
                 <img id="avAccPreviewImg" src="" alt="" style="width:88px;height:88px;border-radius:18px;object-fit:contain;display:block;">
                 <img id="avAccPreviewAcc" class="avatar-acc" src="" alt="">
               </div>
-              <span class="muted" style="font-size:11px;line-height:1.7;">调整「大小 / 上下位置 / 位置模式」时，这里和首页头像同步变化~</span>
             </div>
             <label>头像挂件（透明 PNG，包裹头像）</label>
             <div class="row" style="gap:6px;">
@@ -1489,6 +1494,8 @@ body.cardBgBorder.hasCardImg .card::before{background-image:var(--cardImg),var(-
             <div class="row"><input type="range" id="decorAvAccSize" min="60" max="200" value="120" oninput="setDecorAvAccSize(this.value)" style="flex:1;"><span id="decorAvAccSizeVal" style="width:42px;text-align:right;">120%</span></div>
             <label>挂件上下位置</label>
             <div class="row"><input type="range" id="decorAvAccOff" min="-60" max="60" value="0" oninput="setDecorAvAccOff(this.value)" style="flex:1;"><span id="decorAvAccOffVal" style="width:42px;text-align:right;">0</span></div>
+            <label>挂件左右位置</label>
+            <div class="row"><input type="range" id="decorAvAccH" min="-60" max="60" value="0" oninput="setDecorAvAccH(this.value)" style="flex:1;"><span id="decorAvAccHVal" style="width:42px;text-align:right;">0</span></div>
             <label>顶部签名横幅</label>
             <div class="row" style="gap:6px;"><input id="decorBannerInput" placeholder="比如：今天也要温柔~" style="flex:1;"><button class="btn sm" onclick="saveDecorBanner()">保存</button></div>
           </div>
@@ -1530,7 +1537,7 @@ body.cardBgBorder.hasCardImg .card::before{background-image:var(--cardImg),var(-
               <button class="btn ghost" onclick="document.getElementById('imIn').click()">导入</button>
               <input type="file" id="imIn" style="display:none;" onchange="importData(this)">
             </div>
-            <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-13-v26</b></p>
+            <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-13-v27</b></p>
           </div>
         </div>
         <div class="card">
@@ -1781,7 +1788,7 @@ function load(){
   }catch(e){S={};}
 }
 
-const APP_VERSION = '2026-08-13-v26';
+const APP_VERSION = '2026-08-13-v27';
 // 深度消毒：同步合并/旧版本/损坏数据进入后，把每个用到的字段修复成正确类型，防止任意一处 undefined 崩溃
 function deepSanitize(){
   if(!S || typeof S!=='object' || Array.isArray(S)) S={};
@@ -3336,7 +3343,7 @@ function applyBg(){
 function setBg(v){ S.bg=v; save(); applyBg(); haptic(); }
 function uploadBg(input){
   const f = input.files[0]; if(!f) return;
-  compressImage(f, 1280, data=>{ S.customBg=data; S.bg='custom'; save(); applyBg(); toast('背景换好啦~'); });
+  compressImage(f, 1920, data=>{ S.customBg=data; S.bg='custom'; save(); applyBg(); toast('背景换好啦~'); });
   input.value='';
 }
 function toggleBlur(v){ S.blur=v; save(); applyBg(); haptic(); }
@@ -3354,6 +3361,7 @@ function toggleFold(k){
   S.folds[k] = !foldOpen(k); save();
   document.querySelectorAll('[data-fold="'+k+'"]').forEach(function(el){ el.style.display = foldOpen(k)?'':'none'; });
   const ch=document.querySelector('[data-foldch="'+k+'"]'); if(ch) ch.textContent = foldOpen(k)?'▾':'▸';
+  updateFoldedCards();
   haptic();
 }
 function applyFolds(){
@@ -3361,6 +3369,16 @@ function applyFolds(){
     const k=el.getAttribute('data-fold');
     el.style.display = foldOpen(k)?'':'none';
     const ch=document.querySelector('[data-foldch="'+k+'"]'); if(ch) ch.textContent = foldOpen(k)?'▾':'▸';
+  });
+  updateFoldedCards();
+}
+function updateFoldedCards(){
+  document.querySelectorAll('.card').forEach(function(card){
+    const fbs = card.querySelectorAll('[data-fold]');
+    if(!fbs.length){ card.classList.remove('card-folded'); return; }
+    let anyOpen = false;
+    for(let i=0;i<fbs.length;i++){ if(fbs[i].style.display !== 'none'){ anyOpen = true; break; } }
+    card.classList.toggle('card-folded', !anyOpen);
   });
 }
 
@@ -3376,6 +3394,7 @@ function applyDecor(){
   r.setProperty('--cardBorderStyle', d.cardBorder||'solid');
   r.setProperty('--cardRadius', (d.cardRadius||16)+'px');
   r.setProperty('--cardBgGap', (parseInt(d.cardBgGap,10)||8)+'px');
+  r.setProperty('--cardLaceGap', (parseInt(d.cardLaceGap,10)||6)+'px');
   document.body.classList.toggle('decorPlain', d.style==='plain');
   document.querySelectorAll('[data-decor]').forEach(function(el){
     const key = el.getAttribute('data-decor');
@@ -3394,10 +3413,13 @@ function applyDecor(){
   document.body.classList.toggle('accModeCenter', am==='center');
   r.setProperty('--accSize', parseInt(d.avatarAccSize,10)||120);
   r.setProperty('--accOff', parseInt(d.avatarAccOff,10)||0);
+  r.setProperty('--accLeft', parseInt(d.avatarAccLeft,10)||0);
   const hasAny = !!(d.cardBg || (d.cardBgPer && Object.keys(d.cardBgPer).length));
   document.body.classList.toggle('hasCardImg', hasAny);
+  const bnc = document.getElementById('decorBannerCard');
+  if(bnc) bnc.style.display = d.banner? 'block':'none';
   const bn = document.getElementById('decorBanner');
-  if(bn){ bn.textContent = d.banner||''; bn.style.display = d.banner? 'block':'none'; }
+  if(bn){ bn.textContent = d.banner||''; }
   const st=document.getElementById('decorStyle'); if(st) st.value=d.style||'glass';
   const bd=document.getElementById('decorBorder'); if(bd) bd.value=d.cardBorder||'solid';
   const rr=document.getElementById('decorRadius'); if(rr) rr.value=d.cardRadius||16;
@@ -3406,6 +3428,8 @@ function applyDecor(){
   const cm=document.getElementById('decorCardBgMode'); if(cm) cm.value=d.cardBgMode==='border'?'border':'fill';
   const gg=document.getElementById('decorCardBgGap'); if(gg) gg.value=parseInt(d.cardBgGap,10)||8;
   const ggv=document.getElementById('decorCardBgGapVal'); if(ggv) ggv.textContent=(parseInt(d.cardBgGap,10)||8)+'px';
+  const lg=document.getElementById('decorCardLaceGap'); if(lg) lg.value=parseInt(d.cardLaceGap,10)||6;
+  const lgv=document.getElementById('decorCardLaceGapVal'); if(lgv) lgv.textContent=(parseInt(d.cardLaceGap,10)||6)+'px';
   const co=document.getElementById('decorCardBgOp'); if(co) co.value=parseInt(d.cardBgOpacity,10)||100;
   const cov=document.getElementById('decorCardBgOpVal'); if(cov) cov.textContent=(parseInt(d.cardBgOpacity,10)||100)+'%';
   const ams=document.getElementById('decorAvAccMode'); if(ams) ams.value=am;
@@ -3413,6 +3437,8 @@ function applyDecor(){
   const aszv=document.getElementById('decorAvAccSizeVal'); if(aszv) aszv.textContent=(parseInt(d.avatarAccSize,10)||120)+'%';
   const aof=document.getElementById('decorAvAccOff'); if(aof) aof.value=parseInt(d.avatarAccOff,10)||0;
   const aofv=document.getElementById('decorAvAccOffVal'); if(aofv) aofv.textContent=parseInt(d.avatarAccOff,10)||0;
+  const ah=document.getElementById('decorAvAccH'); if(ah) ah.value=parseInt(d.avatarAccLeft,10)||0;
+  const ahv=document.getElementById('decorAvAccHVal'); if(ahv) ahv.textContent=parseInt(d.avatarAccLeft,10)||0;
 }
 function setDecorStyle(v){ if(!S.decor) S.decor={}; S.decor.style=v; save(); applyDecor(); haptic(); toast(v==='plain'?'已切换为纯净背景（只显示背景）~':'已切换为液态玻璃~'); }
 function setDecorBorder(v){ if(!S.decor) S.decor={}; S.decor.cardBorder=v; save(); applyDecor(); }
@@ -3440,9 +3466,11 @@ function uploadDecorAvAcc(input){
 function setDecorCardBgMode(v){ if(!S.decor) S.decor={}; S.decor.cardBgMode=v; save(); applyDecor(); toast(v==='border'?'已切换为只显示边框~':'已切换为铺满整卡~'); }
 function setDecorCardBgOp(v){ if(!S.decor) S.decor={}; S.decor.cardBgOpacity=parseInt(v||100,10); save(); applyDecor(); }
 function setDecorCardBgGap(v){ if(!S.decor) S.decor={}; S.decor.cardBgGap=parseInt(v||8,10); save(); applyDecor(); const el=document.getElementById('decorCardBgGapVal'); if(el) el.textContent=(parseInt(v||8,10))+'px'; }
+function setDecorCardLaceGap(v){ if(!S.decor) S.decor={}; S.decor.cardLaceGap=parseInt(v||6,10); save(); applyDecor(); const el=document.getElementById('decorCardLaceGapVal'); if(el) el.textContent=(parseInt(v||6,10))+'px'; }
 function setDecorAvAccMode(v){ if(!S.decor) S.decor={}; S.decor.avatarAccMode=v; save(); applyDecor(); haptic(); }
 function setDecorAvAccSize(v){ if(!S.decor) S.decor={}; S.decor.avatarAccSize=parseInt(v||120,10); save(); applyDecor(); }
 function setDecorAvAccOff(v){ if(!S.decor) S.decor={}; S.decor.avatarAccOff=parseInt(v||0,10); save(); applyDecor(); }
+function setDecorAvAccH(v){ if(!S.decor) S.decor={}; S.decor.avatarAccLeft=parseInt(v||0,10); save(); applyDecor(); }
 function clearDecorAvAcc(){ if(!S.decor) return; delete S.decor.avatarAcc; save(); applyDecor(); toast('已取消头像挂件~'); }
 
 // ===== home =====
