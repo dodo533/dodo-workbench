@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script src="icons.js" async></script>
 <script src="stickers.js" async></script>
-<title>呆啾丸 · 绘画自律工作台 v27</title>
+<title>呆啾丸 · 绘画自律工作台 v28</title>
 <style>
 
 :root{
@@ -64,7 +64,7 @@ h1,h2,h3,h4,b,strong{font-weight:300;}
 .nav-ghead::after{content:"▼";font-size:9px;transition:.2s;}
 .nav-group.collapsed .nav-ghead::after{transform:rotate(-90deg);}
 .nav-group.collapsed .nav-items{display:none;}
-.nav-item{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:14px;cursor:pointer;color:var(--text);font-weight:300;font-size:13px;transition:.18s;margin:2px 0;}
+.nav-item{display:flex;align-items:center;gap:9px;padding:11px 12px;border-radius:14px;cursor:pointer;color:var(--text);font-weight:300;font-size:14.5px;transition:.18s;margin:2px 0;min-height:40px;}
 .nav-item .ni-ic{width:26px;height:26px;display:flex;align-items:center;justify-content:center;flex:0 0 26px;}
 .nav-item .ni-ic img{width:26px;height:26px;object-fit:contain;}
 .nav-item:hover{background:var(--glass);}
@@ -108,15 +108,15 @@ body:not(.hasCardImg) .card::before{opacity:0;}
   background:linear-gradient(135deg,rgba(255,255,255,0.28),rgba(255,255,255,0.02) 45%,rgba(255,255,255,0.16));}
 .card>*{position:relative;z-index:1;}
 .card.glass{background:linear-gradient(160deg,rgba(255,255,255,0.22),rgba(255,255,255,0.04));}
-.card h3{margin:0 0 10px;font-size:14px;color:var(--text);display:flex;align-items:center;gap:6px;font-weight:300;}
+.card h3{margin:0 0 10px;font-size:15px;color:var(--text);display:flex;align-items:center;gap:6px;font-weight:300;}
 .card h3 img{width:20px;height:20px;object-fit:contain;}
 .tic{width:14px;height:14px;object-fit:contain;display:inline-block;vertical-align:-2px;}
 .muted{color:var(--sub);font-size:12px;}
-.btn{background:rgba(255,255,255,0.68);color:var(--primary);border:1px solid rgba(255,255,255,0.7);border-radius:13px;padding:8px 14px;font-weight:400;font-size:12.5px;cursor:pointer;box-shadow:0 4px 14px rgba(180,140,160,0.16), inset 0 1px 0 rgba(255,255,255,0.55);transition:.15s;}
+.btn{background:rgba(255,255,255,0.68);color:var(--primary);border:1px solid rgba(255,255,255,0.7);border-radius:13px;padding:10px 16px;font-weight:400;font-size:13.5px;cursor:pointer;box-shadow:0 4px 14px rgba(180,140,160,0.16), inset 0 1px 0 rgba(255,255,255,0.55);transition:.15s;}
 .btn:active{transform:scale(0.96);}
 .btn.ghost{background:var(--glass);color:var(--text);box-shadow:none;border:1px solid var(--line);}
-.btn.sm{padding:5px 10px;font-size:11.5px;border-radius:9px;}
-input,textarea,select{width:100%;padding:8px 10px;border-radius:12px;border:1px solid rgba(255,255,255,0.5);background:rgba(255,255,255,0.22);color:var(--text);font-size:12.5px;font-family:inherit;font-weight:200;margin:4px 0;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:inset 0 1px 0 rgba(255,255,255,0.35);}
+.btn.sm{padding:8px 12px;font-size:12px;border-radius:9px;min-height:34px;}
+input,textarea,select{width:100%;padding:9px 12px;border-radius:12px;border:1px solid rgba(255,255,255,0.5);background:rgba(255,255,255,0.22);color:var(--text);font-size:13.5px;font-family:inherit;font-weight:200;margin:4px 0;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:inset 0 1px 0 rgba(255,255,255,0.35);}
 input:focus,textarea:focus{outline:none;border-color:var(--pink);}
 label{font-size:11.5px;color:var(--sub);font-weight:300;display:block;margin-top:6px;}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;}
@@ -127,6 +127,8 @@ label{font-size:11.5px;color:var(--sub);font-weight:300;display:block;margin-top
 .mascot-wrap{position:relative;animation:floaty 3.2s ease-in-out infinite;display:inline-block;}
 .mascot-wrap img{width:110px;height:110px;cursor:pointer;border-radius:22px;transition:filter .2s;object-fit:contain;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;}
 .mascot-wrap.shake{animation:shake .4s;}
+.card-tag{position:absolute;top:7px;right:9px;z-index:3;width:18px;height:18px;pointer-events:none;opacity:.75;display:block;}
+.card-tag img{width:100%;height:100%;object-fit:contain;}
 .mascot-btn{position:absolute;width:26px;height:26px;border-radius:50%;border:none;background:var(--panel);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:var(--shadow);font-size:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .15s,background .2s;color:var(--text);z-index:5;}
 .mascot-btn:hover{transform:scale(1.1);background:var(--card);}
 .mascot-btn.av-btn{right:-4px;bottom:-4px;}
@@ -241,7 +243,7 @@ label{font-size:11.5px;color:var(--sub);font-weight:300;display:block;margin-top
 .creation img,.gallery .g img{width:100%;height:100px;object-fit:cover;display:block;}
 .creation .ct,.gallery .g .ct{padding:6px 8px;font-size:10.5px;color:var(--text);}
 .gallery .g .del,.creation .del{position:absolute;top:2px;right:2px;background:rgba(0,0,0,0.45);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:10px;cursor:pointer;}
-input[type=file]{color:#5a5a5a;font-size:12px;}
+input[type=file]{color:var(--text);font-size:12px;}
 
 /* growth */
 .month-block{margin-bottom:12px;}
@@ -333,7 +335,7 @@ input[type=file]{color:#5a5a5a;font-size:12px;}
 .modal-box .close{margin-top:10px;}
 
 /* night mode */
-body.night{--text:#ffffff;--sub:rgba(255,255,255,0.72);--panel:rgba(255,255,255,0.10);--card:rgba(255,255,255,0.14);--glass:rgba(255,255,255,0.07);--line:rgba(255,255,255,0.18);--shadow:0 8px 26px rgba(0,0,0,0.45);--pink:#FFC2DA;}
+body.night{--sub:rgba(255,255,255,0.72);--panel:rgba(255,255,255,0.10);--card:rgba(255,255,255,0.14);--glass:rgba(255,255,255,0.07);--line:rgba(255,255,255,0.18);--shadow:0 8px 26px rgba(0,0,0,0.45);--pink:#FFC2DA;}
 body.night{background:#2E1F2B;}
 
 /* gentle mode (低谷) */
@@ -521,14 +523,14 @@ body.gentle .content>.panel>.grid2{opacity:.92;}
 .low-hint .lh-t{margin:6px 0 8px;font-size:11.5px;color:var(--sub);line-height:1.5;}
 .low-hint .lh-btns{display:flex;gap:8px;flex-wrap:wrap;}
 .dream-card{background:rgba(227,238,255,0.55);border:1px solid #b6cdf5;border-radius:12px;padding:8px 10px;margin-top:6px;font-size:11px;color:var(--text);line-height:1.7;}
-.dream-card .dc-h{font-weight:bold;color:#5b7fc7;margin-bottom:2px;}
+.dream-card .dc-h{font-weight:bold;color:var(--text);margin-bottom:2px;}
 .eye-care-layer{position:fixed;inset:0;z-index:9997;pointer-events:none;background:rgba(255,160,60,0.10);display:none;}
 body.eyeon .eye-care-layer{display:block;}
 body .plan-list li.done{background:rgba(143,220,198,0.16);border-color:rgba(143,220,198,0.55);}
-body .plan-list li.done label{text-decoration:none;opacity:.95;color:#4e9c86;}
+body .plan-list li.done label{text-decoration:none;opacity:.95;color:var(--pink);}
 body.gentle .plan-list li{opacity:.72;}
 .memo-atmos{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;}
-.atmo-chip{font-size:10px;padding:2px 8px;border-radius:10px;background:rgba(227,238,255,0.6);color:#5b7fc7;border:1px solid #c4d6f8;}
+.atmo-chip{font-size:10px;padding:2px 8px;border-radius:10px;background:rgba(227,238,255,0.6);color:var(--text);border:1px solid #c4d6f8;}
 .mood-stat-title{font-size:12px;color:var(--sub);margin:12px 0 4px;}
 .mb-row{display:flex;align-items:center;gap:8px;margin:4px 0;font-size:11px;}
 .mb-l{width:18px;text-align:center;font-size:13px;}
@@ -558,7 +560,9 @@ body.gentle .plan-list li{opacity:.72;}
 @media(max-width:760px){
   .bottom-nav{display:flex;}
   .content{padding-bottom:124px;}
-  .card{backdrop-filter:none;-webkit-backdrop-filter:none;background-color:rgba(255,255,255,var(--cardA));box-shadow:0 8px 20px rgba(180,130,150,0.12);}
+  .nav-item{min-height:46px;padding:12px 12px;}
+  .btn{min-height:46px;}
+  .card{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--cardBg);box-shadow:0 8px 20px rgba(180,130,150,0.12);}
   .card::after{display:none;}
   body.hasCardImg .card::after{display:none;}
   .card.home-top{padding:10px 12px 6px;margin-bottom:8px;}
@@ -828,16 +832,16 @@ body.night .hero-text h2,body.night .lv-pop h3,body.night .lvbadge .lvtxt,body.n
 body.night .xpNum,body.night .week-report b,body.night .dust-badge,body.night .tag,
 body.night .found-stats b,body.night .ov-item span,body.night .stepper span,body.night .mini-tree .mt-stage,
 body.night .rt .rt-stage,body.night .mood-edit,body.night .rev-line b,body.night .ms-badge,
-body.night .link-card a,body.night .lv-table td:first-child,body.night .inspo-note b,body.night .mood-opt.on small{color:#fff;}
+body.night .link-card a,body.night .lv-table td:first-child,body.night .inspo-note b,body.night .mood-opt.on small{color:var(--text);}
 body.night .muted,body.night .av-name,body.night .side-foot,body.night .topbar .dt,body.night .cal-dow,
 body.night .state-opt small,body.night .mood-opt small,body.night .mg-m,body.night .month-block .mh,
-body.night .lvbadge .lvtxt .lvTitle,body.night .ring-label{color:rgba(255,255,255,0.72);}
+body.night .lvbadge .lvtxt .lvTitle,body.night .ring-label{color:var(--sub);}
 body.night .cal-d.hi,body.night .cal-d.heat{color:var(--pink);}
-body.night .btn{background:rgba(255,255,255,0.08);color:#fff;border-color:rgba(255,255,255,0.22);box-shadow:none;}
+body.night .btn{background:rgba(255,255,255,0.08);color:var(--text);border-color:rgba(255,255,255,0.22);box-shadow:none;}
 body.night .btn:hover{background:rgba(255,255,255,0.14);}
-body.night .btn.ghost{background:rgba(255,255,255,0.05);color:#fff;}
+body.night .btn.ghost{background:rgba(255,255,255,0.05);color:var(--text);}
 body.night .btn.on,body.night .btn.ghost.on{color:var(--pink);border-color:var(--pink);background:rgba(255,133,170,0.16);box-shadow:none;}
-body.night input,body.night textarea,body.night select{background:rgba(255,255,255,0.10);color:#fff;border-color:rgba(255,255,255,0.22);}
+body.night input,body.night textarea,body.night select{background:rgba(255,255,255,0.10);color:var(--text);border-color:rgba(255,255,255,0.22);}
 body.night input::placeholder,body.night textarea::placeholder{color:rgba(255,255,255,0.4);}
 body.night .mood-opt.on,body.night .state-opt.on,body.night .day-chip.on,body.night .plan-tab.on,body.night .nav-item.on,body.night .mg-cell.on{color:var(--pink);}
 body.night .cal-d.today{background:var(--pink);color:#2a1a26;box-shadow:0 0 0 2px rgba(255,133,170,.35);}
@@ -967,18 +971,30 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
   #homePlan .today-btns{margin-top:4px;}
 }
 body.custom-bg{background-image:none!important;}
+body.hasBgImg::before{content:"";position:fixed;inset:0;background:rgba(255,252,254,0.16);z-index:-1;pointer-events:none;}
+body.night.hasBgImg::before{background:rgba(28,18,26,0.22);}
 .home-more-panel{margin-bottom:10px;}
 .home-more-panel .chk-row{padding:5px 2px;}
 .decor-banner-card{padding:8px 12px;margin-bottom:10px;text-align:center;}
 .decor-banner{font-size:13px;color:var(--pink);margin:0;font-weight:300;}
-.mascot-wrap img.avatar-acc{position:absolute;left:calc(50% + var(--accLeft,0)*1%);width:calc(var(--accSize,120)*1%);height:auto;border-radius:0;object-fit:contain;pointer-events:none;z-index:6;display:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18));}
+.mascot-wrap img.avatar-acc{position:absolute;left:calc(50% + var(--accLeft,0)*1%);width:var(--accSizePx,88px);height:auto;border-radius:0;object-fit:contain;pointer-events:none;z-index:6;display:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18));}
 body.accModeTop .avatar-acc{top:calc(0% + var(--accOff,0)*1%);transform:translate(-50%,-100%);}
 body.accModeCenter .avatar-acc{top:calc(50% + var(--accOff,0)*1%);transform:translate(-50%,-50%);}
+body.accStyleFrame .mascot-wrap img{border:3px solid var(--pink);box-shadow:0 0 0 3px rgba(255,255,255,.75),0 0 0 5px var(--pink);}
+body.accStyleFrame .mascot-wrap img.avatar-acc{border:none;box-shadow:none;}
+body.accStyleWreath .mascot-wrap::after{content:"";position:absolute;inset:-10px;border:4px dashed var(--pink);border-radius:50%;pointer-events:none;opacity:.7;z-index:5;animation:spinSlow 16s linear infinite;}
+body.accStyleWreath .mascot-wrap img.avatar-acc{z-index:7;}
+body.accStyleCharm .mascot-wrap::after{content:"✦";position:absolute;bottom:-17px;left:50%;transform:translateX(-50%);color:var(--pink);font-size:17px;z-index:7;text-shadow:0 1px 3px rgba(0,0,0,.25);}
+@keyframes spinSlow{to{transform:rotate(360deg);}}
 body.decorPlain .card,body.decorPlain .found-card,body.decorPlain .modal-box,body.decorPlain .haven-card{background:transparent !important;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none;border-color:transparent;}
 body.decorPlain .card::after,body.decorPlain .found-card::after{display:none;}
 body.decorPlain .qbtn,body.decorPlain .btn{background:var(--panel);}
 body.decorPlain .card::before{opacity:0!important;}
+body.decorSolid .card,body.decorSolid .found-card,body.decorSolid .modal-box,body.decorSolid .haven-card,body.decorSolid .slime-box,body.decorSolid .wake-picker-box,body.decorSolid .lv-pop,body.decorSolid .slime-banner{background:rgba(255,253,249,0.96);backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:0 10px 30px rgba(150,110,130,0.18);}
+body.decorSolid .card::after,body.decorSolid .found-card::after{display:none;}
+body.night.decorSolid .card,body.night.decorSolid .found-card,body.night.decorSolid .modal-box,body.night.decorSolid .haven-card,body.night.decorSolid .slime-box,body.night.decorSolid .wake-picker-box,body.night.decorSolid .lv-pop,body.night.decorSolid .slime-banner{background:rgba(42,30,38,0.97);}
 body.cardBgFill [data-decor]{background-size:cover!important;}
+body.decorOuter .card{box-shadow:0 0 0 2px var(--pink),0 0 0 4px rgba(255,255,255,.55),0 10px 28px rgba(180,130,150,.20);}
 body.cardBgBorder [data-decor]{background-size:var(--cardLaceCornerW) auto,var(--cardLaceCornerW) auto,var(--cardLaceCornerW) auto,var(--cardLaceCornerW) auto,auto var(--cardLaceEdgeH),auto var(--cardLaceEdgeH)!important;background-repeat:no-repeat,no-repeat,no-repeat,no-repeat,repeat-x,repeat-x!important;background-position:var(--cardBgGap) var(--cardBgGap),calc(100% - var(--cardBgGap)) var(--cardBgGap),var(--cardBgGap) calc(100% - var(--cardBgGap)),calc(100% - var(--cardBgGap)) calc(100% - var(--cardBgGap)),center var(--cardBgGap),center calc(100% - var(--cardBgGap))!important;}
 body.cardBgBorder.hasCardImg .card::before{background-image:var(--cardImg),var(--cardImg),var(--cardImg),var(--cardImg),var(--cardImg),var(--cardImg);background-size:var(--cardLaceCornerW) auto,var(--cardLaceCornerW) auto,var(--cardLaceCornerW) auto,var(--cardLaceCornerW) auto,auto var(--cardLaceEdgeH),auto var(--cardLaceEdgeH);background-repeat:no-repeat,no-repeat,no-repeat,no-repeat,repeat-x,repeat-x;background-position:var(--cardBgGap) var(--cardBgGap),calc(100% - var(--cardBgGap)) var(--cardBgGap),var(--cardBgGap) calc(100% - var(--cardBgGap)),calc(100% - var(--cardBgGap)) calc(100% - var(--cardBgGap)),center var(--cardBgGap),center calc(100% - var(--cardBgGap));background-origin:padding-box,padding-box,padding-box,padding-box,content-box,content-box;}
 body.cardBgBorder.hasCardImg .card.card-folded::before{background-image:var(--cardImg);background-size:auto var(--cardLaceEdgeH);background-repeat:repeat-x;background-position:center var(--cardBgGap);padding:0;background-origin:padding-box;background-clip:border-box;}
@@ -1424,7 +1440,7 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{background-image:var(--ca
             <label>皮肤配色</label>
             <div class="theme-row" id="themeRow2" style="padding:4px 0;"></div>
             <label>界面风格</label>
-            <div class="row"><select id="decorStyle" onchange="setDecorStyle(this.value)"><option value="glass">液态玻璃</option><option value="plain">纯净背景（只显示背景）</option></select></div>
+            <div class="row"><select id="decorStyle" onchange="setDecorStyle(this.value)"><option value="glass">液态玻璃</option><option value="solid">实心底（不透明更清晰）</option><option value="plain">纯净背景（只显示背景）</option></select></div>
             <label>玻璃透明度</label>
             <div class="row"><input type="range" id="glassRange" min="20" max="100" value="100" oninput="setGlass(this.value)" style="flex:1;"><span id="glassVal" style="width:42px;text-align:right;">100%</span></div>
             <label>夜间模式</label>
@@ -1471,6 +1487,10 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{background-image:var(--ca
               <input type="file" id="decorCardBgPer" accept="image/*" style="display:none;" onchange="uploadDecorCardBgPer(this)">
               <button class="btn sm ghost" onclick="clearDecorCardBgPer()">取消</button>
             </div>
+            <label>卡片小标签（右上角小图标）</label>
+            <div class="row"><select id="decorCardTag" onchange="setDecorCardTag(this.value)"><option value="on">开启</option><option value="off">关闭</option></select></div>
+            <label>外扩双线边框</label>
+            <div class="row"><select id="decorOuter" onchange="setDecorOuter(this.value)"><option value="off">关闭</option><option value="on">开启（粉色外扩）</option></select></div>
             <label>卡片边框</label>
             <div class="row"><select id="decorBorder" onchange="setDecorBorder(this.value)"><option value="solid">实线</option><option value="dashed">虚线</option><option value="dot">圆点</option><option value="lace">花边</option></select></div>
             <label>卡片圆角</label>
@@ -1488,6 +1508,8 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{background-image:var(--ca
               <input type="file" id="decorAvAcc" accept="image/*" style="display:none;" onchange="uploadDecorAvAcc(this)">
               <button class="btn sm ghost" onclick="clearDecorAvAcc()">取消挂件</button>
             </div>
+            <label>挂件装饰样式</label>
+            <div class="row"><select id="decorAvAccStyle" onchange="setDecorAvAccStyle(this.value)"><option value="none">图片挂件（自定义上传）</option><option value="frame">相框（包边）</option><option value="wreath">花环（虚线环绕）</option><option value="charm">吊坠（底部小坠）</option></select></div>
             <label>挂件位置模式</label>
             <div class="row"><select id="decorAvAccMode" onchange="setDecorAvAccMode(this.value)"><option value="top">顶部（贴头顶·帽子/光环）</option><option value="center">居中（相框）</option></select></div>
             <label>挂件大小</label>
@@ -1537,7 +1559,7 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{background-image:var(--ca
               <button class="btn ghost" onclick="document.getElementById('imIn').click()">导入</button>
               <input type="file" id="imIn" style="display:none;" onchange="importData(this)">
             </div>
-            <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-13-v27</b></p>
+            <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-13-v28</b></p>
           </div>
         </div>
         <div class="card">
@@ -1788,7 +1810,7 @@ function load(){
   }catch(e){S={};}
 }
 
-const APP_VERSION = '2026-08-13-v27';
+const APP_VERSION = '2026-08-13-v28';
 // 深度消毒：同步合并/旧版本/损坏数据进入后，把每个用到的字段修复成正确类型，防止任意一处 undefined 崩溃
 function deepSanitize(){
   if(!S || typeof S!=='object' || Array.isArray(S)) S={};
@@ -3212,6 +3234,7 @@ function go(page){
     if(page==='mine') renderMine();
   }catch(err){ showPageError(page, err); }
   try{ applyFolds(); }catch(e){}
+  try{ applyCardTags(); }catch(e){}
   if(page==='settings') renderSettings();
   try{
     const bnMap = {home:'home',courses:'courses',micro:'micro',growth:'growth',mine:'mine',body:'mine',mood:'mine',fav:'mine',settings:'mine'};
@@ -3302,8 +3325,10 @@ function applyNight(){
   const t = (ct && ct.bg1 && ct.primary && ct.pink) ? ct : THEMES[parseInt(S.theme)||0];
   const g = (typeof S.glass==='number' && S.glass>=0.2 && S.glass<=1) ? S.glass : 1;
   if(wants){
-    r.setProperty('--text','#ffffff');
-    r.setProperty('--sub','rgba(255,255,255,0.72)');
+    const _ctTxt = (ct && ct.bg1 && ct.primary && ct.pink && ct.text) ? ct.text : '';
+    const nt = _ctTxt ? brightenHex(_ctTxt) : '#ffffff';
+    r.setProperty('--text', nt);
+    r.setProperty('--sub', _ctTxt ? hexToRgba(nt, 0.8) : 'rgba(255,255,255,0.72)');
     r.setProperty('--panel','rgba(28,18,30,'+(0.42*g).toFixed(2)+')');
     r.setProperty('--card','rgba(28,18,30,'+(0.25*g).toFixed(2)+')');
     r.setProperty('--cardA',(0.30*g).toFixed(2));
@@ -3338,6 +3363,7 @@ function applyBg(){
     bg.style.opacity = blurOn ? '0.55' : '1';
   }
   else { bg.style.opacity='0'; }
+  document.body.classList.toggle('hasBgImg', !!(S.bg==='custom' && S.customBg));
   document.body.classList.toggle('gentle', ensureToday().state==='down');
 }
 function setBg(v){ S.bg=v; save(); applyBg(); haptic(); }
@@ -3396,6 +3422,11 @@ function applyDecor(){
   r.setProperty('--cardBgGap', (parseInt(d.cardBgGap,10)||8)+'px');
   r.setProperty('--cardLaceGap', (parseInt(d.cardLaceGap,10)||6)+'px');
   document.body.classList.toggle('decorPlain', d.style==='plain');
+  document.body.classList.toggle('decorSolid', d.style==='solid');
+  document.body.classList.toggle('decorOuter', !!d.outer);
+  document.body.classList.toggle('accStyleFrame', d.accStyle==='frame');
+  document.body.classList.toggle('accStyleWreath', d.accStyle==='wreath');
+  document.body.classList.toggle('accStyleCharm', d.accStyle==='charm');
   document.querySelectorAll('[data-decor]').forEach(function(el){
     const key = el.getAttribute('data-decor');
     const bg = d.cardBgPer && d.cardBgPer[key];
@@ -3412,6 +3443,7 @@ function applyDecor(){
   document.body.classList.toggle('accModeTop', am==='top');
   document.body.classList.toggle('accModeCenter', am==='center');
   r.setProperty('--accSize', parseInt(d.avatarAccSize,10)||120);
+  updateAccPx();
   r.setProperty('--accOff', parseInt(d.avatarAccOff,10)||0);
   r.setProperty('--accLeft', parseInt(d.avatarAccLeft,10)||0);
   const hasAny = !!(d.cardBg || (d.cardBgPer && Object.keys(d.cardBgPer).length));
@@ -3421,6 +3453,9 @@ function applyDecor(){
   const bn = document.getElementById('decorBanner');
   if(bn){ bn.textContent = d.banner||''; }
   const st=document.getElementById('decorStyle'); if(st) st.value=d.style||'glass';
+  const as2=document.getElementById('decorAvAccStyle'); if(as2) as2.value=d.accStyle||'none';
+  const ct2=document.getElementById('decorCardTag'); if(ct2) ct2.value=(d.cardTag===false)?'off':'on';
+  const ot=document.getElementById('decorOuter'); if(ot) ot.value=d.outer?'on':'off';
   const bd=document.getElementById('decorBorder'); if(bd) bd.value=d.cardBorder||'solid';
   const rr=document.getElementById('decorRadius'); if(rr) rr.value=d.cardRadius||16;
   const rv=document.getElementById('decorRadiusVal'); if(rv) rv.textContent=(d.cardRadius||16)+'px';
@@ -3440,7 +3475,7 @@ function applyDecor(){
   const ah=document.getElementById('decorAvAccH'); if(ah) ah.value=parseInt(d.avatarAccLeft,10)||0;
   const ahv=document.getElementById('decorAvAccHVal'); if(ahv) ahv.textContent=parseInt(d.avatarAccLeft,10)||0;
 }
-function setDecorStyle(v){ if(!S.decor) S.decor={}; S.decor.style=v; save(); applyDecor(); haptic(); toast(v==='plain'?'已切换为纯净背景（只显示背景）~':'已切换为液态玻璃~'); }
+function setDecorStyle(v){ if(!S.decor) S.decor={}; S.decor.style=v; save(); applyDecor(); haptic(); toast(v==='plain'?'已切换为纯净背景（只显示背景）~':(v==='solid'?'已切换为实心底（不透明更清晰）~':'已切换为液态玻璃~')); }
 function setDecorBorder(v){ if(!S.decor) S.decor={}; S.decor.cardBorder=v; save(); applyDecor(); }
 function setDecorRadius(v){ if(!S.decor) S.decor={}; S.decor.cardRadius=parseInt(v||16,10); save(); applyDecor(); const el=document.getElementById('decorRadiusVal'); if(el) el.textContent=v+'px'; }
 function saveDecorBanner(){ const v=(document.getElementById('decorBannerInput').value||'').trim(); if(!S.decor) S.decor={}; S.decor.banner=v; save(); applyDecor(); toast('签名横幅已更新~'); }
@@ -3462,6 +3497,49 @@ function clearDecorCardBgPer(){
 function uploadDecorAvAcc(input){
   const f=input&&input.files&&input.files[0]; if(!f) return;
   compressImage(f, 160, data=>{ if(!S.decor) S.decor={}; S.decor.avatarAcc=data; save(); applyDecor(); toast('头像挂件已添加~'); });
+}
+function brightenHex(hex){
+  try{
+    let h=String(hex||'').replace('#','');
+    if(!h) return '#ffffff';
+    if(h.length===3) h=h.split('').map(function(c){return c+c;}).join('');
+    const n=parseInt(h,16); if(isNaN(n)) return '#ffffff';
+    let r=(n>>16)&255, g=(n>>8)&255, b=n&255;
+    r/=255; g/=255; b/=255;
+    const mx=Math.max(r,g,b), mn=Math.min(r,g,b);
+    const l=(mx+mn)/2;
+    if(l>=0.62) return '#'+((1<<24)+(Math.round(r*255)<<16)+(Math.round(g*255)<<8)+Math.round(b*255)).toString(16).slice(1);
+    const mix=(0.78-l)/(1-l);
+    r=Math.round((r+(1-r)*mix)*255); g=Math.round((g+(1-g)*mix)*255); b=Math.round((b+(1-b)*mix)*255);
+    return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);
+  }catch(e){ return '#ffffff'; }
+}
+function hexToRgba(hex, a){
+  try{
+    let h=String(hex||'').replace('#','');
+    if(h.length===3) h=h.split('').map(function(c){return c+c;}).join('');
+    const n=parseInt(h,16); if(isNaN(n)) return 'rgba(255,255,255,'+a+')';
+    return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')';
+  }catch(e){ return 'rgba(255,255,255,'+a+')'; }
+}
+function updateAccPx(){
+  const d=S.decor||{};
+  const b=parseInt(d.avatarAccSize,10)||120;
+  const px=Math.round(b*(0.42+0.05*((window.innerWidth||390)/100)));
+  document.documentElement.style.setProperty('--accSizePx', px+'px');
+}
+function setDecorAvAccStyle(v){ if(!S.decor) S.decor={}; S.decor.accStyle=v; save(); applyDecor(); haptic(); }
+function setDecorCardTag(v){ if(!S.decor) S.decor={}; S.decor.cardTag=(v==='on'); save(); applyCardTags(); toast((v==='on')?'卡片小标签已开启~':'卡片小标签已关闭~'); }
+function setDecorOuter(v){ if(!S.decor) S.decor={}; S.decor.outer=(v==='on'); save(); applyDecor(); haptic(); }
+function applyCardTags(){
+  const on = !!(S.decor && S.decor.cardTag!==false);
+  const pool=['s033','s055','s078','s109','s113','s117','s177','s179','s187','s185','s087','s010'];
+  document.querySelectorAll('.card').forEach(function(card, i){
+    let tag=card.querySelector(':scope > .card-tag');
+    if(!on){ if(tag) tag.remove(); return; }
+    if(!tag){ tag=document.createElement('span'); tag.className='card-tag'; card.insertBefore(tag, card.firstChild); }
+    tag.innerHTML='<img src="'+stk(pool[i%pool.length])+'" alt="">';
+  });
 }
 function setDecorCardBgMode(v){ if(!S.decor) S.decor={}; S.decor.cardBgMode=v; save(); applyDecor(); toast(v==='border'?'已切换为只显示边框~':'已切换为铺满整卡~'); }
 function setDecorCardBgOp(v){ if(!S.decor) S.decor={}; S.decor.cardBgOpacity=parseInt(v||100,10); save(); applyDecor(); }
@@ -5433,7 +5511,9 @@ function initAll(){
   buildThemes();
   applyTheme();
   applyDecor();
+  applyCardTags();
   applyEyeCare();
+  try{ window.addEventListener('resize', function(){ clearTimeout(window.__accT); window.__accT=setTimeout(updateAccPx,150); }); }catch(e){}
   try{
     const mm = window.matchMedia('(prefers-color-scheme: dark)');
     const onSys = ()=>{ try{ applyNight(); applyBg(); }catch(e){} };
