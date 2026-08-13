@@ -553,6 +553,9 @@ body.gentle .plan-list li{opacity:.72;}
 .home-more-btn{margin:10px 0 0;}
 @media(max-width:760px){
   .bottom-nav{display:flex;}
+  #sidebar{padding-bottom:calc(88px + env(safe-area-inset-bottom));}
+  #sidebar.open ~ #main #bottomNav{display:none;}
+  .topbar,#sidebar{backdrop-filter:none;-webkit-backdrop-filter:none;}
   .content{padding-bottom:124px;}
   .nav-item{min-height:46px;padding:12px 12px;}
   .btn{min-height:46px;}
@@ -5511,7 +5514,7 @@ function initAll(){
   setInterval(()=>{
     const now = new Date();
     document.getElementById('dt').textContent = now.getMonth()+1+'月'+now.getDate()+'日 '+(now.getHours()<10?'0':'')+now.getHours()+':'+(now.getMinutes()<10?'0':'')+now.getMinutes();
-  },1000);
+  },30000);
   // first visit welcome
   if(!S.firstVisit){ S.firstVisit=true; save(); }
   go(S.page || 'home');

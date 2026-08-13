@@ -1,16 +1,22 @@
-/* DJW Workbench Service Worker: offline + fast start + auto update (network-first for HTML) */
-const CACHE = 'dajiuwan-v32-20260813';
-const ASSETS = ['./', './index.html', './gallery.html', './manifest.webmanifest', './icons.js', './stickers.js', './firebase-app.js', './firebase-auth.js', './firebase-db.js', './icon-192.png', './icon-512.png'];
+/* DJW Workbench Service Worker: offline + fast start + auto update */
+/* v33: 双缓存 - 版本化外壳(CACHE) + 稳定资源(ASSET_CACHE: 贴纸/图标/SDK 不随更新重下) */
+const CACHE = 'dajiuwan-v33-20260813';
+const ASSET_CACHE = 'dajiuwan-assets-v1';
+const SHELL = ['./', './index.html', './gallery.html', './manifest.webmanifest'];
+const STABLE = ['./icons.js', './stickers.js', './firebase-app.js', './firebase-auth.js', './firebase-db.js', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', function(e){
   e.waitUntil(
-    caches.open(CACHE).then(function(c){ return c.addAll(ASSETS); }).then(function(){ return self.skipWaiting(); })
+    Promise.all([
+      caches.open(CACHE).then(function(c){ return c.addAll(SHELL); }),
+      caches.open(ASSET_CACHE).then(function(c){ return c.addAll(STABLE); })
+    ]).then(function(){ return self.skipWaiting(); })
   );
 });
 self.addEventListener('activate', function(e){
   e.waitUntil(
     caches.keys().then(function(keys){
-      return Promise.all(keys.filter(function(k){ return k !== CACHE; }).map(function(k){ return caches.delete(k); }));
+      return Promise.all(keys.filter(function(k){ return k !== CACHE && k !== ASSET_CACHE; }).map(function(k){ return caches.delete(k); }));
     }).then(function(){ return self.clients.claim(); })
   );
 });
@@ -22,15 +28,8 @@ function isNav(req, url){
   return req.mode === 'navigate' || url.pathname === '/' || url.pathname.endsWith('index.html');
 }
 
-function sameResponse(a, b){
-  try{
-    const la=a.headers.get('last-modified'), lb=b.headers.get('last-modified');
-    const ca=a.headers.get('content-length'), cb=b.headers.get('content-length');
-    if(la && lb && la !== lb) return false;
-    if(la && lb && la === lb) return true;
-    if(ca && cb && ca === cb) return true;
-    return a.clone().text().then(function(ta){ return b.clone().text().then(function(tb){ return ta === tb; }); });
-  }catch(e){ return Promise.resolve(true); }
+function stableName(name){
+  return name === 'icons.js' || name === 'stickers.js' || name === 'firebase-app.js' || name === 'firebase-auth.js' || name === 'firebase-db.js' || name === 'icon-192.png' || name === 'icon-512.png';
 }
 
 self.addEventListener('fetch', function(e){
@@ -58,8 +57,10 @@ self.addEventListener('fetch', function(e){
   }
 
   // Static assets: cache-first with background refresh
+  const name = url.pathname.split('/').pop();
+  const cacheName = stableName(name) ? ASSET_CACHE : CACHE;
   e.respondWith((async function(){
-    const cache = await caches.open(CACHE);
+    const cache = await caches.open(cacheName);
     const cached = await cache.match(req, { ignoreSearch: true });
     const network = fetch(req).then(function(res){
       if(res && res.ok){ try{ cache.put(req, res.clone()); }catch(err){} }
