@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script src="icons.js" async></script>
 <script src="stickers.js" async></script>
-<title>呆啾丸 · 绘画自律工作台 v33</title>
+<title>呆啾丸 · 绘画自律工作台 v34</title>
 <style>
 
 :root{
@@ -1520,12 +1520,24 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{background-image:var(--ca
               <div><button class="btn ghost" onclick="changeAvatar()">上传头像</button></div>
               <div><button class="btn ghost" onclick="resetAvatar()">恢复默认</button></div>
             </div>
-            <label>自定义背景</label>
+            <label>自定义背景（通用 · 所有设备）</label>
             <div class="row">
               <div><select id="bgSel" onchange="setBg(this.value)"><option value="none">无（纯色）</option><option value="custom">我的上传</option></select></div>
-              <div><button class="btn ghost" onclick="document.getElementById('bgUp').click()">上传背景图</button><input type="file" id="bgUp" accept="image/*" style="display:none;" onchange="uploadBg(this)"></div>
+              <div><button class="btn ghost" onclick="document.getElementById('bgUp').click()">上传通用背景</button><input type="file" id="bgUp" accept="image/*" style="display:none;" onchange="uploadBg(this,'shared')"></div>
+              <div><button class="btn ghost sm" onclick="clearBg('shared')" id="bgDelBtn" style="display:none;">清除</button></div>
             </div>
-            <div class="row"><button class="btn ghost sm" onclick="delCustomBg()" id="bgDelBtn" style="display:none;">清除背景图</button></div>
+            <label style="margin-top:8px;">分设备背景（可选，填了优先于通用）</label>
+            <div class="row" style="gap:6px;flex-wrap:wrap;">
+              <button class="btn ghost sm" onclick="document.getElementById('bgUpPhone').click()">上传手机背景</button><input type="file" id="bgUpPhone" accept="image/*" style="display:none;" onchange="uploadBg(this,'phone')">
+              <button class="btn ghost sm" onclick="document.getElementById('bgUpTab').click()">上传平板背景</button><input type="file" id="bgUpTab" accept="image/*" style="display:none;" onchange="uploadBg(this,'tablet')">
+              <button class="btn ghost sm" onclick="document.getElementById('bgUpDesk').click()">上传电脑背景</button><input type="file" id="bgUpDesk" accept="image/*" style="display:none;" onchange="uploadBg(this,'desktop')">
+            </div>
+            <div class="row" style="gap:6px;flex-wrap:wrap;">
+              <button class="btn ghost sm" onclick="clearBg('phone')" id="bgDelPhone" style="display:none;">清除手机背景</button>
+              <button class="btn ghost sm" onclick="clearBg('tablet')" id="bgDelTab" style="display:none;">清除平板背景</button>
+              <button class="btn ghost sm" onclick="clearBg('desktop')" id="bgDelDesk" style="display:none;">清除电脑背景</button>
+            </div>
+            <p class="muted" id="bgDeviceHint" style="font-size:10.5px;margin:6px 0 0;"></p>
             <label>白色弱化遮罩</label>
             <div class="row"><select id="blurSel" onchange="toggleBlur(this.value)"><option value="auto">自动跟随系统</option><option value="on">开启</option><option value="off">关闭</option></select></div>
           </div>
@@ -1552,7 +1564,7 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{background-image:var(--ca
               <button class="btn ghost" onclick="document.getElementById('imIn').click()">导入</button>
               <input type="file" id="imIn" style="display:none;" onchange="importData(this)">
             </div>
-            <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-13-v33</b></p>
+            <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-13-v34</b></p>
           </div>
         </div>
         <div class="card">
@@ -1792,7 +1804,7 @@ function load(){
   }catch(e){S={};}
 }
 
-const APP_VERSION = '2026-08-13-v33';
+const APP_VERSION = '2026-08-13-v34';
 // 深度消毒：同步合并/旧版本/损坏数据进入后，把每个用到的字段修复成正确类型，防止任意一处 undefined 崩溃
 function deepSanitize(){
   if(!S || typeof S!=='object' || Array.isArray(S)) S={};
@@ -1818,7 +1830,7 @@ function deepSanitize(){
   if(typeof S.firstVisit!=='boolean') S.firstVisit=false;
   var VALID_PAGES=['home','courses','micro','know','dance','body','mood','growth','fav','settings','mine'];
   if(typeof S.page!=='string' || VALID_PAGES.indexOf(S.page)<0) S.page='home';
-  ['homeNote','theme','nightMode','bg','blur','lastCheckin','customBg','customAvatar','bodyNote','planTab'].forEach(function(k){
+  ['homeNote','theme','nightMode','bg','blur','lastCheckin','customBg','customAvatar','bodyNote','planTab','bgPhone','bgTablet','bgDesktop'].forEach(function(k){
     if(typeof S[k]!=='string') S[k]='';
   });
   // ---- 深层：dance ----
@@ -3305,10 +3317,20 @@ function applyNight(){
   const nm=document.getElementById('nightMode'); if(nm) nm.value=S.nightMode;
 }
 function setNight(v){ S.nightMode=v; save(); applyNight(); applyBg(); haptic(); }
+function devType(){
+  const w = window.innerWidth;
+  if(w <= 760) return 'phone';
+  if(w < 1100) return 'tablet';
+  return 'desktop';
+}
 function applyBg(){
   const bg = document.getElementById('appBg');
   let src = '';
-  if(S.bg==='custom') src = S.customBg;
+  if(S.bg==='custom'){
+    const dt = devType();
+    const slot = dt==='phone' ? S.bgPhone : dt==='tablet' ? S.bgTablet : S.bgDesktop;
+    src = slot || S.customBg;
+  }
   if(src){
     bg.style.backgroundImage = "url('"+src+"')";
     const night = S.nightMode==='on' || (S.nightMode==='auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
@@ -3316,15 +3338,34 @@ function applyBg(){
     bg.style.opacity = blurOn ? '0.55' : '1';
   }
   else { bg.style.opacity='0'; }
-  document.body.classList.toggle('hasBgImg', !!(S.bg==='custom' && S.customBg));
+  document.body.classList.toggle('hasBgImg', !!(S.bg==='custom' && (S.customBg || S.bgPhone || S.bgTablet || S.bgDesktop)));
   document.body.classList.toggle('gentle', ensureToday().state==='down');
 }
 function setBg(v){ S.bg=v; save(); applyBg(); haptic(); }
-function uploadBg(input){
+function uploadBg(input, slot){
   const f = input.files[0]; if(!f) return;
-  compressImage(f, 1600, data=>{ S.customBg=data; S.bg='custom'; save(); applyBg(); toast('背景换好啦~'); }, 0.72);
+  const maxW = slot==='phone' ? 900 : slot==='tablet' ? 1200 : 1600;
+  compressImage(f, maxW, data=>{
+    if(slot==='phone') S.bgPhone=data;
+    else if(slot==='tablet') S.bgTablet=data;
+    else if(slot==='desktop') S.bgDesktop=data;
+    else S.customBg=data;
+    S.bg='custom'; save(); applyBg(); try{ renderSettings(); }catch(e){}
+    toast(slot==='phone'||slot==='tablet'||slot==='desktop' ? '该设备背景换好啦~' : '背景换好啦~');
+  }, 0.72);
   input.value='';
 }
+function clearBg(slot){
+  if(!confirm('清除这张背景图？')) return;
+  if(slot==='phone') S.bgPhone='';
+  else if(slot==='tablet') S.bgTablet='';
+  else if(slot==='desktop') S.bgDesktop='';
+  else S.customBg='';
+  if(!S.customBg && !S.bgPhone && !S.bgTablet && !S.bgDesktop) S.bg='none';
+  save(); applyBg(); try{ renderSettings(); }catch(e){}
+  toast('已清除~');
+}
+function delCustomBg(){ clearBg('shared'); }
 function toggleBlur(v){ S.blur=v; save(); applyBg(); haptic(); }
 
 function setEyeCare(v){ S.eyeCare=(v==='on'); save(); applyEyeCare(); haptic(); }
@@ -5202,6 +5243,10 @@ function renderSettings(){
   document.getElementById('bgSel').value = S.bg;
   document.getElementById('blurSel').value = S.blur;
   const bd=document.getElementById('bgDelBtn'); if(bd) bd.style.display = S.customBg? 'inline-block':'none';
+  const bdp=document.getElementById('bgDelPhone'); if(bdp) bdp.style.display = S.bgPhone? 'inline-block':'none';
+  const bdt=document.getElementById('bgDelTab'); if(bdt) bdt.style.display = S.bgTablet? 'inline-block':'none';
+  const bdd=document.getElementById('bgDelDesk'); if(bdd) bdd.style.display = S.bgDesktop? 'inline-block':'none';
+  const bh=document.getElementById('bgDeviceHint'); if(bh){ const dt=devType(); const slot=dt==='phone'?S.bgPhone:dt==='tablet'?S.bgTablet:S.bgDesktop; bh.textContent='当前设备（'+({phone:'手机',tablet:'平板',desktop:'电脑'}[dt])+'）：'+(slot?'使用专用背景':'使用通用背景'); }
   const sc=document.getElementById('syncConfig'); if(sc) sc.value=(S.sync&&S.sync.config)||'';
   const sco=document.getElementById('syncCode'); if(sco) sco.value=(S.sync&&S.sync.code)||'';
   updateSyncStatus();
