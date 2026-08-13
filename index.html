@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script src="icons.js" async></script>
 <script src="stickers.js" async></script>
-<title>呆啾丸 · 绘画自律工作台 v31</title>
+<title>呆啾丸 · 绘画自律工作台 v32</title>
 <style>
 
 :root{
@@ -83,7 +83,7 @@ h1,h2,h3,h4,b,strong{font-weight:300;}
 .hamb{display:block;font-size:22px;cursor:pointer;background:none;border:none;color:var(--text);}
 .topbar .ttl{font-weight:300;font-size:14px;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .topbar .dt{font-size:11px;color:var(--sub);}
-.lvbadge{display:flex;align-items:center;gap:6px;background:var(--glass);padding:4px 10px 4px 4px;border-radius:30px;box-shadow:var(--shadow);cursor:pointer;}
+.lvbadge{display:flex;align-items:center;gap:6px;background:transparent;padding:2px 6px 2px 2px;border-radius:30px;box-shadow:none;cursor:pointer;transition:background .2s;}
 .lvbadge .lvimg{width:34px;height:34px;border-radius:50%;object-fit:cover;border:1.5px solid #fff;}
 .lvbadge .lvtxt{font-size:10px;font-weight:300;color:var(--pink);line-height:1.1;}
 .lvbadge .lvtxt .lvTitle{display:block;font-size:9px;color:var(--sub);}
@@ -460,7 +460,8 @@ body.gentle .content>.panel>.grid2{opacity:.92;}
 
 /* 液态玻璃按钮微调 */
 .qbtn{background:linear-gradient(160deg,rgba(255,255,255,0.34),rgba(255,255,255,0.10));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);}
-.lvbadge{background:linear-gradient(160deg,rgba(255,255,255,0.34),rgba(255,255,255,0.10));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);}
+.lvbadge{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;}
+.lvbadge:hover{background:rgba(255,255,255,0.16);}
 
 @media(max-width:760px){
   .week-grid{grid-template-columns:repeat(2,1fr);}
@@ -1548,7 +1549,7 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{background-image:var(--ca
               <button class="btn ghost" onclick="document.getElementById('imIn').click()">导入</button>
               <input type="file" id="imIn" style="display:none;" onchange="importData(this)">
             </div>
-            <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-13-v31</b></p>
+            <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-13-v32</b></p>
           </div>
         </div>
         <div class="card">
@@ -1788,7 +1789,7 @@ function load(){
   }catch(e){S={};}
 }
 
-const APP_VERSION = '2026-08-13-v31';
+const APP_VERSION = '2026-08-13-v32';
 // 深度消毒：同步合并/旧版本/损坏数据进入后，把每个用到的字段修复成正确类型，防止任意一处 undefined 崩溃
 function deepSanitize(){
   if(!S || typeof S!=='object' || Array.isArray(S)) S={};
