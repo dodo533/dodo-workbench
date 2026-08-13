@@ -1,6 +1,6 @@
 /* DJW Workbench Service Worker: offline + fast start + auto update */
 /* v33: 双缓存 - 版本化外壳(CACHE) + 稳定资源(ASSET_CACHE: 贴纸/图标/SDK 不随更新重下) */
-const CACHE = 'dajiuwan-v34-20260813';
+const CACHE = 'dajiuwan-v36-20260813';
 const ASSET_CACHE = 'dajiuwan-assets-v1';
 const SHELL = ['./', './index.html', './gallery.html', './manifest.webmanifest'];
 const STABLE = ['./icons.js', './stickers.js', './firebase-app.js', './firebase-auth.js', './firebase-db.js', './icon-192.png', './icon-512.png'];
