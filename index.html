@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <script src="icons.js" async></script>
 <script src="stickers.js" async></script>
-<title>呆啾丸 · 绘画自律工作台 v22</title>
+<title>呆啾丸 · 绘画自律工作台 v23</title>
 <style>
 
 :root{
@@ -609,7 +609,7 @@ body.gentle .plan-list li{opacity:.72;}
 @media(min-width:761px){
   .card.home-top{padding:12px 14px 8px;}
   .hero{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;align-items:center;flex-wrap:nowrap;}
-  .mascot-wrap{justify-self:center;}
+  .mascot-wrap{justify-self:center;order:2;}
   .mascot-wrap img{width:110px;height:110px;border-radius:20px;}
   .hero-text{order:1;grid-column:1/-1;text-align:center;min-width:0;}
   .hero-text h2{font-size:14px;margin-bottom:0;}
@@ -1547,7 +1547,7 @@ body.cardBgBorder.hasCardImg .card::before{background-image:var(--cardImg),var(-
               <button class="btn ghost" onclick="document.getElementById('imIn').click()">导入</button>
               <input type="file" id="imIn" style="display:none;" onchange="importData(this)">
             </div>
-            <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-13-v22</b></p>
+            <p class="muted" style="font-size:11px;margin-top:4px;">应用版本 <b>2026-08-13-v23</b></p>
           </div>
         </div>
         <div class="card">
@@ -1798,7 +1798,7 @@ function load(){
   }catch(e){S={};}
 }
 
-const APP_VERSION = '2026-08-13-v22';
+const APP_VERSION = '2026-08-13-v23';
 // 深度消毒：同步合并/旧版本/损坏数据进入后，把每个用到的字段修复成正确类型，防止任意一处 undefined 崩溃
 function deepSanitize(){
   if(!S || typeof S!=='object' || Array.isArray(S)) S={};
