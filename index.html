@@ -2994,7 +2994,7 @@ function checkReminders(){
 function escHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g, function(c){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"\'":'&#39;'})[c]; }); }
 
 // ===== v6 新增：多端同步（Firebase 同步码） =====
-let _syncTimer=null, _syncBusy=false, _syncListenerRef=null, _applyingRemote=false, _syncQueued=false, _lastPushSig='';
+let _syncTimer=null, _syncBusy=false, _syncListenerRef=null, _applyingRemote=false, _syncQueued=false, _lastPushSig='', _djwForcePush=false;
 let _createShowAll=false, _inspoShowAll=false, _archShowAll=false;
 function syncReady(){
   try{
@@ -3069,14 +3069,33 @@ function pushToServer(){
     const sig = dataSig(payload);
     if(sig===_lastPushSig){ updateSyncStatus('已同步'); _syncBusy=false; return; }
     if(payload._meta) payload._meta.updatedAt = firebase.database.ServerValue.TIMESTAMP;
-    syncRef().set(payload)
-      .then(()=>{
-        _lastPushSig=sig;
-        if(S.sync){ S.sync._pendingAt=0; S.sync.lastSync=Date.now(); }
-        updateSyncStatus('已同步 · '+new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'}));
-      })
-      .catch(err=>{ updateSyncStatus('同步失败：'+(err&&err.message||err),'err'); })
-      .finally(()=>{ _syncBusy=false; if(_syncQueued){ _syncQueued=false; scheduleSyncPush(); } });
+    const doSet = function(){
+      syncRef().set(payload)
+        .then(()=>{
+          _lastPushSig=sig;
+          if(S.sync){ S.sync._pendingAt=0; S.sync.lastSync=Date.now(); }
+          updateSyncStatus('已同步 · '+new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'}));
+        })
+        .catch(err=>{ updateSyncStatus('同步失败：'+(err&&err.message||err),'err'); })
+        .finally(()=>{ _syncBusy=false; if(_syncQueued){ _syncQueued=false; scheduleSyncPush(); } });
+    };
+    // 安全护栏：云端数据比本机更全时不覆盖，改为拉取云端（防止空/旧数据覆盖云端）
+    if(!_djwForcePush){
+      syncRef().once('value').then(function(snap){
+        const cloud = snap.val();
+        const lw = dataWeight(payload);
+        const cw = cloud ? dataWeight(cloud) : 0;
+        if(cloud && cloud._meta && cw > lw){
+          _syncBusy=false;
+          updateSyncStatus('云端数据更全，已自动拉取（未覆盖）','err');
+          try{ pullFromServer(); }catch(e){}
+          return;
+        }
+        doSet();
+      }).catch(function(){ doSet(); });
+    } else {
+      doSet();
+    }
   }catch(e){ _syncBusy=false; updateSyncStatus('同步失败','err'); }
 }
 function pullFromServer(){
@@ -3218,7 +3237,10 @@ function forcePushLocal(){
     S._meta.updatedAt = Date.now();
     if(S.sync) S.sync._pendingAt = 0;
     localStorage.setItem('dajiuwan_v5', JSON.stringify(S));
-    pushToServer();
+    _djwForcePush=true;
+      pushToServer();
+      _djwForcePush=false;
+      
     updateSyncStatus('已用本机覆盖云端 · 请到其他设备点「立即同步」');
     toast('已用本机数据覆盖云端 🎉');
   }catch(e){ toast('操作失败：'+(e&&e.message||e)); }
@@ -5627,6 +5649,57 @@ function updateInstallHint(){
   else if(/android/i.test(ua)) hint.textContent='安卓：在 Chrome 右上角菜单点「安装应用」或「添加到主屏幕」~';
   else hint.textContent='电脑：在浏览器地址栏右侧点「安装」图标，即可安装为桌面 App~';
 }
+
+
+// ===== 多端自动找回：启动后扫描云端，收敛到最全数据 =====
+function autoRecoverData(){
+  try{
+    if(typeof firebase==='undefined' || !firebase.database) return;
+    if(!(S.sync && S.sync.config)) return;
+    if(!syncReady()) return;
+    const curPath = syncCodePath();
+    const flagKey = 'djw_recovered_' + String(curPath||'none').replace(/[^A-Za-z0-9]/g,'');
+    try{ if(localStorage.getItem(flagKey)==='1') return; }catch(e){}
+    const localCourses = (Array.isArray(S.courses)?S.courses.length:0);
+    let localW = 0; try{ localW = dataWeight(S); }catch(e){}
+    const localScore = localCourses*1000 + localW;
+    const db = syncRef(); if(!db || !db.parent) return;
+    db.parent.once('value').then(function(snap){
+      const v = snap.val() || {};
+      let best=null;
+      Object.keys(v).forEach(function(k){
+        if(k===curPath) return;
+        const d = v[k];
+        let w=0; try{ w=dataWeight(d); }catch(e){}
+        if(w<5) return;
+        const cs = (Array.isArray(d.courses)?d.courses.length:0);
+        const sc = cs*1000 + w;
+        if(!best || sc>best.score) best={path:k, w:w, score:sc, courses:cs, data:d};
+      });
+      if(!best || best.score<=localScore){
+        try{ localStorage.setItem(flagKey,'1'); }catch(e){}
+        return;
+      }
+      try{ const cur=localStorage.getItem('dajiuwan_v5'); if(cur) localStorage.setItem('dajiuwan_v5_backup', cur); }catch(e){}
+      const curAuth = (S.sync && S.sync.authLocal) || {};
+      const curConfig = (S.sync && S.sync.config) || '';
+      S = best.data;
+      try{ ensureDefaults(); }catch(e){}
+      if(!S.sync) S.sync={};
+      if(curConfig) S.sync.config = curConfig;
+      S.sync.code = best.path;
+      if(curAuth && curAuth.email){ S.sync.authLocal = { email: curAuth.email, code: best.path }; }
+      S.sync.oldCode = curAuth.code || (S.sync.oldCode) || '';
+      try{ localStorage.setItem('dajiuwan_v5', JSON.stringify(S)); }catch(e){}
+      try{ localStorage.setItem(flagKey,'1'); }catch(e){}
+      try{ save(); }catch(e){}
+      try{ toast('已自动找回云端数据（同步码 '+best.path+'，'+best.courses+' 门课程）~'); }catch(e){}
+      try{ initAll(); }catch(e){}
+      try{ startSyncListener(); }catch(e){}
+    }).catch(function(){});
+  }catch(e){}
+}
+setTimeout(function(){ try{ autoRecoverData(); }catch(e){} }, 2500);
 
 function registerSW(){
   if(!('serviceWorker' in navigator) || !location.protocol.startsWith('http')) return;
