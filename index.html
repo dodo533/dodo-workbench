@@ -1958,6 +1958,7 @@ function mergeDay(a,b){
   });
   return out;
 }
+function isDjwMarker(v){ return !!(v&&typeof v==='object'&&!Array.isArray(v)&&v.__djw); }
 function mergeStates(a,b){
   if(!a) return JSON.parse(JSON.stringify(b||{}));
   if(!b) return JSON.parse(JSON.stringify(a));
@@ -1990,8 +1991,8 @@ function mergeStates(a,b){
       } else { out[k]=mergeStates(av,bv); }
       return;
     }
-    const aEmpty=(av===undefined||av===null||av==='');
-    const bEmpty=(bv===undefined||bv===null||bv==='');
+    const aEmpty=(av===undefined||av===null||av==='')||isDjwMarker(av);
+    const bEmpty=(bv===undefined||bv===null||bv==='')||isDjwMarker(bv);
     if(!aEmpty&&!bEmpty){
       if(typeof av==='number'&&typeof bv==='number') out[k]=Math.max(av,bv);
       else if(typeof av==='boolean'&&typeof bv==='boolean') out[k]=av||bv;
