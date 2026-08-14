@@ -1960,6 +1960,12 @@ function mergeStates(a,b){
         const ks=new Set(Object.keys(av).concat(Object.keys(bv)));
         ks.forEach(function(dk){ o[dk]=mergeDay(av[dk],bv[dk]); });
         out[k]=o;
+      } else if(k==='decor'){
+        const o=mergeStates(av,bv);
+        const at=(av&&av.avatarAccAt)||0, bt=(bv&&bv.avatarAccAt)||0;
+        if(at>bt){ o.avatarAcc=av.avatarAcc; o.avatarAccAt=at; }
+        else if(bt>at){ o.avatarAcc=bv.avatarAcc; o.avatarAccAt=bt; }
+        out[k]=o;
       } else { out[k]=mergeStates(av,bv); }
       return;
     }
@@ -2204,7 +2210,7 @@ function deepSanitize(){
   if(typeof S.sleep.earlyCount!=='number') S.sleep.earlyCount=0;
   if(typeof S.sleep.earliest!=='string') S.sleep.earliest='';
   if(typeof S.sleep.lastDate!=='string') S.sleep.lastDate='';
-  if(!S.wake||typeof S.wake!=='object'||Array.isArray(S.wake)) S.wake={time:'',earlyCount:0,count:0,lastDate:''};
+  if(!S.wake||typeof S.wake!=='object'||Array.isArray(S.wake)) S.wake={time:'',earlyCount:0,count:0,lastDate:'',history:[]};
   if(typeof S.wake.time!=='string') S.wake.time='';
   if(typeof S.wake.earlyCount!=='number') S.wake.earlyCount=0;
   if(typeof S.wake.count!=='number') S.wake.count=0;
@@ -2320,7 +2326,7 @@ function ensureDefaults(){
   if(!S.inspo||typeof S.inspo!=='object') S.inspo={material:[],dream:[]};
   if(!Array.isArray(S.inspo.material)) S.inspo.material=[];
   if(!Array.isArray(S.inspo.dream)) S.inspo.dream=[];
-  if(!S.wake||typeof S.wake!=='object') S.wake={time:'',earlyCount:0,count:0,lastDate:''};
+  if(!S.wake||typeof S.wake!=='object') S.wake={time:'',earlyCount:0,count:0,lastDate:'',history:[]};
   if(!S.yearPlan||typeof S.yearPlan!=='object') S.yearPlan={goal:'完成人体速写、素描色彩、头像结构三门基础课，年底自主创作一幅伪厚图/厚图作品。',months:{}};
   if(!S.yearPlan.months||typeof S.yearPlan.months!=='object') S.yearPlan.months={};
   if(!S.monthPlan||typeof S.monthPlan!=='object') S.monthPlan={};
@@ -3890,7 +3896,7 @@ function uploadDecorCardBg(input){
 function clearDecorCardBg(){ if(!S.decor) return; delete S.decor.cardBg; save(); applyDecor(); toast('已取消卡片底图~'); }
 function uploadDecorAvAcc(input){
   const f=input&&input.files&&input.files[0]; if(!f) return;
-  compressImage(f, 160, data=>{ if(!S.decor) S.decor={}; S.decor.avatarAcc=data; save(); applyDecor(); toast('头像挂件已添加~'); });
+  compressImage(f, 160, data=>{ if(!S.decor) S.decor={}; S.decor.avatarAcc=data; S.decor.avatarAccAt=Date.now(); save(); applyDecor(); toast('头像挂件已添加~'); });
 }
 function brightenHex(hex){
   try{
@@ -3968,7 +3974,7 @@ function setDecorAvAccMode(v){ if(!S.decor) S.decor={}; S.decor.avatarAccMode=v;
 function setDecorAvAccSize(v){ if(!S.decor) S.decor={}; S.decor.avatarAccSize=parseInt(v||120,10); save(); applyDecor(); }
 function setDecorAvAccOff(v){ if(!S.decor) S.decor={}; S.decor.avatarAccOff=parseInt(v||0,10); save(); applyDecor(); }
 function setDecorAvAccH(v){ if(!S.decor) S.decor={}; S.decor.avatarAccLeft=parseInt(v||0,10); save(); applyDecor(); }
-function clearDecorAvAcc(){ if(!S.decor) return; delete S.decor.avatarAcc; save(); applyDecor(); toast('已取消头像挂件~'); }
+function clearDecorAvAcc(){ if(!S.decor) return; delete S.decor.avatarAcc; S.decor.avatarAccAt=Date.now(); save(); applyDecor(); toast('已取消头像挂件~'); }
 
 // ===== home =====
 function renderHome(){
@@ -4657,10 +4663,22 @@ function releasePlanItem(scope, key){
   showPraise('release');
 }
 function openWakePicker(){
-  if(S.wake.lastDate === todayStr()){ toast('今天已经起床打卡啦~🌅'); return; }
   const box = document.getElementById('wakePicker'); if(!box) return;
+  const alreadyDone = !!(S.wake && S.wake.lastDate === todayStr());
   const opts = ['07:00','08:00','09:00','10:00','11:00'];
   document.getElementById('wakeOpts').innerHTML = opts.map(t=>'<button class="btn sm'+(S.wake.time===t?' ghost':'')+'" onclick="recordWake(\''+t+'\')">'+t+'</button>').join('');
+  const alreadyLbl=document.getElementById('wakeAlready');
+  if(alreadyLbl){ alreadyLbl.style.display = alreadyDone ? 'block' : 'none'; alreadyLbl.textContent = '✅ 今天已打卡：'+(S.wake.time||''); }
+  const optWrap=document.getElementById('wakeOptsWrap');
+  if(optWrap) optWrap.style.display = alreadyDone ? 'none' : '';
+  const customWrap=document.getElementById('wakeCustomWrap');
+  if(customWrap) customWrap.style.display = alreadyDone ? 'none' : '';
+  const histEl=document.getElementById('wakeHistList');
+  if(histEl){
+    const hist=(Array.isArray(S.wake.history)?S.wake.history:[]).slice().reverse().slice(0,30);
+    if(!hist.length){ histEl.innerHTML='<div style="font-size:11px;color:var(--sub);">还没有记录，打完卡就有了~</div>'; }
+    else { histEl.innerHTML = hist.map(function(h){ return '<div style="display:flex;justify-content:space-between;align-items:center;padding:3px 2px;font-size:11.5px;color:var(--text);"><span>'+h.date+'</span><span>🌅 '+esc(h.time||'')+'</span></div>'; }).join(''); }
+  }
   box.style.display='flex';
   haptic();
 }
@@ -5467,6 +5485,12 @@ function renderWake(){
     html += '</div>';
   }
   html += '<p class="muted">累计 '+(S.wake.count||0)+' 天 · 早起徽章 '+(S.wake.earlyCount||0)+' 个</p>';
+  html += '<div class="sw-fold'+(window.__wakeHistOpen?' open':'')+'"><div class="sw-head" onclick="window.__wakeHistOpen=!window.__wakeHistOpen;renderWake()"><span>📋 以往打卡记录</span><span class="chev">'+(window.__wakeHistOpen?'▾':'▸')+'</span></div>';
+  html += '<div class="sw-body" style="'+(window.__wakeHistOpen?'':'display:none;')+'">';
+  const hist=(Array.isArray(S.wake.history)?S.wake.history:[]).slice().reverse().slice(0,30);
+  if(!hist.length){ html+='<div class="muted" style="padding:6px 2px;font-size:11px;">还没有历史记录，打卡一次就有了~</div>'; }
+  hist.forEach(function(h){ html+='<div class="body-log"><div class="bl-d">'+h.date+'</div><div>🌅 '+esc(h.time||'')+'</div></div>'; });
+  html += '</div></div>';
   document.getElementById('wakeBox').innerHTML = html;
 }
 function recordWake(time){
@@ -5475,6 +5499,8 @@ function recordWake(time){
   S.wake.time = time; S.wake.count = (S.wake.count||0)+1;
   S.wake.lastDate = todayStr();
   S.wake.checkinAt = Date.now();
+  if(!Array.isArray(S.wake.history)) S.wake.history=[];
+  S.wake.history.push({date:todayStr(), time:time, ts:Date.now()});
   if(time<'09:00'){ S.wake.earlyCount = (S.wake.earlyCount||0)+1; toast('早起徽章 +1~🌅'); }
   else { toast('起床打卡成功~🌅'); }
   const d = ensureToday(); d.wake = time;
@@ -6129,11 +6155,16 @@ document.addEventListener('DOMContentLoaded', initAll);
 <div class="wake-picker" id="wakePicker" style="display:none;">
   <div class="wake-picker-box">
     <h3>🌅 今天几点醒的呀？</h3>
-    <div class="wake-opts" id="wakeOpts"></div>
-    <div class="row" style="margin-top:10px;align-items:center;">
+    <div id="wakeAlready" style="display:none;color:var(--pink);font-size:12.5px;margin:4px 0 8px;"></div>
+    <div class="wake-opts" id="wakeOptsWrap"><div class="wake-opts" id="wakeOpts"></div></div>
+    <div class="row" id="wakeCustomWrap" style="margin-top:10px;align-items:center;">
       <input type="time" id="wakeCustom" style="flex:1;min-width:90px;">
       <button class="btn sm" onclick="pickWakeTime()">自定义</button>
       <button class="btn sm ghost" onclick="closeWakePicker()">取消</button>
+    </div>
+    <div style="margin-top:12px;border-top:1px dashed var(--line);padding-top:8px;max-height:170px;overflow-y:auto;text-align:left;">
+      <div style="font-size:12px;color:var(--pink);margin-bottom:6px;">📋 以往打卡记录</div>
+      <div id="wakeHistList"></div>
     </div>
   </div>
 </div>
