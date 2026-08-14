@@ -3387,6 +3387,7 @@ function pushToServer(){
           if(!merged.sync) merged.sync={};
           if(S.sync){ merged.sync.config=S.sync.config; merged.sync.code=S.sync.code; merged.sync.deviceId=S.sync.deviceId; merged.sync.oldCode=S.sync.oldCode||''; }
           if(cloud.sync && S.sync){ merged.sync.tombstones = mergeTombstones((S.sync&&S.sync.tombstones), (cloud.sync&&cloud.sync.tombstones)); }
+      applyTombstones(merged); // 清理：推送时同步应用墓碑，避免已删课程被旧设备重新带回
           if(!merged._meta) merged._meta={};
           merged._meta.updatedAt = firebase.database.ServerValue.TIMESTAMP;
           backupCloudBeforeWrite(cloud).then(function(){ doSet(merged); });
@@ -3467,6 +3468,7 @@ function mergeRemoteData(remote){
   merged.sync.code = S.sync.code;
   merged.sync.deviceId = S.sync.deviceId;
   if(S.sync && remote.sync){ merged.sync.tombstones = mergeTombstones((S.sync&&S.sync.tombstones), (remote.sync&&remote.sync.tombstones)); }
+  applyTombstones(merged); // 清理：让远端墓碑真正生效，删除/去重结果跨端收敛
   if(!merged._meta) merged._meta={};
   merged._meta.deviceId = S._meta.deviceId;
   const page = S.page;
