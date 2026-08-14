@@ -899,7 +899,10 @@ body.night .sr-item{background:rgba(255,255,255,.08);border-color:rgba(255,255,2
 .memo-item .memo-h{display:flex;align-items:center;gap:6px;}
 .memo-item .memo-text{font-size:13px;color:var(--text);margin-top:4px;white-space:pre-wrap;word-break:break-all;}
 .memo-item .memo-sum{font-size:11px;color:var(--sub);margin-top:6px;border-left:2px solid rgba(255,156,191,.5);padding-left:8px;}
-.memo-del{background:none;border:none;font-size:13px;color:var(--sub);cursor:pointer;margin-left:auto;padding:2px 6px;}
+.memo-edit-btn{background:none;border:none;font-size:13px;color:var(--sub);cursor:pointer;margin-left:auto;padding:2px 6px;}
+.memo-del{background:none;border:none;font-size:13px;color:var(--sub);cursor:pointer;padding:2px 6px;}
+.memo-edit{width:100%;box-sizing:border-box;background:rgba(255,255,255,.5);border:1px solid var(--line);border-radius:10px;padding:8px;color:var(--text);}
+.memo-edit-bar{display:flex;gap:8px;margin-top:6px;}
 .memo-cat{font-size:10px;color:#fff;background:var(--pink);padding:2px 8px;border-radius:20px;}
 .memo-type{font-size:10px;color:var(--sub);}
 .memo-group-h{font-size:13px;color:var(--pink);font-weight:400;margin:14px 0 8px;display:flex;align-items:center;gap:6px;}
@@ -2016,7 +2019,6 @@ function convergeToFullest(prefix){
     if(!syncReady()) return;
     const curPath=syncCodePath();
     const flagKey='djw_conv_'+(prefix||'')+String(curPath||'none').replace(/[^A-Za-z0-9]/g,'');
-    try{ if(localStorage.getItem(flagKey)==='1') return; }catch(e){}
     const localCourses=(Array.isArray(S.courses)?S.courses.length:0);
     let localW=0; try{ localW=dataWeight(S); }catch(e){}
     const localScore=localCourses*1000+localW;
@@ -3115,9 +3117,9 @@ function renderMemo(){
   Object.keys(groups).forEach(function(g){
     h+='<div class="memo-group-h">✨ '+escHtml(g)+'</div>';
     groups[g].forEach(function(m){
-      h+='<div class="memo-item"><div class="memo-h"><span class="memo-type">'+(MEMO_ICONS[m.type]||'📝')+' '+(m.date||'')+'</span>';
+      h+='<div class="memo-item" data-id="'+m.id+'"><div class="memo-h"><span class="memo-type">'+(MEMO_ICONS[m.type]||'📝')+' '+(m.date||'')+'</span>';
       if(m.cat) h+='<span class="memo-cat">'+escHtml(m.cat)+'</span>';
-      h+='<button class="memo-del" onclick="deleteMemo(\''+m.id+'\')">✕</button></div>';
+      h+='<button class="memo-edit-btn" onclick="editMemo(\''+m.id+'\')" title="编辑">✎</button><button class="memo-del" onclick="deleteMemo(\''+m.id+'\')">✕</button></div>';
       h+='<div class="memo-text">'+escHtml(m.text)+'</div>';
       if(m.summary) h+='<div class="memo-sum">✨ '+escHtml(m.summary)+'</div>';
       if(m.atmos && m.atmos.length) h+='<div class="memo-atmos">'+m.atmos.map(function(a){ return '<span class="atmo-chip">'+escHtml(a)+'</span>'; }).join('')+'</div>';
@@ -3141,6 +3143,24 @@ function deleteMemo(id){
   S.memos=(S.memos||[]).filter(function(m){ return m.id!==id; });
   save(); renderMemo(); toast('已删除');
 }
+function editMemo(id){
+  const item=document.querySelector('.memo-item[data-id="'+id+'"]');
+  const box=item?item.querySelector('.memo-text'):null;
+  const m=(S.memos||[]).find(function(x){ return x.id===id; });
+  if(!box||!m) return;
+  box.innerHTML='<textarea class="memo-edit" rows="3">'+escHtml(m.text)+'</textarea><div class="memo-edit-bar"><button class="btn sm" onclick="saveMemoEdit(\''+id+'\')">保存</button><button class="btn sm ghost" onclick="cancelMemoEdit(\''+id+'\')">取消</button></div>';
+  const ta=box.querySelector('textarea'); if(ta){ try{ ta.focus(); }catch(e){} }
+}
+function saveMemoEdit(id){
+  const item=document.querySelector('.memo-item[data-id="'+id+'"]');
+  const ta=item?item.querySelector('.memo-edit'):null;
+  if(!ta) return;
+  const t=ta.value.trim(); if(!t){ toast('内容不能为空~'); return; }
+  const m=(S.memos||[]).find(function(x){ return x.id===id; });
+  if(!m) return;
+  m.text=t; save(); renderMemo(); toast('已保存~');
+}
+function cancelMemoEdit(id){ renderMemo(); }
 
 // ===== v16 新增：收藏夹 =====
 function renderFav(){
@@ -3899,7 +3919,7 @@ function hexToRgba(hex, a){
 function updateAccPx(){
   const d=S.decor||{};
   const b=parseInt(d.avatarAccSize,10)||120;
-  const px=Math.round(b*(0.42+0.05*((window.innerWidth||390)/100)));
+  const px=Math.round(110*(b/100));
   document.documentElement.style.setProperty('--accSizePx', px+'px');
 }
 function setDecorAvAccStyle(v){ if(!S.decor) S.decor={}; S.decor.accStyle=v; save(); applyDecor(); haptic(); }
@@ -3968,7 +3988,7 @@ function renderHome(){
   document.getElementById('avImg').src = S.customAvatar || stk('s010');
   document.getElementById('statusIc').src = d.checkin ? stk('s002') : stk('s008');
   const qw=document.getElementById('qicWake'), qg=document.getElementById('qicGrowth'), qc=document.getElementById('qicCourse');
-  if(qw) qw.src = stk('s136'); if(qg) qg.src = stk('s156'); if(qc) qc.src = stk('s165');
+  if(qw){ qw.src = stk('s136'); const _wb=qw.closest('button'); const _wd=!!(S.wake&&S.wake.lastDate===todayStr()); if(_wb){ let _tn=null; for(let _i=_wb.childNodes.length-1;_i>=0;_i--){ if(_wb.childNodes[_i].nodeType===3){ _tn=_wb.childNodes[_i]; break; } } if(!_tn){ _tn=document.createTextNode(''); _wb.appendChild(_tn); } _tn.textContent = _wd? '已打卡 · '+(S.wake.time||'') : '起床打卡'; } } if(qg) qg.src = stk('s156'); if(qc) qc.src = stk('s165');
   showBubble(randomBubble());
   renderCompass();
   renderHomePlan();
@@ -5345,8 +5365,8 @@ function renderBody(){
   html += '<div class="row"><input id="newMed" placeholder="添加保健品"><button class="btn sm" onclick="addMed()">添加</button></div>';
   html += '</div>';
   html += '<div class="card"><h3><img class="tic" src="'+stk('s040')+'" alt="">入睡 · 喝水</h3>';
-  html += '<div class="sw-fold"><div class="sw-head" onclick="toggleSwFold()"><span>今日记录</span><span class="sw-today">'+(S.sleep.time||'未记录入睡')+' · 💧 '+(S.water.cups||0)+' 杯</span><span class="chev">▸</span></div>';
-  html += '<div class="sw-body" id="swBody" style="display:none;">';
+  html += '<div class="sw-fold'+( _swFoldOpen?' open':'')+'"><div class="sw-head" onclick="toggleSwFold()"><span>今日记录</span><span class="sw-today">'+(S.sleep.time||'未记录入睡')+' · 💧 '+(S.water.cups||0)+' 杯</span><span class="chev">▸</span></div>';
+  html += '<div class="sw-body" id="swBody" style="'+( _swFoldOpen?'':'display:none;')+'">';
   html += '<div class="sw-row"><span>昨晚入睡</span><input type="time" id="sleepTime" value="'+(S.sleep.time||'')+'"></div>';
   html += '<div class="sw-row"><span>今天喝水</span><div class="stepper"><button onclick="setWater(-1)">−</button><span id="waterCount">'+(S.water.cups||0)+'</span><button onclick="setWater(1)">+</button><span style="font-size:11px;color:var(--sub);">杯</span></div></div>';
   html += '<button class="btn sm" style="width:100%;margin-top:10px;" onclick="saveSleepWater()">✓ 记录今日（入睡 + 喝水）</button>';
@@ -5393,13 +5413,14 @@ function toggleSleep(){
   haptic(); S.sleep.done=!S.sleep.done; save(); renderBody(); renderOverview();
   if(S.sleep.done) showPraise('sleep');
 }
+let _swFoldOpen=false;
 function toggleSwFold(){
   const b = document.getElementById('swBody');
   if(!b) return;
-  const open = b.style.display!=='none';
-  b.style.display = open?'none':'block';
-  const fold = b.closest('.sw-fold'); if(fold) fold.classList.toggle('open', !open);
-  if(!open) renderSwLog();
+  _swFoldOpen = b.style.display==='none';
+  b.style.display = _swFoldOpen?'block':'none';
+  const fold = b.closest('.sw-fold'); if(fold) fold.classList.toggle('open', _swFoldOpen);
+  if(_swFoldOpen) renderSwLog();
   haptic();
 }
 function saveSleepWater(){
@@ -5430,14 +5451,22 @@ function setWater(delta){
 
 // ===== wake =====
 function renderWake(){
+  const done = !!(S.wake && S.wake.lastDate === todayStr());
   const opts = ['07:00','08:00','09:00','10:00','11:00','其他'];
-  let html = '<div class="row">';
-  opts.forEach(t=>{
-    const on = S.wake.time===t?' ghost':'';
-    html += '<button class="btn sm'+on+'" onclick="recordWake(\''+t+'\')">'+t+'</button>';
-  });
-  html += '</div>';
-  html += '<p class="muted">今日起床：'+(S.wake.time||'未记录')+' · 累计 '+S.wake.count+' 天 · 早起徽章 '+S.wake.earlyCount+' 个</p>';
+  let html = '';
+  if(done){
+    const ct = S.wake.checkinAt ? new Date(S.wake.checkinAt) : null;
+    const ctStr = ct ? (ct.getHours()<10?'0':'')+ct.getHours()+':'+(ct.getMinutes()<10?'0':'')+ct.getMinutes() : '';
+    html += '<p class="muted">🌅 今天已起床打卡：'+(S.wake.time||'')+(ctStr?' · '+ctStr+' 记录':'')+'</p>';
+  } else {
+    html += '<div class="row">';
+    opts.forEach(t=>{
+      const on = S.wake.time===t?' ghost':'';
+      html += '<button class="btn sm'+on+'" onclick="recordWake(\''+t+'\')">'+t+'</button>';
+    });
+    html += '</div>';
+  }
+  html += '<p class="muted">累计 '+(S.wake.count||0)+' 天 · 早起徽章 '+(S.wake.earlyCount||0)+' 个</p>';
   document.getElementById('wakeBox').innerHTML = html;
 }
 function recordWake(time){
@@ -5445,6 +5474,7 @@ function recordWake(time){
   if(S.wake.lastDate === todayStr()){ toast('今天已经起床打卡啦~🌅'); return; }
   S.wake.time = time; S.wake.count = (S.wake.count||0)+1;
   S.wake.lastDate = todayStr();
+  S.wake.checkinAt = Date.now();
   if(time<'09:00'){ S.wake.earlyCount = (S.wake.earlyCount||0)+1; toast('早起徽章 +1~🌅'); }
   else { toast('起床打卡成功~🌅'); }
   const d = ensureToday(); d.wake = time;
@@ -5984,7 +6014,6 @@ function autoRecoverData(){
     if(!syncReady()) return;
     const curPath = syncCodePath();
     const flagKey = 'djw_recovered_' + String(curPath||'none').replace(/[^A-Za-z0-9]/g,'');
-    try{ if(localStorage.getItem(flagKey)==='1') return; }catch(e){}
     const localCourses = (Array.isArray(S.courses)?S.courses.length:0);
     let localW = 0; try{ localW = dataWeight(S); }catch(e){}
     const localScore = localCourses*1000 + localW;
