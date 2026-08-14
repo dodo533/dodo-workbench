@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="theme-color" content="#FFF8FA">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -29,6 +29,7 @@ body{
   font-family:"SimSun","Songti SC","Noto Serif CJK SC","宋体",serif;
   font-weight:200; letter-spacing:0.02em;
   color:var(--text); background:var(--bg1);
+  -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;
   background-image:radial-gradient(1200px 600px at 10% -10%, var(--accent), transparent 60%),
     radial-gradient(1000px 500px at 110% 20%, var(--accent), transparent 55%);
   background-attachment:fixed; overscroll-behavior:none;
@@ -116,6 +117,7 @@ body:not(.hasCardImg) .card::before{opacity:0;}
 .btn:active{transform:scale(0.96);}
 .btn.ghost{background:var(--glass);color:var(--text);box-shadow:none;border:1px solid var(--line);}
 .btn.sm{padding:5px 10px;font-size:12px;border-radius:9px;min-height:32px;}
+input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:text;}
 input,textarea,select{width:100%;padding:9px 12px;border-radius:12px;border:1px solid rgba(255,255,255,0.5);background:rgba(255,255,255,0.22);color:var(--text);font-size:13.5px;font-family:inherit;font-weight:200;margin:4px 0;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:inset 0 1px 0 rgba(255,255,255,0.35);}
 input:focus,textarea:focus{outline:none;border-color:var(--pink);}
 label{font-size:12px;color:var(--sub);font-weight:300;display:block;margin-top:6px;}
@@ -1004,8 +1006,8 @@ body.decorSolid .card,body.decorSolid .found-card,body.decorSolid .modal-box,bod
 body.decorSolid .card::after,body.decorSolid .found-card::after{display:none;}
 body.night.decorSolid .card,body.night.decorSolid .found-card,body.night.decorSolid .modal-box,body.night.decorSolid .haven-card,body.night.decorSolid .slime-box,body.night.decorSolid .wake-picker-box,body.night.decorSolid .lv-pop,body.night.decorSolid .slime-banner{background:var(--solidBgNight, rgba(42,30,38,0.97));}
 body.cardBgFill [data-decor]{background-size:cover!important;}
-body.cardBgBorder [data-decor]{background-size:var(--cardLaceCornerW) auto,var(--cardLaceCornerW) auto,var(--cardLaceCornerW) auto,var(--cardLaceCornerW) auto,auto var(--cardLaceEdgeH),auto var(--cardLaceEdgeH)!important;background-repeat:no-repeat,no-repeat,no-repeat,no-repeat,repeat-x,repeat-x!important;background-position:var(--cardBgGap) var(--cardBgGap),calc(100% - var(--cardBgGap)) var(--cardBgGap),var(--cardBgGap) calc(100% - var(--cardBgGap)),calc(100% - var(--cardBgGap)) calc(100% - var(--cardBgGap)),center var(--cardBgGap),center calc(100% - var(--cardBgGap))!important;}
-body.cardBgBorder.hasCardImg .card::before{background-image:var(--cardImg),var(--cardImg),var(--cardImg),var(--cardImg),var(--cardImg),var(--cardImg);background-size:var(--cardLaceCornerW) auto,var(--cardLaceCornerW) auto,var(--cardLaceCornerW) auto,var(--cardLaceCornerW) auto,auto var(--cardLaceEdgeH),auto var(--cardLaceEdgeH);background-repeat:no-repeat,no-repeat,no-repeat,no-repeat,repeat-x,repeat-x;background-position:var(--cardBgGap) var(--cardBgGap),calc(100% - var(--cardBgGap)) var(--cardBgGap),var(--cardBgGap) calc(100% - var(--cardBgGap)),calc(100% - var(--cardBgGap)) calc(100% - var(--cardBgGap)),center var(--cardBgGap),center calc(100% - var(--cardBgGap));background-origin:padding-box,padding-box,padding-box,padding-box,content-box,content-box;}
+
+body.cardBgBorder.hasCardImg .card::before{background-image:var(--cardImg),var(--cardImg);background-size:auto var(--cardLaceEdgeH),auto var(--cardLaceEdgeH);background-repeat:repeat-x,repeat-x;background-position:center var(--cardBgGap),center calc(100% - var(--cardBgGap));background-origin:content-box,content-box;mix-blend-mode:lighten;}
 body.cardBgBorder.hasCardImg .card.card-folded::before{opacity:0!important;}
 @media(max-width:760px){
   .bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:66%;max-width:340px;bottom:calc(18px + env(safe-area-inset-bottom));border-radius:27px;background:rgba(255,255,255,0.5);backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);border:1px solid rgba(255,255,255,0.65);box-shadow:0 10px 30px rgba(120,80,100,0.28);height:52px;padding:4px 6px;}
@@ -1417,8 +1419,10 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{opacity:0!important;}
             <button class="chip" data-src="inspo" onclick="setCollectSrc('inspo')">素材</button>
           </div>
           <div class="muted" style="font-size:12px;margin-top:6px;">拖住卡片左侧 ⠿ 到上方「收藏 / 随手记 / 素材」，即可移动分类</div>
-          <div class="row" style="gap:6px;flex-wrap:wrap;margin-top:6px;" id="collectCatRow">
-            <button class="chip chip-on" data-cat="all" onclick="setCollectCat('all')">全部分类</button>
+          <div class="fold-bar" style="margin-top:6px;" onclick="toggleFold('collectCat')"><span style="font-size:12px;color:var(--sub);" id="collectCatLabel">🏷 分类筛选</span><span class="fold-ch" data-foldch="collectCat">▸</span></div>
+          <div class="fold-body" data-fold="collectCat">
+            <div class="row" style="gap:6px;flex-wrap:wrap;margin-top:4px;" id="collectCatRow">
+              <button class="chip chip-on" data-cat="all" onclick="setCollectCat('all')">全部</button>
             <button class="chip" data-cat="梦·氛围" onclick="setCollectCat('梦·氛围')">梦·氛围</button>
             <button class="chip" data-cat="雪景" onclick="setCollectCat('雪景')">雪景</button>
             <button class="chip" data-cat="画画参考" onclick="setCollectCat('画画参考')">画画参考</button>
@@ -1428,6 +1432,7 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{opacity:0!important;}
             <button class="chip" data-cat="实物" onclick="setCollectCat('实物')">实物</button>
             <button class="chip" data-cat="宠物" onclick="setCollectCat('宠物')">宠物</button>
             <button class="chip" data-cat="未分类" onclick="setCollectCat('未分类')">未分类</button>
+          </div>
           </div>
           <div id="collectList" style="margin-top:10px;"></div>
           <div class="gallery-col" style="margin-top:14px;">
@@ -2353,6 +2358,8 @@ function ensureDefaults(){
   if(S.folds.growthReport===undefined) S.folds.growthReport=false;
   if(S.folds.homeCourseSec===undefined) S.folds.homeCourseSec=false;
   if(S.folds.planMore===undefined) S.folds.planMore=false;
+  if(S.folds.collectCat===undefined) S.folds.collectCat=false;
+  if(S.folds.moodPast===undefined) S.folds.moodPast=false;
   if(!S.homeCards||typeof S.homeCards!=='object'||Array.isArray(S.homeCards)) S.homeCards={state:true,task:true,plan:true,cal:true,meds:true};
   if(typeof S.homeMoreOpen!=='boolean') S.homeMoreOpen=false;
   if(typeof S.glass!=='number' || !(S.glass>=0.2 && S.glass<=1)) S.glass=1;
@@ -3242,7 +3249,7 @@ function collectCatOf(it, src){
   return '未分类';
 }
 function setCollectSrc(v){ _collectSrc=v; document.querySelectorAll('#collectSrcRow .chip').forEach(function(el){ el.classList.toggle('chip-on', el.getAttribute('data-src')===v); }); renderFav(); haptic(); }
-function setCollectCat(v){ _collectCat=v; document.querySelectorAll('#collectCatRow .chip').forEach(function(el){ el.classList.toggle('chip-on', el.getAttribute('data-cat')===v); }); renderFav(); haptic(); }
+function setCollectCat(v){ _collectCat=v; document.querySelectorAll('#collectCatRow .chip').forEach(function(el){ el.classList.toggle('chip-on', el.getAttribute('data-cat')===v); }); const lab=document.getElementById('collectCatLabel'); if(lab) lab.textContent='🏷 分类筛选'+(v==='all'?'':'：'+v); renderFav(); haptic(); }
 function renderFav(){
   const box=document.getElementById('collectList'); if(!box) return;
   const items=[];
@@ -4563,8 +4570,8 @@ function renderOverview(){
   const coursePct = totalCourse? Math.round(doneCourse/totalCourse*100):0;
   const dancePct = S.dance.goal? Math.min(100,Math.round(danceThis/S.dance.goal*100)):0;
   const box = document.getElementById('overviewTop'); if(!box) return;
-  let h = '<div class="prog-row"><span class="pr-k">📚 课程</span><div class="mini-prog big"><i style="width:'+coursePct+'%"></i></div></div>';
-  h += '<div class="prog-row"><span class="pr-k">💃 跳舞</span><div class="mini-prog big pink"><i style="width:'+dancePct+'%"></i></div></div>';
+  let h = '<div class="prog-row"><span class="pr-k">课程</span><div class="mini-prog big"><i style="width:'+coursePct+'%"></i></div></div>';
+  h += '<div class="prog-row"><span class="pr-k">跳舞</span><div class="mini-prog big pink"><i style="width:'+dancePct+'%"></i></div></div>';
   box.innerHTML = h;
 }
 function renderHomePlanPreview(){
@@ -4577,7 +4584,7 @@ function renderHomePlanPreview(){
   h += '<span class="pt-dates muted">'+weekRangeText(S.planSel.y, S.planSel.m, S.planSel.w)+'</span>';
   h += '</div>';
   h += goalEditHtml(getWeekPlan().goal,'week');
-  h += '<div class="fold-bar" style="margin-top:6px;" onclick="toggleFold(\'planMore\')"><span style="font-size:12px;color:var(--sub);">📂 年月视图</span><span class="fold-ch" data-foldch="planMore">▸</span></div>';
+  h += '<div class="fold-bar" style="margin-top:6px;" onclick="toggleFold(\'planMore\')"><span style="font-size:12px;color:var(--sub);">📂 '+S.planSel.y+'年'+S.planSel.m+'月</span><span class="fold-ch" data-foldch="planMore">▸</span></div>';
   h += '<div class="fold-body" data-fold="planMore"><div class="plan-tabs">';
   [['year','年'],['month','月']].forEach(t=>{
     h += '<button class="btn sm ghost'+(S.planTab===t[0]?' on':'')+'" onclick="setPlanTab(\''+t[0]+'\')">'+t[1]+'</button>';
@@ -5762,7 +5769,7 @@ function renderGrowth(){
   });
   const monthKeysAll = Object.keys(months).sort().reverse();
   if(!_archShowAll && monthKeysAll.length>4) html += '<button class="btn sm ghost" style="margin-top:8px;" onclick="_archShowAll=true;renderGrowth()">查看更多还有 '+(monthKeysAll.length-4)+' 个月</button>';
-  document.getElementById('monthBlocks').innerHTML = html||'<div class="empty-note">还没有手写记录~</div>';
+  document.getElementById('monthBlocks').innerHTML = html||'';
   renderMilestones();
   renderTolerance();
   renderWeekReports();
@@ -6106,11 +6113,16 @@ function renderMood(){
   h+='<label style="margin-top:10px;">今天想写点什么</label><textarea id="moodText" rows="4" placeholder="随便写，不开心也可以说~">'+(cur.text||'')+'</textarea>';
   h+='<div class="row" style="margin-top:6px;"><button class="btn sm" onclick="saveMoodDiary()">保存今天的情绪日记</button></div>';
   const keys=Object.keys(S.moodDiary).sort().reverse().slice(0,60);
-  if(keys.length){ h+='<div class="rev-sub" style="margin:12px 0 6px;"><img class="tic" src="'+stk('s001')+'" alt="">过往记录（可编辑）</div>'; }
+  if(keys.length){
+    h+='<div class="fold-bar" style="margin-top:12px;" onclick="toggleFold(\'moodPast\')"><span style="font-size:12px;color:var(--sub);">📂 过往记录</span><span class="fold-ch" data-foldch="moodPast">▸</span></div>';
+    h+='<div class="fold-body" data-fold="moodPast">';
   keys.forEach(k=>{ const e=S.moodDiary[k]; const mn=(MOODS.find(x=>x.k===e.mood)||{}).n||''; h+='<div class="memo-card"><div class="muted">'+k+(mn?' · '+mn:'')+'<button class="mood-edit" onclick="editMoodEntry(\''+k+'\')">编辑</button></div>'+(e.text?esc(e.text):'<span class="muted">（只选了心情）</span>')+'</div>'; });
+    h+='</div>';
+  }
   h+=renderMoodStats();
   h+='</div>';
   box.innerHTML=h;
+  applyFolds();
 }
 function renderMoodStats(){
   const MOOD_KEYS=['down','meh','ok','happy'];
@@ -6124,7 +6136,7 @@ function renderMoodStats(){
     const m=moodOf(ds); const mo=months.find(function(x){ return x.key===ds.slice(0,7); });
     if(mo && m && mo.cnt[m]!=null) mo.cnt[m]++;
   });
-  let h='<div class="card"><h3>📊 情绪周期统计</h3>';
+  let h='<div class="card"><h3><img class="tic" src="'+stk('s037')+'" alt="">情绪周期统计</h3>';
   h+='<div class="mood-stat-title">近 30 天心情分布</div>';
   MOOD_KEYS.forEach(function(k){
     const pct = Math.round(c30[k]/30*100);
