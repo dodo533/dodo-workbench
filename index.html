@@ -112,10 +112,10 @@ body:not(.hasCardImg) .card::before{opacity:0;}
 .card h3 img{width:20px;height:20px;object-fit:contain;}
 .tic{width:14px;height:14px;object-fit:contain;display:inline-block;vertical-align:-2px;}
 .muted{color:var(--sub);font-size:12px;}
-.btn{background:rgba(255,255,255,0.68);color:var(--primary);border:1px solid rgba(255,255,255,0.7);border-radius:13px;padding:10px 16px;font-weight:400;font-size:14px;min-height:44px;cursor:pointer;box-shadow:0 4px 14px rgba(180,140,160,0.16), inset 0 1px 0 rgba(255,255,255,0.55);transition:.15s;}
+.btn{background:rgba(255,255,255,0.68);color:var(--primary);border:1px solid rgba(255,255,255,0.7);border-radius:13px;padding:8px 13px;font-weight:400;font-size:14px;min-height:38px;cursor:pointer;box-shadow:0 4px 14px rgba(180,140,160,0.16), inset 0 1px 0 rgba(255,255,255,0.55);transition:.15s;}
 .btn:active{transform:scale(0.96);}
 .btn.ghost{background:var(--glass);color:var(--text);box-shadow:none;border:1px solid var(--line);}
-.btn.sm{padding:8px 12px;font-size:12px;border-radius:9px;min-height:38px;}
+.btn.sm{padding:5px 10px;font-size:12px;border-radius:9px;min-height:32px;}
 input,textarea,select{width:100%;padding:9px 12px;border-radius:12px;border:1px solid rgba(255,255,255,0.5);background:rgba(255,255,255,0.22);color:var(--text);font-size:13.5px;font-family:inherit;font-weight:200;margin:4px 0;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:inset 0 1px 0 rgba(255,255,255,0.35);}
 input:focus,textarea:focus{outline:none;border-color:var(--pink);}
 label{font-size:12px;color:var(--sub);font-weight:300;display:block;margin-top:6px;}
@@ -663,6 +663,10 @@ table.tt td input:focus{background:var(--panel);border-radius:6px;}
 .sw-body{padding:4px 13px 13px;border-top:1px dashed var(--line);}
 .sw-row{display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap;}
 .sw-row span{font-size:12px;color:var(--sub);flex:0 0 64px;}
+.sw-cols{display:flex;gap:16px;margin-top:10px;flex-wrap:wrap;}
+.sw-col{display:flex;flex-direction:column;gap:5px;}
+.sw-col>span{font-size:12px;color:var(--sub);}
+.sw-time{width:auto;min-width:0;padding:5px 8px;margin:0;}
 .sw-row input{flex:1;min-width:120px;}
 .sw-log-item{display:flex;align-items:center;gap:8px;padding:7px 9px;background:var(--card);border:1px solid var(--line);border-radius:10px;margin-top:6px;font-size:12px;color:var(--text);}
 .sw-log-item .sl-d{flex:0 0 76px;color:var(--sub);}
@@ -708,6 +712,8 @@ table.tt td input:focus{background:var(--panel);border-radius:6px;}
 .plan-time select{flex:0 0 auto;width:auto;min-width:64px;padding:5px 8px;margin:0;}
 .pt-w{font-size:12px;color:var(--text);white-space:nowrap;}
 .pt-cur{font-size:12px;margin:6px 0 0;}
+.pt-range{font-size:14px;font-weight:500;color:var(--text);white-space:nowrap;}
+.pt-dates{font-size:12px;margin-left:2px;}
 .goal-edit{display:flex;flex-direction:column;gap:5px;margin:6px 0;}
 .ge-row{display:flex;align-items:center;gap:7px;}
 .ge-no{flex:0 0 20px;font-size:12px;color:var(--pink);text-align:right;}
@@ -1047,6 +1053,10 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{opacity:0!important;}
 
 /* ===== 素材合集 / 每周宽容总结（改造方案）===== */
 .collect-item{position:relative;}
+.drag-h{display:inline-flex;align-items:center;align-self:flex-start;color:var(--sub);opacity:.55;font-size:15px;cursor:grab;touch-action:none;user-select:none;padding:2px 8px 2px 2px;line-height:1;}
+.collect-item.dragging{opacity:.4;}
+.chip.drop-target{box-shadow:0 0 0 2px var(--pink);transform:scale(1.06);}
+.drag-ghost{position:fixed;z-index:99;pointer-events:none;opacity:.92;background:var(--panel);border:1px solid var(--pink);border-radius:12px;padding:8px 12px;font-size:12px;color:var(--text);box-shadow:0 10px 30px rgba(0,0,0,.22);max-width:220px;}
 .collect-badge{display:inline-block;font-size:12px;color:var(--sub);background:var(--glass);border:1px solid var(--line);border-radius:8px;padding:1px 7px;margin-right:6px;}
 .collect-cat{display:inline-block;font-size:12px;color:var(--pink);background:rgba(255,183,208,0.18);border-radius:8px;padding:1px 7px;margin-right:6px;}
 .collect-meta{font-size:12px;color:var(--sub);margin-top:5px;}
@@ -1332,13 +1342,7 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{opacity:0!important;}
             <div class="level-top" id="growthLv"></div>
             <div id="xpInfo" class="muted" style="margin:6px 0 10px;"></div>
             <div id="monthBlocks"></div>
-            <div style="margin-top:8px;">
-              <label>上传手写记录（归入当前月份）</label>
-              <div class="row">
-                <div><select id="archType"><option value="day">每日</option><option value="week">每周</option><option value="month">每月</option></select></div>
-                <div><button class="btn" onclick="document.getElementById('archUp').click()">＋ 上传</button><input type="file" accept="image/*" id="archUp" style="display:none;" onchange="uploadArchive(this)"></div>
-              </div>
-            </div>
+
           </div>
         </div>
         <div class="card" data-decor="tol">
@@ -1412,6 +1416,7 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{opacity:0!important;}
             <button class="chip" data-src="memo" onclick="setCollectSrc('memo')">随手记</button>
             <button class="chip" data-src="inspo" onclick="setCollectSrc('inspo')">素材</button>
           </div>
+          <div class="muted" style="font-size:12px;margin-top:6px;">拖住卡片左侧 ⠿ 到上方「收藏 / 随手记 / 素材」，即可移动分类</div>
           <div class="row" style="gap:6px;flex-wrap:wrap;margin-top:6px;" id="collectCatRow">
             <button class="chip chip-on" data-cat="all" onclick="setCollectCat('all')">全部分类</button>
             <button class="chip" data-cat="梦·氛围" onclick="setCollectCat('梦·氛围')">梦·氛围</button>
@@ -3264,7 +3269,7 @@ function renderFav(){
       if(f.note) inner+='<div class="fav-note">'+escHtml(f.note)+'</div>';
       if(f.tags&&f.tags.length) inner+='<div class="fav-tags">'+f.tags.map(function(t){return '<span class="fav-tag">#'+escHtml(t)+'</span>';}).join('')+'</div>';
       inner+='<div class="collect-meta">'+new Date(f.ts||Date.now()).toLocaleString('zh-CN')+'</div>';
-      h+='<div class="fav-item collect-item"><div class="fav-top">'+badge+cat+'<button class="fav-del" onclick="deleteFav(\''+f.id+'\')">✕</button></div>'+inner+'</div>';
+      h+='<div class="fav-item collect-item" data-src="fav" data-id="'+f.id+'"><span class="drag-h" title="拖动到上方分类可移动">⠿</span><div class="fav-top">'+badge+cat+'<button class="fav-del" onclick="deleteFav(\''+f.id+'\')">✕</button></div>'+inner+'</div>';
     } else if(x.src==='memo'){
       const m=x.it;
       let inner='<div class="memo-text">'+escHtml(m.text)+'</div>';
@@ -3283,7 +3288,7 @@ function renderFav(){
         }
       }
       inner+='<div class="collect-meta">'+escHtml(m.date||'')+'</div>';
-      h+='<div class="memo-item collect-item" data-id="'+m.id+'"><div class="memo-h"><span class="memo-type">'+(MEMO_ICONS[m.type]||'📝')+' '+(m.date||'')+'</span>'+cat+'<button class="memo-edit-btn" onclick="editMemo(\''+m.id+'\')" title="编辑">✎</button><button class="memo-del" onclick="deleteMemo(\''+m.id+'\')">✕</button></div>'+badge+inner+'</div>';
+      h+='<div class="memo-item collect-item" data-src="memo" data-id="'+m.id+'"><span class="drag-h" title="拖动到上方分类可移动">⠿</span><div class="memo-h"><span class="memo-type">'+(MEMO_ICONS[m.type]||'📝')+' '+(m.date||'')+'</span>'+cat+'<button class="memo-edit-btn" onclick="editMemo(\''+m.id+'\')" title="编辑">✎</button><button class="memo-del" onclick="deleteMemo(\''+m.id+'\')">✕</button></div>'+badge+inner+'</div>';
     } else {
       const x0=x.it;
       let inner='';
@@ -3291,10 +3296,99 @@ function renderFav(){
       else if(x0.link) inner+='<a href="'+escHtml(x0.link)+'" target="_blank" rel="noopener">🔖 '+escHtml(x0.link.length>48?x0.link.slice(0,48)+'…':x0.link)+'</a>';
       else inner+='<img class="fav-img" loading="lazy" decoding="async" src="'+x0.img+'" alt="素材图">';
       inner+='<div class="collect-meta">'+escHtml(x0.date||'')+'</div>';
-      h+='<div class="memo-card collect-item">'+badge+cat+inner+'<button class="del" onclick="delInspo(\''+x.tab+'\','+x.idx+')">✕</button></div>';
+      h+='<div class="memo-card collect-item" data-src="inspo" data-tab="'+x.tab+'" data-idx="'+x.idx+'"><span class="drag-h" title="拖动到上方分类可移动">⠿</span>'+badge+cat+inner+'<button class="del" onclick="delInspo(\''+x.tab+'\','+x.idx+')">✕</button></div>';
     }
   });
   box.innerHTML=h;
+  initCollectDrag();
+}
+let _dragState=null;
+function initCollectDrag(){
+  const list=document.getElementById('collectList'); if(!list || list.dataset.dragReady) return;
+  list.dataset.dragReady='1';
+  list.addEventListener('pointerdown', function(e){
+    const h=e.target.closest('.drag-h'); if(!h) return;
+    const item=h.closest('.collect-item'); if(!item) return;
+    e.preventDefault();
+    const sx=e.clientX, sy=e.clientY;
+    let started=false, ghost=null;
+    function mv(ev){
+      if(!started && Math.hypot(ev.clientX-sx, ev.clientY-sy)>8){
+        started=true;
+        _dragState={src:item.dataset.src, id:item.dataset.id, tab:item.dataset.tab, idx:item.dataset.idx};
+        item.classList.add('dragging');
+        ghost=document.createElement('div'); ghost.className='drag-ghost';
+        const t0=item.querySelector('.fav-t,.memo-text');
+        ghost.textContent=t0 ? t0.textContent.trim().slice(0,24) : '移动这条';
+        document.body.appendChild(ghost);
+        document.querySelectorAll('#collectSrcRow .chip[data-src]').forEach(function(c){ if(c.dataset.src!=='all') c.classList.add('drop-target'); });
+      }
+      if(started && ghost){ ghost.style.left=(ev.clientX+12)+'px'; ghost.style.top=(ev.clientY+10)+'px'; }
+    }
+    function up(ev){
+      document.removeEventListener('pointermove', mv);
+      document.removeEventListener('pointerup', up);
+      document.removeEventListener('pointercancel', up);
+      if(started){
+        const el=document.elementFromPoint(ev.clientX, ev.clientY);
+        const chip=el?el.closest('#collectSrcRow .chip[data-src]'):null;
+        if(chip && chip.dataset.src && chip.dataset.src!=='all' && _dragState){
+          moveCollectItem(_dragState.src, _dragState.id, _dragState.tab, _dragState.idx, chip.dataset.src);
+        }
+        if(ghost) ghost.remove();
+        item.classList.remove('dragging');
+        document.querySelectorAll('#collectSrcRow .chip.drop-target').forEach(function(c){ c.classList.remove('drop-target'); });
+        _dragState=null;
+      }
+    }
+    document.addEventListener('pointermove', mv, {passive:true});
+    document.addEventListener('pointerup', up);
+    document.addEventListener('pointercancel', up);
+  });
+}
+function moveCollectItem(src, id, tab, idx, to){
+  if(src===to || !to) return;
+  const today=todayStr(), now=Date.now();
+  const rnd=function(){ return Math.random().toString(36).slice(2,7); };
+  if(src==='fav'){
+    const f=(S.favs||[]).find(function(x){ return x.id===id; }); if(!f) return;
+    if(to==='memo'){
+      if(!Array.isArray(S.memos)) S.memos=[];
+      S.memos.push({id:'m'+now+rnd(), type:0, text:f.title, img:f.img||'', summary:'', cat:f.cat||'', ts:now, date:today});
+      S.favs=S.favs.filter(function(x){ return x.id!==id; });
+    } else if(to==='inspo'){
+      if(!S.inspo || typeof S.inspo!=='object') S.inspo={material:[],dream:[]};
+      if(!Array.isArray(S.inspo.material)) S.inspo.material=[];
+      S.inspo.material.unshift({img:f.img||'', link:f.type==='link'?f.url:'', text:f.type!=='link'?f.title:'', date:today});
+      S.favs=S.favs.filter(function(x){ return x.id!==id; });
+    }
+  } else if(src==='memo'){
+    const m=(S.memos||[]).find(function(x){ return x.id===id; }); if(!m) return;
+    if(to==='fav'){
+      if(!Array.isArray(S.favs)) S.favs=[];
+      S.favs.unshift({id:'f'+now+rnd(), type:'text', title:m.text, url:'', img:m.img||'', note:'', tags:[], cat:m.cat||'', ts:now, date:today});
+      S.memos=S.memos.filter(function(x){ return x.id!==id; });
+    } else if(to==='inspo'){
+      if(!S.inspo || typeof S.inspo!=='object') S.inspo={material:[],dream:[]};
+      if(!Array.isArray(S.inspo.material)) S.inspo.material=[];
+      S.inspo.material.unshift({img:m.img||'', link:'', text:m.text, date:today});
+      S.memos=S.memos.filter(function(x){ return x.id!==id; });
+    }
+  } else if(src==='inspo'){
+    const arr=(S.inspo&&Array.isArray(S.inspo[tab]))?S.inspo[tab]:[];
+    const it=arr[idx]; if(!it) return;
+    if(to==='fav'){
+      if(!Array.isArray(S.favs)) S.favs=[];
+      S.favs.unshift({id:'f'+now+rnd(), type:it.link?'link':'text', title:it.text||it.link||'素材', url:it.link||'', img:it.img||'', note:'', tags:[], cat:'', ts:now, date:today});
+      arr.splice(idx,1);
+    } else if(to==='memo'){
+      if(!Array.isArray(S.memos)) S.memos=[];
+      S.memos.push({id:'m'+now+rnd(), type:0, text:it.text||(it.link?'链接：'+it.link:''), img:it.img||'', summary:'', cat:'', ts:now, date:today});
+      arr.splice(idx,1);
+    }
+  }
+  save(); renderFav();
+  toast('已移动到「'+{fav:'收藏',memo:'随手记',inspo:'素材'}[to]+'」~');
 }
 function addFav(){
   const inp=document.getElementById('favInput');
@@ -4240,7 +4334,7 @@ function stateAdvice(){
   const M = STATE_ADVICE[st];
   return (M && (M[mo]||M[''])) || '';
 }
-const LOW_HINT_LOCAL = ['去楼下走 10 分钟，看看云和树','出门买杯喜欢的热饮，顺便晒晒太阳','去附近便利店买支新笔，透透气','在小区里散步一圈，听一首喜欢的歌','去公园坐 5 分钟，什么都不做也行'];
+const LOW_HINT_LOCAL = ['什么都不做也没关系，今天先照顾好自己','窝在沙发或床上听一首喜欢的歌，什么都不用想','喝杯温水，发一会儿呆，这不算浪费时间','写三行今天的心情，不用评判自己','给朋友发一句「今天有点累」，说出来会轻松一点','盖好被子休息 20 分钟，恢复也算进步'];
 let _lowHintBusy=false;
 function last3Low(){
   for(let i=2;i>=0;i--){
@@ -4255,10 +4349,10 @@ function renderLowHint(){
   const box = document.getElementById('homeLowHint'); if(!box) return;
   const d = ensureToday();
   if(!last3Low() || d.lowHintShown){ box.innerHTML=''; return; }
-  let h = '<div class="low-hint"><b>🥺 你已经连续 3 天在低谷啦</b>';
+  let h = '<div class="low-hint"><b>💗 最近辛苦了，你已经连续 3 天在低谷</b>';
   if(d.lowHint) h += '<p class="lh-t">'+escHtml(d.lowHint)+'</p>';
-  else h += '<p class="lh-t muted">'+(_lowHintBusy?'正在想一个出门小建议…':'要不要出去透透气？')+'</p>';
-  h += '<div class="lh-btns"><button class="btn sm" onclick="lowHintGen()">✨ 生成出门小建议</button>';
+  else h += '<p class="lh-t muted">'+(_lowHintBusy?'正在想一句温柔的提醒…':'先不急着变好，休息也是在恢复~')+'</p>';
+  h += '<div class="lh-btns"><button class="btn sm" onclick="lowHintGen()">✨ 换一句温柔的提醒</button>';
   h += '<button class="btn sm ghost" onclick="lowHintDismiss()">今天先不了</button></div></div>';
   box.innerHTML = h;
 }
@@ -4272,7 +4366,7 @@ function lowHintGen(){
   }
   const plans = '年度：'+((S.yearPlan&&S.yearPlan.goal)||'无')+'；月度：'+((getMonthPlan(ym()).goal)||'无')+'；本周：'+((S.weekPlan&&S.weekPlan.goal)||'无');
   callAI([
-    {role:'system',content:'你是呆啾丸的状态陪伴助手。用户已连续 3 天状态低谷，请根据他的计划生成 1 个「出去做某件事」的具体小建议：低成本、5~30 分钟、不评判、具体到动作，不超过 40 字，一行输出，不要解释。'},
+    {role:'system',content:'你是呆啾丸的状态陪伴助手。用户已连续 3 天状态低谷，请生成 1 句温柔、零压力、允许休息的陪伴小建议：不要求出门或做任何事，具体到动作，不超过 40 字，一行输出，不要解释。'},
     {role:'user',content:'我的计划：'+plans}
   ], function(txt){
     const t = String(txt||'').trim();
@@ -4476,32 +4570,24 @@ function renderOverview(){
 function renderHomePlanPreview(){
   const box = document.getElementById('homePlanPreview');
   if(!box) return;
-  if(!S.planTab) S.planTab='week';
+  if(S.planTab!=='year' && S.planTab!=='month') S.planTab='year';
   ensurePlanSel();
   let h = '<div class="plan-time">';
-  h += '<select id="planSelY" onchange="savePlanSel()">'+planYearOptions()+'</select>';
-  h += '<select id="planSelM" onchange="savePlanSel()">'+planMonthOptions()+'</select>';
-  h += '<button class="btn sm ghost" onclick="planShift(-1)">‹</button>';
-  h += '<span class="pt-w">第'+S.planSel.w+'周</span>';
-  h += '<button class="btn sm ghost" onclick="planShift(1)">›</button>';
-  h += '<button class="btn sm ghost" onclick="planGoToday()">本周</button>';
+  h += '<span class="pt-range">'+S.planSel.y+'年'+S.planSel.m+'月 第'+S.planSel.w+'周</span>';
+  h += '<span class="pt-dates muted">'+weekRangeText(S.planSel.y, S.planSel.m, S.planSel.w)+'</span>';
   h += '</div>';
-  h += '<div class="muted pt-cur">当前：'+S.planSel.y+'年'+S.planSel.m+'月 · 第'+S.planSel.w+'周（周一起始）</div>';
-  h += planWeekHtml();
-  h += '<div class="fold-bar" style="margin-top:6px;" onclick="toggleFold(\'planMore\')"><span style="font-size:12px;color:var(--sub);">📂 年 / 月 / 周报视图</span><span class="fold-ch" data-foldch="planMore">▸</span></div>';
+  h += goalEditHtml(getWeekPlan().goal,'week');
+  h += '<div class="fold-bar" style="margin-top:6px;" onclick="toggleFold(\'planMore\')"><span style="font-size:12px;color:var(--sub);">📂 年月视图</span><span class="fold-ch" data-foldch="planMore">▸</span></div>';
   h += '<div class="fold-body" data-fold="planMore"><div class="plan-tabs">';
-  [['year','年'],['month','月'],['week','周'],['report','周报']].forEach(t=>{
+  [['year','年'],['month','月']].forEach(t=>{
     h += '<button class="btn sm ghost'+(S.planTab===t[0]?' on':'')+'" onclick="setPlanTab(\''+t[0]+'\')">'+t[1]+'</button>';
   });
   h += '</div>';
   if(S.planTab==='year') h += planYearHtml();
-  else if(S.planTab==='month'){ h += planMonthHtml(); }
-  else if(S.planTab==='week') h += planWeekHtml();
-  else h += planReportHtml();
+  else h += planMonthHtml();
   h += '</div>';
   box.innerHTML = h;
   if(S.planTab==='month') renderHomeMonthCal();
-  if(S.planTab==='report') ensureWeekReport();
   applyFolds();
 }
 function isoWeek(d){
@@ -4516,6 +4602,14 @@ function monthWeekNum(d){
   const first=new Date(y,m,1);
   const firstMon = (first.getDay()+6)%7; // 周一=0
   return Math.floor((d.getDate()-1+firstMon)/7)+1;
+}
+function weekRangeText(y,m,w){
+  const first=new Date(y,m-1,1);
+  const firstMon=(first.getDay()+6)%7;
+  const start=new Date(y,m-1,1+(w-1)*7-firstMon);
+  const end=new Date(start); end.setDate(end.getDate()+6);
+  const f=function(d){ return (d.getMonth()+1)+'.'+d.getDate(); };
+  return f(start)+' – '+f(end);
 }
 function setPlanTab(t){ S.planTab=t; save(); renderHomePlanPreview(); haptic(); }
 function ensurePlanSel(){
@@ -5492,20 +5586,15 @@ function renderBody(){
   html += '<div class="row"><input id="newMed" placeholder="添加保健品"><button class="btn sm" onclick="addMed()">添加</button></div>';
   html += '</div>';
   html += '<div class="card"><h3><img class="tic" src="'+stk('s040')+'" alt="">入睡 · 喝水</h3>';
-  html += '<div class="sw-fold'+( _swFoldOpen?' open':'')+'"><div class="sw-head" onclick="toggleSwFold()"><span>今日记录</span><span class="sw-today">'+(S.sleep.time||'未记录入睡')+' · 💧 '+(S.water.cups||0)+' 杯</span><span class="chev">▸</span></div>';
-  html += '<div class="sw-body" id="swBody" style="'+( _swFoldOpen?'':'display:none;')+'">';
-  html += '<div class="sw-row"><span>昨晚入睡</span><input type="time" id="sleepTime" value="'+(S.sleep.time||'')+'"></div>';
-  html += '<div class="sw-row"><span>今天喝水</span><div class="stepper"><button onclick="setWater(-1)">−</button><span id="waterCount">'+(S.water.cups||0)+'</span><button onclick="setWater(1)">+</button><span style="font-size:12px;color:var(--sub);">杯</span></div></div>';
-  html += '<button class="btn sm" style="width:100%;margin-top:10px;" onclick="saveSleepWater()">✓ 记录今日（入睡 + 喝水）</button>';
+  html += '<div class="sw-cols">';
+  html += '<div class="sw-col"><span>昨晚入睡</span><input type="time" id="sleepTime" class="sw-time" value="'+(S.sleep.time||'')+'"></div>';
+  html += '<div class="sw-col"><span>今天喝水</span><div class="stepper"><button onclick="setWater(-1)">−</button><span id="waterCount">'+(S.water.cups||0)+'</span><button onclick="setWater(1)">+</button><span style="font-size:12px;color:var(--sub);">杯</span></div></div>';
+  html += '</div>';
+  html += '<button class="btn sm" style="margin-top:12px;" onclick="saveSleepWater()">✓ 记录今日（入睡 + 喝水）</button>';
   html += '<div id="swLog" style="margin-top:10px;"></div>';
-  html += '</div></div></div>';
-  html += '<div class="card"><h3><img class="tic" src="'+stk('s045')+'" alt="">身体记录</h3><p class="muted">记录皮肤、疲劳、状态等，会自动带上日期，之后可以回看~</p>';
-  html += '<textarea id="bodyNote" rows="3" placeholder="今天身体感觉怎么样？"></textarea>';
-  html += '<div class="row"><button class="btn sm" onclick="saveBody()">保存今天的记录</button></div>';
-  html += '<div id="bodyLogList"></div>';
   html += '</div>';
   document.getElementById('bodyBox').innerHTML = html;
-  renderBodyLog();
+  renderSwLog();
 }
 
 function toggleMed(i){ haptic(); const d=ensureToday(); if(!d.meds||d.meds.length!==S.meds.length) d.meds=S.meds.map(()=>false); d.meds[i]=!d.meds[i]; save(); renderBody(); renderHome(); if(d.meds[i]) showPraise('med'); }
@@ -5673,7 +5762,7 @@ function renderGrowth(){
   });
   const monthKeysAll = Object.keys(months).sort().reverse();
   if(!_archShowAll && monthKeysAll.length>4) html += '<button class="btn sm ghost" style="margin-top:8px;" onclick="_archShowAll=true;renderGrowth()">查看更多还有 '+(monthKeysAll.length-4)+' 个月</button>';
-  document.getElementById('monthBlocks').innerHTML = html||'<div class="empty-note">还没有手写记录，上传一张吧~</div>';
+  document.getElementById('monthBlocks').innerHTML = html||'<div class="empty-note">还没有手写记录~</div>';
   renderMilestones();
   renderTolerance();
   renderWeekReports();
