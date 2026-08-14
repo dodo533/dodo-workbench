@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>呆啾丸 · 我的图库</title>
 <style>
 :root{--bg1:#FFF8FA;--bg2:#FFF0F5;--primary:#FFB7D0;--accent:#FFD6E5;--pink:#FF85AA;--text:#43303A;--sub:#7E5866;--panel:rgba(255,255,255,0.40);--card:rgba(255,255,255,0.20);--glass:rgba(255,255,255,0.10);--line:rgba(255,255,255,0.52);--shadow:0 14px 40px rgba(180,130,150,0.16);}
@@ -25,17 +25,17 @@ body.night .btn{background:rgba(255,255,255,0.08);color:#fff;border-color:rgba(2
 .tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px;}
 .btn{background:linear-gradient(160deg,var(--bg2),var(--accent));color:var(--pink);border:1px solid rgba(255,255,255,0.7);border-radius:12px;padding:7px 14px;font-weight:200;font-size:12.5px;cursor:pointer;box-shadow:0 5px 14px rgba(180,130,150,0.14);font-family:inherit;}
 .btn:active{transform:scale(0.96);}
-.sync{font-size:11px;color:var(--sub);margin-left:auto;}
+.sync{font-size:12px;color:var(--sub);margin-left:auto;}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
 .item{position:relative;border-radius:12px;overflow:hidden;background:var(--card);border:1px solid var(--line);cursor:zoom-in;aspect-ratio:1/1;}
 .item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .2s;}
 .item:hover img{transform:scale(1.06);}
-.item .tag{position:absolute;left:6px;top:6px;font-size:9.5px;background:rgba(0,0,0,0.45);color:#fff;padding:2px 8px;border-radius:10px;}
-.item .dt{position:absolute;left:6px;bottom:6px;font-size:9.5px;background:rgba(0,0,0,0.45);color:#fff;padding:2px 8px;border-radius:10px;}
+.item .tag{position:absolute;left:6px;top:6px;font-size:12px;background:rgba(0,0,0,0.45);color:#fff;padding:2px 8px;border-radius:10px;}
+.item .dt{position:absolute;left:6px;bottom:6px;font-size:12px;background:rgba(0,0,0,0.45);color:#fff;padding:2px 8px;border-radius:10px;}
 .item .del{position:absolute;right:6px;top:6px;width:22px;height:22px;border:none;border-radius:50%;background:rgba(0,0,0,0.5);color:#fff;font-size:12px;cursor:pointer;z-index:2;}
 .linkcard{position:relative;border-radius:12px;background:var(--glass);border:1px solid var(--line);padding:10px;display:flex;flex-direction:column;gap:4px;min-height:80px;}
-.linkcard a{color:var(--pink);font-size:11.5px;word-break:break-all;text-decoration:none;}
-.linkcard .dt{font-size:9.5px;color:var(--sub);}
+.linkcard a{color:var(--pink);font-size:12px;word-break:break-all;text-decoration:none;}
+.linkcard .dt{font-size:12px;color:var(--sub);}
 .empty{color:var(--sub);font-size:12px;text-align:center;padding:30px 0;}
 .lb{position:fixed;inset:0;background:rgba(20,15,18,0.82);display:none;align-items:center;justify-content:center;z-index:90;padding:20px;backdrop-filter:blur(6px);}
 .lb.on{display:flex;}
