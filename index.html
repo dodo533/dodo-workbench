@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#FFB7D0">
+<meta name="theme-color" content="#FFF8FA">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -3630,6 +3630,14 @@ const THEMES = [
   {name:'海盐蓝',bg1:'#f5f8ff',bg2:'#e3eeff',primary:'#9ab6ef',accent:'#cfdffb',pink:'#7b9ee6',text:'#46587a',sub:'#8aa1c9'},
   {name:'抹茶绿',bg1:'#f8f6fd',bg2:'#e9defa',primary:'#b6a5e7',accent:'#dcd0f6',pink:'#9b85dd',text:'#5a5172',sub:'#9a91ba'}
 ];
+function updateStatusBarColor(){
+  try{
+    const r = getComputedStyle(document.documentElement);
+    const c = (r.getPropertyValue('--bg1')||'').trim() || '#FFF8FA';
+    const meta = document.querySelector('meta[name=theme-color]');
+    if(meta) meta.setAttribute('content', c);
+  }catch(e){}
+}
 function applyTheme(){
   const ct = S.customTheme;
   const t = (ct && ct.bg1 && ct.primary && ct.pink) ? ct : THEMES[parseInt(S.theme)||0];
@@ -3647,6 +3655,7 @@ function applyTheme(){
   }
   applyNight();
   applyBg();
+  updateStatusBarColor();
 }
 function setGlass(v){
   const g = Math.max(0.2, Math.min(1, parseInt(v||100)/100));
@@ -3694,6 +3703,7 @@ function applyNight(){
     r.setProperty('--shadow','0 14px 40px rgba(180,130,150,0.16)');
   }
   const nm=document.getElementById('nightMode'); if(nm) nm.value=S.nightMode;
+  updateStatusBarColor();
 }
 function setNight(v){ S.nightMode=v; save(); applyNight(); applyBg(); haptic(); }
 function devType(){

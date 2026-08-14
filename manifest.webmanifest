@@ -11,8 +11,8 @@
     "minimal-ui"
   ],
   "orientation": "any",
-  "background_color": "#fff7fc",
-  "theme_color": "#FFB7D0",
+  "background_color": "#FFF8FA",
+  "theme_color": "#FFF8FA",
   "categories": [
     "productivity",
     "lifestyle"
