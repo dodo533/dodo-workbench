@@ -1341,6 +1341,24 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{opacity:0!important;}
             </div>
           </div>
         </div>
+        <div class="card" data-decor="tol">
+          <div class="fold-bar" onclick="toggleFold('tol')"><h3><img class="tic" data-stk="s052" alt="">每周宽容总结</h3><span class="fold-ch" data-foldch="tol">▾</span></div>
+          <div class="fold-body" data-fold="tol">
+            <p class="muted">每周日花 2 分钟勾一勾，长期复盘「情绪差是不是身体引起的」。手动填写，不会自动生成~</p>
+            <div class="tol-row"><b>眼睛状态</b><div class="tol-chips" id="tolEye"></div></div>
+            <div class="tol-row"><b>睡眠时长</b><div class="tol-chips" id="tolSleep"></div></div>
+            <div class="tol-row"><b>疲惫程度</b><div class="tol-chips" id="tolTired"></div></div>
+            <div class="tol-checks">
+              <label><input type="checkbox" id="tolC0"> 有几天坚持了哪怕 5 分钟速写</label>
+              <label><input type="checkbox" id="tolC1"> 身体不舒服时有没有主动休息（而不是硬撑）</label>
+              <label><input type="checkbox" id="tolC2"> 情绪低谷期有没有完成基础生理打卡</label>
+              <label><input type="checkbox" id="tolC3"> 有没有放生某门课减轻负担</label>
+            </div>
+            <input class="tol-prog" id="tolProg" placeholder="本周最小的一个画画进步：___">
+            <div class="row" style="margin-top:10px;"><button class="btn sm" onclick="saveTolerance()">保存本周总结</button></div>
+            <div id="tolHistory" class="tol-hist"></div>
+          </div>
+        </div>
         <div class="growth-split">
           <div class="card" data-decor="growthReport">
             <div class="fold-bar" onclick="toggleFold('growthReport')"><h3><img class="tic" data-stk="s037" alt="">每周周报</h3><span class="fold-ch" data-foldch="growthReport">▸</span></div>
@@ -1358,24 +1376,7 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{opacity:0!important;}
             </div>
           </div>
         </div>
-        <div class="card" data-decor="tol">
-          <div class="fold-bar" onclick="toggleFold('tol')"><h3><img class="tic" data-stk="s052" alt="">每周宽容总结</h3><span class="fold-ch" data-foldch="tol">▸</span></div>
-          <div class="fold-body" data-fold="tol">
-            <p class="muted">每周日花 2 分钟勾一勾，长期复盘「情绪差是不是身体引起的」。手动填写，不会自动生成~</p>
-            <div class="tol-row"><b>眼睛状态</b><div class="tol-chips" id="tolEye"></div></div>
-            <div class="tol-row"><b>睡眠时长</b><div class="tol-chips" id="tolSleep"></div></div>
-            <div class="tol-row"><b>疲惫程度</b><div class="tol-chips" id="tolTired"></div></div>
-            <div class="tol-checks">
-              <label><input type="checkbox" id="tolC0"> 有几天坚持了哪怕 5 分钟速写</label>
-              <label><input type="checkbox" id="tolC1"> 身体不舒服时有没有主动休息（而不是硬撑）</label>
-              <label><input type="checkbox" id="tolC2"> 情绪低谷期有没有完成基础生理打卡</label>
-              <label><input type="checkbox" id="tolC3"> 有没有放生某门课减轻负担</label>
-            </div>
-            <input class="tol-prog" id="tolProg" placeholder="本周最小的一个画画进步：___">
-            <div class="row" style="margin-top:10px;"><button class="btn sm" onclick="saveTolerance()">保存本周总结</button></div>
-            <div id="tolHistory" class="tol-hist"></div>
-          </div>
-        </div>
+
       </section>
 
       
@@ -1397,16 +1398,9 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{opacity:0!important;}
             <p class="muted">收藏、随手记、灵感素材统一收纳在这里，AI 自动帮你分类，一个入口全找到~</p>
             <div class="row" style="gap:8px;flex-wrap:wrap;">
               <input id="favInput" placeholder="粘贴链接或写一句话…" style="flex:1;min-width:170px;">
-              <button class="btn sm" onclick="addFav()">＋ 收藏</button>
+              <button class="btn sm" onclick="addFav()">＋ 添加</button>
               <button class="btn sm ghost" onclick="document.getElementById('favImgIn').click()">＋ 图片</button>
               <input type="file" id="favImgIn" accept="image/*" style="display:none;" onchange="addFavImage(this)">
-              <button class="btn sm ghost" onclick="openMemo()"><img class="tic" data-stk="s069" alt="">随手记</button>
-            </div>
-            <div class="row" style="margin-top:8px;gap:8px;flex-wrap:wrap;">
-              <input id="inspoLink" placeholder="贴素材链接（网盘/图库网址）…" style="flex:1;min-width:170px;">
-              <button class="btn sm ghost" onclick="addInspoLink()">＋ 素材链接</button>
-              <button class="btn sm ghost" onclick="document.getElementById('inspoUp').click()">＋ 素材图</button>
-              <input type="file" id="inspoUp" accept="image/*" multiple style="display:none;" onchange="uploadInspo(this)">
               <button class="btn sm ghost" onclick="aiClassifyAllFav()"><img class="tic" data-stk="s050" alt="">AI 全部归类</button>
             </div>
           </div>
