@@ -17,14 +17,14 @@
 
 :root{
   --bg1:#FFF8FA; --bg2:#FFF0F5; --primary:#FFB7D0; --accent:#FFD6E5; --pink:#FF85AA; --cardImg:var(--cardBg); --cardBorderStyle:solid; --cardRadius:16px;
-  --text:#43303A; --sub:#7E5866;
+  --text:#2E2328; --sub:#5C3F4B;
   --panel:rgba(255,255,255,0.40); --card:rgba(255,255,255,0.20); --glass:rgba(255,255,255,0.10);
   --line:rgba(255,255,255,0.52); --shadow:0 14px 40px rgba(180,130,150,0.16);
   --sheen1:rgba(255,255,255,0.55); --sheen2:rgba(255,255,255,0.04);
   --cardA:0.60; --cardBgGap:8px; --cardLaceCornerW:clamp(20px,5vw,60px); --cardLaceEdgeH:clamp(14px,3vw,30px); --cardBg:linear-gradient(160deg,rgba(255,255,255,0.30),rgba(255,255,255,0.06));
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-html,body{margin:0;height:100%;}
+html,body{margin:0;height:100%;font-size:15px;}
 body{
   font-family:"SimSun","Songti SC","Noto Serif CJK SC","宋体",serif;
   font-weight:200; letter-spacing:0.02em;
@@ -64,7 +64,7 @@ h1,h2,h3,h4,b,strong{font-weight:300;}
 .nav-ghead::after{content:"▼";font-size:9px;transition:.2s;}
 .nav-group.collapsed .nav-ghead::after{transform:rotate(-90deg);}
 .nav-group.collapsed .nav-items{display:none;}
-.nav-item{display:flex;align-items:center;gap:9px;padding:11px 12px;border-radius:14px;cursor:pointer;color:var(--text);font-weight:300;font-size:14.5px;transition:.18s;margin:2px 0;min-height:40px;}
+.nav-item{display:flex;align-items:center;gap:9px;padding:11px 12px;border-radius:14px;cursor:pointer;color:var(--text);font-weight:300;font-size:15px;min-height:44px;transition:.18s;margin:2px 0;min-height:40px;}
 .nav-item .ni-ic{width:26px;height:26px;display:flex;align-items:center;justify-content:center;flex:0 0 26px;}
 .nav-item .ni-ic img{width:26px;height:26px;object-fit:contain;}
 .nav-item:hover{background:var(--glass);}
@@ -112,10 +112,10 @@ body:not(.hasCardImg) .card::before{opacity:0;}
 .card h3 img{width:20px;height:20px;object-fit:contain;}
 .tic{width:14px;height:14px;object-fit:contain;display:inline-block;vertical-align:-2px;}
 .muted{color:var(--sub);font-size:12px;}
-.btn{background:rgba(255,255,255,0.68);color:var(--primary);border:1px solid rgba(255,255,255,0.7);border-radius:13px;padding:10px 16px;font-weight:400;font-size:13.5px;cursor:pointer;box-shadow:0 4px 14px rgba(180,140,160,0.16), inset 0 1px 0 rgba(255,255,255,0.55);transition:.15s;}
+.btn{background:rgba(255,255,255,0.68);color:var(--primary);border:1px solid rgba(255,255,255,0.7);border-radius:13px;padding:10px 16px;font-weight:400;font-size:14px;min-height:44px;cursor:pointer;box-shadow:0 4px 14px rgba(180,140,160,0.16), inset 0 1px 0 rgba(255,255,255,0.55);transition:.15s;}
 .btn:active{transform:scale(0.96);}
 .btn.ghost{background:var(--glass);color:var(--text);box-shadow:none;border:1px solid var(--line);}
-.btn.sm{padding:8px 12px;font-size:12px;border-radius:9px;min-height:34px;}
+.btn.sm{padding:8px 12px;font-size:12px;border-radius:9px;min-height:38px;}
 input,textarea,select{width:100%;padding:9px 12px;border-radius:12px;border:1px solid rgba(255,255,255,0.5);background:rgba(255,255,255,0.22);color:var(--text);font-size:13.5px;font-family:inherit;font-weight:200;margin:4px 0;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:inset 0 1px 0 rgba(255,255,255,0.35);}
 input:focus,textarea:focus{outline:none;border-color:var(--pink);}
 label{font-size:11.5px;color:var(--sub);font-weight:300;display:block;margin-top:6px;}
@@ -539,7 +539,7 @@ body.gentle .plan-list li{opacity:.72;}
 .mm-n{font-size:10px;margin-top:2px;}
 @media(min-width:1100px){.content{max-width:1160px;}}
 .bottom-nav{display:none;position:fixed;left:0;right:0;bottom:0;z-index:998;height:58px;background:rgba(255,255,255,0.82);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);border-top:1px solid var(--line);align-items:center;justify-content:space-around;padding:4px 2px calc(4px + env(safe-area-inset-bottom));}
-.bn-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;color:var(--sub);cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.bn-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:var(--sub);cursor:pointer;-webkit-tap-highlight-color:transparent;}
 .bn-item img{width:22px;height:22px;object-fit:contain;}
 .bn-item.on{color:var(--pink);font-weight:600;}
 .bn-item.on img{transform:scale(1.08);}
@@ -572,7 +572,7 @@ body.gentle .plan-list li{opacity:.72;}
   .ring-hero{transform:scale(.55);transform-origin:center;margin:0 0 0 auto;padding:0;flex:0 0 auto;}
   .mini-cal{transform:scale(.58);transform-origin:center;margin:0;flex:0 0 auto;padding:6px 7px;border-radius:10px;}
   .quick-row{margin-top:6px;gap:6px;}
-  .qbtn{min-width:0;padding:7px 4px;font-size:11px;border-radius:11px;}
+  .qbtn{min-width:0;padding:7px 4px;font-size:12px;border-radius:11px;}
   #homeMoreBtn{width:100%;padding:10px;font-size:12px;position:relative;z-index:20;}
   .home-cols{margin-top:8px;gap:8px;}
   .mix-card{padding:11px;}
@@ -955,7 +955,7 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
   .ring-hero{transform:scale(.48);}
   .mini-cal{transform:scale(.52);}
   .quick-row{margin-top:4px;gap:5px;}
-  .qbtn{padding:5px 3px;font-size:10.5px;border-radius:9px;}
+  .qbtn{padding:5px 3px;font-size:12px;border-radius:9px;}
   #homeMoreBtn{padding:8px;margin-top:6px;}
   .mix-card{padding:8px;}
   .mix-top h3,.mix-bottom h3{font-size:11.5px;margin-bottom:4px;}
@@ -973,6 +973,8 @@ body.night .memo-item .memo-sum{color:#c9a8b8;}
 body.custom-bg{background-image:none!important;}
 body.hasBgImg::before{content:"";position:fixed;inset:0;background:rgba(255,252,254,0.16);z-index:-1;pointer-events:none;}
 body.night.hasBgImg::before{background:rgba(28,18,26,0.22);}
+body.hasBgImg .card{text-shadow:0 1px 2px rgba(255,255,255,0.5);}
+body.night.hasBgImg .card{text-shadow:0 1px 2px rgba(0,0,0,0.5);}
 .home-more-panel{margin-bottom:10px;}
 .home-more-panel .chk-row{padding:5px 2px;}
 .decor-banner-card{padding:8px 12px;margin-bottom:10px;text-align:center;}
@@ -1002,7 +1004,7 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{opacity:0!important;}
 @media(max-width:760px){
   .bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:66%;max-width:340px;bottom:calc(18px + env(safe-area-inset-bottom));border-radius:27px;background:rgba(255,255,255,0.5);backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);border:1px solid rgba(255,255,255,0.65);box-shadow:0 10px 30px rgba(120,80,100,0.28);height:52px;padding:4px 6px;}
   .bn-item img{width:26px;height:26px;}
-  .bn-item{font-size:10.5px;}
+  .bn-item{font-size:12px;}
   .decor-banner{font-size:11px;}
 }
 @media(max-width:760px){
@@ -1042,6 +1044,24 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{opacity:0!important;}
   .quick-row{margin-top:5px;gap:5px;}
   .qbtn{padding:5px 3px;font-size:10.5px;border-radius:9px;}
 }
+
+/* ===== 素材合集 / 每周宽容总结（改造方案）===== */
+.collect-item{position:relative;}
+.collect-badge{display:inline-block;font-size:11px;color:var(--sub);background:var(--glass);border:1px solid var(--line);border-radius:8px;padding:1px 7px;margin-right:6px;}
+.collect-cat{display:inline-block;font-size:11px;color:var(--pink);background:rgba(255,183,208,0.18);border-radius:8px;padding:1px 7px;margin-right:6px;}
+.collect-meta{font-size:11px;color:var(--sub);margin-top:5px;}
+.collect-item .fav-img,.collect-item img.memo-img{max-height:200px;object-fit:contain;border-radius:10px;background:var(--glass);margin-top:6px;width:100%;}
+.tol-row{display:flex;align-items:flex-start;gap:8px;margin:9px 0;flex-wrap:wrap;}
+.tol-row b{flex:0 0 auto;width:66px;padding-top:6px;font-weight:500;font-size:13px;}
+.tol-chips{display:flex;gap:6px;flex-wrap:wrap;}
+.tol-checks{margin-top:10px;}
+.tol-checks label{display:flex;align-items:center;gap:6px;font-size:13px;padding:4px 0;color:var(--text);}
+.tol-checks input[type=checkbox]{width:18px;height:18px;accent-color:var(--pink);flex:0 0 auto;}
+.tol-prog{margin-top:8px;}
+.tol-hist{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px;font-size:12px;color:var(--sub);}
+.tol-hist .th-d{color:var(--pink);font-weight:500;margin:7px 0 2px;font-size:12.5px;}
+.tol-hist .th-item{margin:4px 0;line-height:1.5;}
+.tol-hist .th-w{color:var(--pink);font-weight:500;}
 </style>
 </head>
 <body>
@@ -1079,7 +1099,7 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{opacity:0!important;}
       <div class="nav-items">
         <div class="nav-item" data-page="home" onclick="go('home')"><span class="ni-ic"><img data-stk="s107" alt=""></span><span>首页</span></div>
         <div class="nav-item" data-page="growth" onclick="go('growth')"><span class="ni-ic"><img data-stk="s105" alt=""></span><span>成长</span></div>
-        <div class="nav-item" data-page="fav" onclick="go('fav')"><span class="ni-ic"><img data-stk="s029" alt=""></span><span>收藏</span></div>
+        <div class="nav-item" data-page="fav" onclick="go('fav')"><span class="ni-ic"><img data-stk="s029" alt=""></span><span>素材合集</span></div>
       </div>
     </div>
     <div class="nav-group">
@@ -1250,11 +1270,12 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{opacity:0!important;}
 
       <section class="panel" id="p-micro">
         <div class="card" data-decor="microMain">
-          <div class="fold-bar" onclick="toggleFold('microMain')"><h3><img class="tic" data-stk="s022" alt="">微创作</h3><span class="fold-ch" data-foldch="microMain">▾</span></div>
+          <div class="fold-bar" onclick="toggleFold('microMain')"><h3><img class="tic" data-stk="s022" alt="">微创作</h3><span class="fold-ch" data-foldch="microMain">▸</span></div>
           <div class="fold-body" data-fold="microMain">
             <div class="row">
               <div><label>选择课程</label><select id="microCourse"></select></div>
-              <div style="flex:0 0 auto;display:flex;align-items:flex-end;gap:6px;">
+              <div style="flex:0 0 auto;display:flex;align-items:flex-end;gap:6px;flex-wrap:wrap;">
+                <button class="btn sm ghost" onclick="rollInspiration()"><img class="tic" data-stk="s023" alt="">灵感便签</button>
                 <button class="btn sm ghost" id="timer" data-sec="900" onclick="startTimer()">⏳ 15:00</button>
                 <button class="btn sm ghost" id="upTimer" onclick="startUpTimer()">⏱ 00:00</button>
               </div>
@@ -1272,54 +1293,10 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{opacity:0!important;}
             </div>
           </div>
         </div>
-        <div class="card" data-decor="microDream">
-          <div class="fold-bar" onclick="toggleFold('microDream')"><h3><img class="tic" data-stk="s069" alt="">梦境记录</h3><span class="fold-ch" data-foldch="microDream">▾</span></div>
-          <div class="fold-body" data-fold="microDream">
-            <p class="muted">记下梦境，AI 会自动打氛围标签并生成灵感卡~</p>
-            <textarea id="dreamNew" rows="3" placeholder="比如：我梦见一条暗红色的走廊，到处是漂浮的镜子…" style="width:100%;"></textarea>
-            <div style="margin-top:6px;">
-              <button class="btn sm ghost" onclick="toggleAtmosBar()">🎭 氛围标签 <span id="atmosChev">▾</span></button>
-              <div id="atmosWrap" style="display:none;margin-top:6px;" class="row">
-                <span class="muted">标签：</span>
-                <button class="chip" data-a="压抑" onclick="toggleAtmos(this)">压抑</button>
-                <button class="chip" data-a="雪景" onclick="toggleAtmos(this)">雪景</button>
-                <button class="chip" data-a="逃亡" onclick="toggleAtmos(this)">逃亡</button>
-                <button class="chip" data-a="奇幻" onclick="toggleAtmos(this)">奇幻</button>
-                <button class="chip" data-a="明亮" onclick="toggleAtmos(this)">明亮</button>
-                <button class="chip" data-a="温柔" onclick="toggleAtmos(this)">温柔</button>
-                <button class="chip" data-a="悬疑" onclick="toggleAtmos(this)">悬疑</button>
-                <button class="chip" data-a="治愈" onclick="toggleAtmos(this)">治愈</button>
-              </div>
-            </div>
-            <div class="row" style="margin-top:8px;">
-              <button class="btn sm" onclick="addDream()">记下梦境</button>
-            </div>
-          </div>
-        </div>
-        <div class="card" data-decor="microMemo">
-          <div class="fold-bar" onclick="toggleFold('microMemo')"><h3><img class="tic" data-stk="s069" alt="">随手记（备忘录 / 梦境 / 想法）</h3><span class="fold-ch" data-foldch="microMemo">▾</span></div>
-          <div class="fold-body" data-fold="microMemo">
-            <p class="muted">在首页点小啾啾旁的 📝 快速记录，AI 会自动分类到这里统一查看~</p>
-            <div id="memoList" style="margin-top:12px;"></div>
-          </div>
-        </div>
-        <div class="card" data-decor="microInspo">
-          <div class="fold-bar" onclick="toggleFold('microInspo')"><h3><img class="tic" data-stk="s089" alt="">灵感与素材</h3><span class="fold-ch" data-foldch="microInspo">▾</span></div>
-          <div class="fold-body" data-fold="microInspo">
-            <div class="row" style="gap:6px;flex-wrap:wrap;">
-              <button class="btn sm ghost" onclick="rollInspiration()"><img class="tic" data-stk="s023" alt="">灵感便签</button>
-              <button class="btn sm" onclick="document.getElementById('inspoUp').click()">＋ 上传图片</button>
-              <input type="file" accept="image/*" multiple id="inspoUp" style="display:none;" onchange="uploadInspo(this)">
-              <input id="inspoLink" placeholder="贴素材链接（网盘/图库网址）…" style="flex:1;min-width:140px;">
-              <button class="btn sm ghost" onclick="addInspoLink()">＋ 存链接</button>
-            </div>
-            <div id="inspoBox" style="margin-top:8px;"></div>
-            <div class="gallery-col" style="margin-top:10px;">
-              <h4><img class="tic" data-stk="s186" alt="">我的图库</h4>
-              <p class="muted">所有素材、创作图片统一存到图库新页面，点开即跳转。</p>
-              <a href="gallery.html" class="btn" style="text-decoration:none;text-align:center;">打开我的图库 →</a>
-            </div>
-          </div>
+        <div class="gallery-col" style="margin-top:10px;">
+          <h4><img class="tic" data-stk="s186" alt="">我的图库</h4>
+          <p class="muted">素材、创作图片统一存到图库新页面，点开即跳转。</p>
+          <a href="gallery.html" class="btn" style="text-decoration:none;text-align:center;">打开我的图库 →</a>
         </div>
       </section>
 
@@ -1381,6 +1358,24 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{opacity:0!important;}
             </div>
           </div>
         </div>
+        <div class="card" data-decor="tol">
+          <div class="fold-bar" onclick="toggleFold('tol')"><h3><img class="tic" data-stk="s052" alt="">每周宽容总结</h3><span class="fold-ch" data-foldch="tol">▸</span></div>
+          <div class="fold-body" data-fold="tol">
+            <p class="muted">每周日花 2 分钟勾一勾，长期复盘「情绪差是不是身体引起的」。手动填写，不会自动生成~</p>
+            <div class="tol-row"><b>眼睛状态</b><div class="tol-chips" id="tolEye"></div></div>
+            <div class="tol-row"><b>睡眠时长</b><div class="tol-chips" id="tolSleep"></div></div>
+            <div class="tol-row"><b>疲惫程度</b><div class="tol-chips" id="tolTired"></div></div>
+            <div class="tol-checks">
+              <label><input type="checkbox" id="tolC0"> 有几天坚持了哪怕 5 分钟速写</label>
+              <label><input type="checkbox" id="tolC1"> 身体不舒服时有没有主动休息（而不是硬撑）</label>
+              <label><input type="checkbox" id="tolC2"> 情绪低谷期有没有完成基础生理打卡</label>
+              <label><input type="checkbox" id="tolC3"> 有没有放生某门课减轻负担</label>
+            </div>
+            <input class="tol-prog" id="tolProg" placeholder="本周最小的一个画画进步：___">
+            <div class="row" style="margin-top:10px;"><button class="btn sm" onclick="saveTolerance()">保存本周总结</button></div>
+            <div id="tolHistory" class="tol-hist"></div>
+          </div>
+        </div>
       </section>
 
       
@@ -1397,19 +1392,50 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{opacity:0!important;}
 
       <section class="panel" id="p-fav">
         <div class="card">
-          <h3><img class="tic" data-stk="s029" alt="">收藏夹</h3>
-          <p class="muted">把想留的链接、文字、图片一键存进来，AI 自动帮你归类。以后一个搜索框全找到，不用再去各大平台翻。</p>
-          <div class="row" style="gap:8px;flex-wrap:wrap;">
-            <input id="favInput" placeholder="粘贴链接或写一句话…" style="flex:1;min-width:180px;">
-            <button class="btn sm" onclick="addFav()">＋ 收藏</button>
-            <button class="btn sm ghost" onclick="document.getElementById('favImgIn').click()">＋ 图片</button>
-            <input type="file" id="favImgIn" accept="image/*" style="display:none;" onchange="addFavImage(this)">
+          <div class="fold-bar" onclick="toggleFold('collectMain')"><h3><img class="tic" data-stk="s089" alt="">素材合集</h3><span class="fold-ch" data-foldch="collectMain">▸</span></div>
+          <div class="fold-body" data-fold="collectMain">
+            <p class="muted">收藏、随手记、灵感素材统一收纳在这里，AI 自动帮你分类，一个入口全找到~</p>
+            <div class="row" style="gap:8px;flex-wrap:wrap;">
+              <input id="favInput" placeholder="粘贴链接或写一句话…" style="flex:1;min-width:170px;">
+              <button class="btn sm" onclick="addFav()">＋ 收藏</button>
+              <button class="btn sm ghost" onclick="document.getElementById('favImgIn').click()">＋ 图片</button>
+              <input type="file" id="favImgIn" accept="image/*" style="display:none;" onchange="addFavImage(this)">
+              <button class="btn sm ghost" onclick="openMemo()"><img class="tic" data-stk="s069" alt="">随手记</button>
+            </div>
+            <div class="row" style="margin-top:8px;gap:8px;flex-wrap:wrap;">
+              <input id="inspoLink" placeholder="贴素材链接（网盘/图库网址）…" style="flex:1;min-width:170px;">
+              <button class="btn sm ghost" onclick="addInspoLink()">＋ 素材链接</button>
+              <button class="btn sm ghost" onclick="document.getElementById('inspoUp').click()">＋ 素材图</button>
+              <input type="file" id="inspoUp" accept="image/*" multiple style="display:none;" onchange="uploadInspo(this)">
+              <button class="btn sm ghost" onclick="aiClassifyAllFav()"><img class="tic" data-stk="s050" alt="">AI 全部归类</button>
+            </div>
           </div>
-          <div class="row" style="margin-top:8px;flex-wrap:wrap;gap:8px;">
-            <button class="btn sm ghost" onclick="aiClassifyAllFav()"><img class="tic" data-stk="s050" alt="">AI 全部归类</button>
-            <span class="muted" style="font-size:11px;">未配 AI Key 时，按手动类型简单归类</span>
+        </div>
+        <div class="card">
+          <div class="row" style="gap:6px;flex-wrap:wrap;" id="collectSrcRow">
+            <button class="chip chip-on" data-src="all" onclick="setCollectSrc('all')">全部</button>
+            <button class="chip" data-src="fav" onclick="setCollectSrc('fav')">收藏</button>
+            <button class="chip" data-src="memo" onclick="setCollectSrc('memo')">随手记</button>
+            <button class="chip" data-src="inspo" onclick="setCollectSrc('inspo')">素材</button>
           </div>
-          <div id="favList" style="margin-top:12px;"></div>
+          <div class="row" style="gap:6px;flex-wrap:wrap;margin-top:6px;" id="collectCatRow">
+            <button class="chip chip-on" data-cat="all" onclick="setCollectCat('all')">全部分类</button>
+            <button class="chip" data-cat="梦·氛围" onclick="setCollectCat('梦·氛围')">梦·氛围</button>
+            <button class="chip" data-cat="雪景" onclick="setCollectCat('雪景')">雪景</button>
+            <button class="chip" data-cat="画画参考" onclick="setCollectCat('画画参考')">画画参考</button>
+            <button class="chip" data-cat="穿搭" onclick="setCollectCat('穿搭')">穿搭</button>
+            <button class="chip" data-cat="旅行" onclick="setCollectCat('旅行')">旅行</button>
+            <button class="chip" data-cat="OC" onclick="setCollectCat('OC')">OC</button>
+            <button class="chip" data-cat="实物" onclick="setCollectCat('实物')">实物</button>
+            <button class="chip" data-cat="宠物" onclick="setCollectCat('宠物')">宠物</button>
+            <button class="chip" data-cat="未分类" onclick="setCollectCat('未分类')">未分类</button>
+          </div>
+          <div id="collectList" style="margin-top:10px;"></div>
+          <div class="gallery-col" style="margin-top:14px;">
+            <h4><img class="tic" data-stk="s186" alt="">我的图库</h4>
+            <p class="muted">所有素材、创作图片统一存到图库新页面，点开即跳转。</p>
+            <a href="gallery.html" class="btn" style="text-decoration:none;text-align:center;">打开我的图库 →</a>
+          </div>
         </div>
       </section>
       <section class="panel" id="p-mine">
@@ -1419,7 +1445,7 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{opacity:0!important;}
           <div class="mine-grid">
             <div class="mine-cell" onclick="go('body')"><img class="tic" data-stk="s020" alt=""><span>身体</span></div>
             <div class="mine-cell" onclick="go('mood')"><img class="tic" data-stk="s100" alt=""><span>情绪日记</span></div>
-            <div class="mine-cell" onclick="go('fav')"><img class="tic" data-stk="s029" alt=""><span>收藏</span></div>
+            <div class="mine-cell" onclick="go('fav')"><img class="tic" data-stk="s029" alt=""><span>素材合集</span></div>
             <div class="mine-cell" onclick="go('settings')"><img class="tic" data-stk="s032" alt=""><span>设置</span></div>
           </div>
         </div>
@@ -1643,6 +1669,12 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{opacity:0!important;}
       <button class="chip" id="memoTypeChip2" onclick="setMemoType(2)">💡 新奇想法</button>
     </div>
     <textarea id="memoInput" rows="3" placeholder="写一句..." style="text-align:left;margin-top:8px;"></textarea>
+    <div class="row" style="gap:6px;margin-top:6px;flex-wrap:wrap;">
+      <input id="memoKw" placeholder="关键词（梦境/灵感，逗号分隔）" style="flex:1;min-width:140px;">
+      <button class="btn sm ghost" onclick="document.getElementById('memoImgIn').click()">＋ 图</button>
+      <input type="file" id="memoImgIn" accept="image/*" style="display:none;" onchange="attachMemoImg(this)">
+    </div>
+    <img id="memoImgPrev" alt="" style="display:none;max-height:120px;border-radius:10px;margin-top:6px;width:100%;object-fit:contain;">
     <div class="row" style="margin-top:10px;">
       <button class="btn ghost" onclick="closeMemo()">取消</button>
       <button class="btn" onclick="saveMemo()">保存</button>
@@ -1707,12 +1739,12 @@ const KNOWLEDGE_TREE = [
   {k:'技法',children:[]}
 ];
 const MILESTONES = [
-  {id:'streak7',cat:'日常生活',text:'连续打卡 7 天'},
-  {id:'streak30',cat:'日常生活',text:'连续打卡 30 天'},
-  {id:'streak100',cat:'日常生活',text:'连续打卡 100 天'},
+  {id:'streak7',cat:'日常生活',text:'累计打卡 7 天'},
+  {id:'streak30',cat:'日常生活',text:'累计打卡 30 天'},
+  {id:'streak100',cat:'日常生活',text:'累计打卡 100 天'},
   {id:'earlybird',cat:'日常生活',text:'早起徽章（早于 9 点起床）'},
   {id:'sleep24',cat:'日常生活',text:'早睡徽章（连续 7 天早于 23:00 睡）'},
-  {id:'water7',cat:'日常生活',text:'连续 7 天记录喝水'},
+  {id:'water7',cat:'日常生活',text:'累计 7 天记录喝水'},
   {id:'release1',cat:'日常生活',text:'第一次放生，收获断舍离星尘'},
   {id:'course1',cat:'技能',text:'完整学完一门课程（任意）'},
   {id:'know1',cat:'技能',text:'任一根基长出第一片叶子'},
@@ -3056,7 +3088,7 @@ function pushMemoItem(item){
   if(!Array.isArray(S.memos)) S.memos=[];
   S.memos.unshift(item);
   save();
-  renderMemo();
+  renderMemo(); renderFav();
   if(aiKey()) aiClassifyMemo(item);
   if(item.type===1 && aiKey()) aiExtractDream(item);
 }
@@ -3102,14 +3134,14 @@ function aiClassifyMemo(item){
     const cat=(i>=0?txt.slice(0,i):txt).trim()||'随手记';
     const sum=(i>=0?txt.slice(i+1):txt).trim();
     const it=(S.memos||[]).find(function(m){ return m.id===item.id; });
-    if(it){ it.cat=cat; it.summary=sum; save(); renderMemo(); toast('AI 已分类：'+cat); }
+    if(it){ it.cat=cat; it.summary=sum; save(); renderMemo(); renderFav(); toast('AI 已分类：'+cat); }
   }, function(){});
 }
 function aiExtractDreamById(id){
   const it=(S.memos||[]).find(function(m){ return m.id===id; });
   if(!it) return;
   if(!aiKey()){ toast('先在设置里配置 AI Key~'); return; }
-  it.dreamBusy = true; renderMemo();
+  it.dreamBusy = true; renderMemo(); renderFav();
   aiExtractDream(it);
 }
 function aiExtractDream(item){
@@ -3124,13 +3156,13 @@ function aiExtractDream(item){
       it.dreamCard = {kw:p[0]||'', elems:p[1]||'', colors:p[2]||''};
       if(p[3]) it.atmos = p[3].split(/[,，、]/).map(function(s){ return s.trim(); }).filter(Boolean).slice(0,3);
       it.dreamBusy = false;
-      save(); renderMemo();
+      save(); renderMemo(); renderFav();
       toast('梦境灵感卡生成好啦~');
     }
   }, function(){
     const it2=(S.memos||[]).find(function(m){ return m.id===item.id; });
     if(it2) it2.dreamBusy=false;
-    renderMemo();
+    renderMemo(); renderFav();
   });
 }
 function renderMemo(){
@@ -3171,7 +3203,7 @@ function renderMemo(){
 }
 function deleteMemo(id){
   S.memos=(S.memos||[]).filter(function(m){ return m.id!==id; });
-  save(); renderMemo(); toast('已删除');
+  save(); renderMemo(); renderFav(); toast('已删除');
 }
 function editMemo(id){
   const item=document.querySelector('.memo-item[data-id="'+id+'"]');
@@ -3188,28 +3220,85 @@ function saveMemoEdit(id){
   const t=ta.value.trim(); if(!t){ toast('内容不能为空~'); return; }
   const m=(S.memos||[]).find(function(x){ return x.id===id; });
   if(!m) return;
-  m.text=t; save(); renderMemo(); toast('已保存~');
+  m.text=t; save(); renderMemo(); renderFav(); toast('已保存~');
 }
-function cancelMemoEdit(id){ renderMemo(); }
+function cancelMemoEdit(id){ renderMemo(); renderFav(); }
 
 // ===== v16 新增：收藏夹 =====
+let _collectSrc='all', _collectCat='all';
+const COLLECT_FIXED_CATS=['梦·氛围','雪景','画画参考','穿搭','旅行','OC','实物','宠物'];
+function collectCatOf(it, src){
+  if(src==='memo'){
+    if(it.type===1) return '梦·氛围';
+    const c=(it.cat||'').trim();
+    if(COLLECT_FIXED_CATS.indexOf(c)>=0) return c;
+    if(c && c!=='备忘录' && c!=='新奇想法' && c!=='随手记') return c;
+    return '未分类';
+  }
+  if(src==='fav'){
+    const c=(it.cat||'').trim();
+    if(COLLECT_FIXED_CATS.indexOf(c)>=0) return c;
+    return c ? c : '未分类';
+  }
+  return '未分类';
+}
+function setCollectSrc(v){ _collectSrc=v; document.querySelectorAll('#collectSrcRow .chip').forEach(function(el){ el.classList.toggle('chip-on', el.getAttribute('data-src')===v); }); renderFav(); haptic(); }
+function setCollectCat(v){ _collectCat=v; document.querySelectorAll('#collectCatRow .chip').forEach(function(el){ el.classList.toggle('chip-on', el.getAttribute('data-cat')===v); }); renderFav(); haptic(); }
 function renderFav(){
-  const box=document.getElementById('favList'); if(!box) return;
-  const arr=S.favs||[];
-  if(!arr.length){ box.innerHTML='<div class="sr-empty">收藏夹空空的，把想留的链接/文字/图片存进来吧~</div>'; return; }
+  const box=document.getElementById('collectList'); if(!box) return;
+  const items=[];
+  (S.favs||[]).forEach(function(f){ items.push({src:'fav', it:f, cat:collectCatOf(f,'fav'), ts:f.ts||0}); });
+  (S.memos||[]).forEach(function(m){ items.push({src:'memo', it:m, cat:collectCatOf(m,'memo'), ts:m.ts||0}); });
+  Object.keys(S.inspo||{}).forEach(function(k){
+    (S.inspo[k]||[]).forEach(function(x,i){ items.push({src:'inspo', it:x, cat:'未分类', ts:x.ts||0, tab:k, idx:i}); });
+  });
+  let list=items.filter(function(x){ return _collectSrc==='all'||x.src===_collectSrc; });
+  if(_collectCat!=='all') list=list.filter(function(x){ return x.cat===_collectCat; });
+  list.sort(function(a,b){ return (b.ts||0)-(a.ts||0); });
+  if(!list.length){ box.innerHTML='<div class="sr-empty">这里空空的，把链接/文字/图片/随手记存进来吧~</div>'; return; }
+  const srcName={fav:'收藏',memo:'随手记',inspo:'素材'};
   let h='';
-  arr.forEach(function(f){
-    h+='<div class="fav-item"><div class="fav-top">';
-    if(f.cat) h+='<span class="fav-cat">'+escHtml(f.cat)+'</span>';
-    h+='<div class="fav-main">';
-    if(f.type==='link') h+='<a class="fav-t" href="'+escHtml(f.url)+'" target="_blank" rel="noopener">🔖 '+escHtml(f.title)+'</a> <button class="fav-copy" onclick="copyFav(\''+f.id+'\')">复制</button><div class="fav-url">'+escHtml(f.url)+'</div>';
-    else h+='<div class="fav-t">'+(f.img?'🖇 ':'💬 ')+escHtml(f.title)+'</div>';
-    h+='</div><button class="fav-del" onclick="deleteFav(\''+f.id+'\')">✕</button></div>';
-    if(f.img) h+='<img class="fav-img" src="'+f.img+'" alt="收藏图片">';
-    if(f.note) h+='<div class="fav-note">'+escHtml(f.note)+'</div>';
-    if(f.tags&&f.tags.length) h+='<div class="fav-tags">'+f.tags.map(function(t){ return '<span class="fav-tag">#'+escHtml(t)+'</span>'; }).join('')+'</div>';
-    h+='<div class="muted" style="font-size:10px;margin-top:6px;">'+new Date(f.ts||Date.now()).toLocaleString('zh-CN')+'</div>';
-    h+='</div>';
+  list.forEach(function(x){
+    const badge='<span class="collect-badge">'+(x.src==='fav'?'📎':x.src==='memo'?'📝':'🎨')+' '+srcName[x.src]+'</span>';
+    const cat='<span class="collect-cat">#'+escHtml(x.cat)+'</span>';
+    if(x.src==='fav'){
+      const f=x.it;
+      let inner='';
+      if(f.type==='link') inner+='<a class="fav-t" href="'+escHtml(f.url)+'" target="_blank" rel="noopener">🔖 '+escHtml(f.title)+'</a> <button class="fav-copy" onclick="copyFav(\''+f.id+'\')">复制</button><div class="fav-url">'+escHtml(f.url)+'</div>';
+      else inner+='<div class="fav-t">'+(f.img?'🖇 ':'💬 ')+escHtml(f.title)+'</div>';
+      if(f.img) inner+='<img class="fav-img" loading="lazy" decoding="async" src="'+f.img+'" alt="收藏图片">';
+      if(f.note) inner+='<div class="fav-note">'+escHtml(f.note)+'</div>';
+      if(f.tags&&f.tags.length) inner+='<div class="fav-tags">'+f.tags.map(function(t){return '<span class="fav-tag">#'+escHtml(t)+'</span>';}).join('')+'</div>';
+      inner+='<div class="collect-meta">'+new Date(f.ts||Date.now()).toLocaleString('zh-CN')+'</div>';
+      h+='<div class="fav-item collect-item"><div class="fav-top">'+badge+cat+'<button class="fav-del" onclick="deleteFav(\''+f.id+'\')">✕</button></div>'+inner+'</div>';
+    } else if(x.src==='memo'){
+      const m=x.it;
+      let inner='<div class="memo-text">'+escHtml(m.text)+'</div>';
+      if(m.summary) inner+='<div class="memo-sum">✨ '+escHtml(m.summary)+'</div>';
+      if(m.img) inner+='<img class="memo-img" loading="lazy" decoding="async" src="'+m.img+'" alt="随手记图片">';
+      if(m.atmos&&m.atmos.length) inner+='<div class="memo-atmos">'+m.atmos.map(function(a){return '<span class="atmo-chip">'+escHtml(a)+'</span>';}).join('')+'</div>';      if(m.kw3&&m.kw3.length) inner+='<div class="memo-atmos">'+m.kw3.map(function(w){return '<span class="atmo-chip">'+escHtml(w)+'</span>';}).join('')+'</div>';
+      if(m.type===1){
+        if(m.dreamCard&&(m.dreamCard.kw||m.dreamCard.elems||m.dreamCard.colors)){
+          inner+='<div class="dream-card"><div class="dc-h">🌙 梦境灵感卡</div>';
+          if(m.dreamCard.kw) inner+='<div>🎯 核心画面：'+escHtml(m.dreamCard.kw)+'</div>';
+          if(m.dreamCard.elems) inner+='<div>✏️ 可画元素：'+escHtml(m.dreamCard.elems)+'</div>';
+          if(m.dreamCard.colors) inner+='<div>🎨 建议色彩：'+escHtml(m.dreamCard.colors)+'</div>';
+          inner+='</div>';
+        } else {
+          inner+='<div class="dream-card"><div class="dc-h">🌙 梦境灵感卡</div>'+(m.dreamBusy?'<div class="muted" style="font-size:11px;">正在提取…</div>':(aiKey()?'<button class="btn sm ghost" onclick="aiExtractDreamById(\''+m.id+'\')">✨ 生成灵感卡</button>':'<div class="muted" style="font-size:11px;">配置 AI Key 后，可为梦境自动提取关键词/元素/色彩~</div>'))+'</div>';
+        }
+      }
+      inner+='<div class="collect-meta">'+escHtml(m.date||'')+'</div>';
+      h+='<div class="memo-item collect-item" data-id="'+m.id+'"><div class="memo-h"><span class="memo-type">'+(MEMO_ICONS[m.type]||'📝')+' '+(m.date||'')+'</span>'+cat+'<button class="memo-edit-btn" onclick="editMemo(\''+m.id+'\')" title="编辑">✎</button><button class="memo-del" onclick="deleteMemo(\''+m.id+'\')">✕</button></div>'+badge+inner+'</div>';
+    } else {
+      const x0=x.it;
+      let inner='';
+      if(x0.text) inner+='<div class="memo-text">'+escHtml(x0.text)+'</div>';
+      else if(x0.link) inner+='<a href="'+escHtml(x0.link)+'" target="_blank" rel="noopener">🔖 '+escHtml(x0.link.length>48?x0.link.slice(0,48)+'…':x0.link)+'</a>';
+      else inner+='<img class="fav-img" loading="lazy" decoding="async" src="'+x0.img+'" alt="素材图">';
+      inner+='<div class="collect-meta">'+escHtml(x0.date||'')+'</div>';
+      h+='<div class="memo-card collect-item">'+badge+cat+inner+'<button class="del" onclick="delInspo(\''+x.tab+'\','+x.idx+')">✕</button></div>';
+    }
   });
   box.innerHTML=h;
 }
@@ -3620,7 +3709,7 @@ function restoreBackup(){
 }
 
 // ===== navigation =====
-const PAGE_TITLES = {home:'首页',courses:'课程',micro:'微创作',know:'知识树',dance:'跳舞',body:'身体',mood:'情绪日记',growth:'成长',fav:'收藏',settings:'设置',mine:'我的'};
+const PAGE_TITLES = {home:'首页',courses:'课程',micro:'微创作',know:'知识树',dance:'跳舞',body:'身体',mood:'情绪日记',growth:'成长',fav:'素材合集',settings:'设置',mine:'我的'};
 function go(page){
   haptic();
   if(!document.getElementById('p-'+page)) page='home'; // 已删除页面回退首页
@@ -3677,10 +3766,10 @@ function renderMine(){
 
 // ===== theme =====
 const THEMES = [
-  {name:'云朵白',bg1:'#f3fefa',bg2:'#e4fdf6',primary:'#8fdcc6',accent:'#c8f2e7',pink:'#5fc9ac',text:'#3f6557',sub:'#7fa89a'},
-  {name:'樱花粉',bg1:'#fff7fc',bg2:'#fee6fa',primary:'#f6abd3',accent:'#fbd7ee',pink:'#ec84bc',text:'#6d4a5e',sub:'#b18ba5'},
-  {name:'海盐蓝',bg1:'#f5f8ff',bg2:'#e3eeff',primary:'#9ab6ef',accent:'#cfdffb',pink:'#7b9ee6',text:'#46587a',sub:'#8aa1c9'},
-  {name:'抹茶绿',bg1:'#f8f6fd',bg2:'#e9defa',primary:'#b6a5e7',accent:'#dcd0f6',pink:'#9b85dd',text:'#5a5172',sub:'#9a91ba'}
+  {name:'云朵白',bg1:'#f3fefa',bg2:'#e4fdf6',primary:'#8fdcc6',accent:'#c8f2e7',pink:'#5fc9ac',text:'#2E4E42',sub:'#547F70'},
+  {name:'樱花粉',bg1:'#fff7fc',bg2:'#fee6fa',primary:'#f6abd3',accent:'#fbd7ee',pink:'#ec84bc',text:'#523647',sub:'#8A6F80'},
+  {name:'海盐蓝',bg1:'#f5f8ff',bg2:'#e3eeff',primary:'#9ab6ef',accent:'#cfdffb',pink:'#7b9ee6',text:'#33425E',sub:'#697FA3'},
+  {name:'抹茶绿',bg1:'#f8f6fd',bg2:'#e9defa',primary:'#b6a5e7',accent:'#dcd0f6',pink:'#9b85dd',text:'#443D59',sub:'#756D92'}
 ];
 function updateStatusBarColor(){
   try{
@@ -4962,9 +5051,9 @@ function renderMicro(){
       sel.innerHTML = '<option>先添加课程~</option>';
     }
   }
-  renderMemo();
+  renderMemo(); renderFav();
   renderCreations();
-  renderInspo();
+  renderInspo(); renderFav();
 }
 let _upTmr=null, _upSec=0;
 function addSketchMin(m){
@@ -5102,7 +5191,7 @@ function delCreation(i){
 
 // ===== inspo =====
 function renderInspo(){
-  const box = document.getElementById('inspoBox');
+  const box = document.getElementById('inspoBox'); if(!box) return;
   const list = S.inspo[currentInspo]||[];
   if(list.length===0){ box.innerHTML='<div class="muted">这里还是空的，上传一张或写一句随手记吧~</div>'; return; }
   const lim = _inspoShowAll ? list.length : Math.min(60, list.length);
@@ -5120,7 +5209,7 @@ function renderInspo(){
   if(!_inspoShowAll && list.length>60) html += '<button class="btn sm ghost" style="margin-top:8px;" onclick="_inspoShowAll=true;renderInspo()">查看全部还有 '+(list.length-60)+' 条</button>';
   box.innerHTML = html;
 }
-function switchInspo(tab){ currentInspo=tab; renderInspo(); }
+function switchInspo(tab){ currentInspo=tab; renderInspo(); renderFav(); }
 
 function compressImage(file, maxW, cb, quality){
   const r = new FileReader();
@@ -5201,7 +5290,7 @@ function uploadInspo(input){
   Array.from(input.files).forEach(file=>{
     compressImage(file, 1080, data=>{
       if(!S.inspo[currentInspo]) S.inspo[currentInspo]=[];
-      S.inspo[currentInspo].push({img:data, date:todayStr()}); save(); renderInspo();
+      S.inspo[currentInspo].push({img:data, date:todayStr()}); save(); renderInspo(); renderFav();
     });
   });
   input.value='';
@@ -5212,17 +5301,17 @@ function addInspoLink(){
   if(!S.inspo.material) S.inspo.material=[];
   S.inspo.material.unshift({link:t, date:todayStr()});
   document.getElementById('inspoLink').value='';
-  save(); renderInspo(); toast('素材链接已收藏~');
+  save(); renderInspo(); renderFav(); toast('素材链接已收藏~');
 }
 function addInspoText(){
   const inp = document.getElementById('inspoText');
   const t = (inp&&inp.value||'').trim();
   if(!t){ toast('写一句再说~'); return; }
   S.inspo[currentInspo].push({text:t, date:todayStr()});
-  save(); renderInspo(); if(inp) inp.value='';
+  save(); renderInspo(); renderFav(); if(inp) inp.value='';
   toast('记下啦~');
 }
-function delInspo(tab,idx){ S.inspo[tab].splice(idx,1); save(); renderInspo(); }
+function delInspo(tab,idx){ S.inspo[tab].splice(idx,1); save(); renderInspo(); renderFav(); renderFav(); }
 // ===== knowledge tree =====
 function renderKnow(){
   const box = document.getElementById('foundGrid');
@@ -5592,6 +5681,7 @@ function renderGrowth(){
   if(!_archShowAll && monthKeysAll.length>4) html += '<button class="btn sm ghost" style="margin-top:8px;" onclick="_archShowAll=true;renderGrowth()">查看更多还有 '+(monthKeysAll.length-4)+' 个月</button>';
   document.getElementById('monthBlocks').innerHTML = html||'<div class="empty-note">还没有手写记录，上传一张吧~</div>';
   renderMilestones();
+  renderTolerance();
   renderWeekReports();
 }
 function renderWeekReports(){
@@ -5662,6 +5752,7 @@ function renderMs(){
   });
   document.getElementById('msList').innerHTML = html;
 }
+function totalCheckins(){ let t=0; Object.keys(S.days||{}).forEach(function(k){ const d=S.days[k]; if(d && d.checkin) t++; }); return t; }
 function checkMilestones(){
   try{
   const today = todayStr();
@@ -5703,6 +5794,47 @@ function checkMilestones(){
   }catch(e){ /* 里程碑只是荣誉展示，异常不应导致页面报错 */ }
 }
 
+// ===== 每周宽容总结（改造方案·成长页固定模板）=====
+const TOL_EYE=['正常','干涩','疲劳','酸痛','模糊'];
+const TOL_SLEEP=['<5h','5-6h','6-7h','7-8h','>8h'];
+const TOL_TIRED=['精力充沛','正常','有点累','很累','透支'];
+let _tolSel={eye:'',sleep:'',tired:''};
+function tolWeekKey(){ const nn=new Date(); return nn.getFullYear()+'-W'+isoWeek(nn); }
+function renderTolChips(ids, opts, cur, key){
+  const el=document.getElementById(ids); if(!el) return;
+  el.innerHTML = opts.map(function(o){
+    const on = cur===o ? ' chip-on':'';
+    const safe = String(o).replace(/'/g,"\\'");
+    return '<button class="chip'+on+'" onclick="setTolChip(\''+key+'\',\''+safe+'\')">'+o+'</button>';
+  }).join('');
+}
+function setTolChip(key,v){ _tolSel[key]=v; renderTolChips('tolEye',TOL_EYE,_tolSel.eye,'eye'); renderTolChips('tolSleep',TOL_SLEEP,_tolSel.sleep,'sleep'); renderTolChips('tolTired',TOL_TIRED,_tolSel.tired,'tired'); haptic(); }
+function renderTolerance(){
+  if(!S.tol) S.tol={};
+  const wk=tolWeekKey();
+  const cur=S.tol[wk]||{};
+  _tolSel={eye:cur.eye||'',sleep:cur.sleep||'',tired:cur.tired||''};
+  renderTolChips('tolEye',TOL_EYE,_tolSel.eye,'eye');
+  renderTolChips('tolSleep',TOL_SLEEP,_tolSel.sleep,'sleep');
+  renderTolChips('tolTired',TOL_TIRED,_tolSel.tired,'tired');
+  const checks=(cur.checks&&cur.checks.length)?cur.checks:[false,false,false,false];
+  [['tolC0',0],['tolC1',1],['tolC2',2],['tolC3',3]].forEach(function(x){ const el=document.getElementById(x[0]); if(el) el.checked=!!checks[x[1]]; });
+  const tp=document.getElementById('tolProg'); if(tp) tp.value=cur.progress||'';
+  const hist=document.getElementById('tolHistory'); if(!hist) return;
+  const keys=Object.keys(S.tol).filter(function(k){ return /^\d{4}-W\d+$/.test(k); }).sort().reverse();
+  if(!keys.length){ hist.innerHTML='<div class="muted" style="font-size:11px;">还没有保存过，勾完点「保存本周总结」~</div>'; return; }
+  hist.innerHTML='<div class="th-d">📜 往周回顾</div>'+keys.slice(0,12).map(function(k){
+    const r=S.tol[k];
+    return '<div class="th-item"><span class="th-w">'+k+'</span> · 眼：'+(r.eye||'—')+' 睡：'+(r.sleep||'—')+' 累：'+(r.tired||'—')+(r.progress?(' · 进步：'+r.progress):'')+'</div>';
+  }).join('');
+}
+function saveTolerance(){
+  if(!S.tol) S.tol={};
+  const wk=tolWeekKey();
+  const checks=[!!document.getElementById('tolC0').checked,!!document.getElementById('tolC1').checked,!!document.getElementById('tolC2').checked,!!document.getElementById('tolC3').checked];
+  S.tol[wk]={eye:_tolSel.eye||'',sleep:_tolSel.sleep||'',tired:_tolSel.tired||'',checks:checks,progress:(document.getElementById('tolProg').value||'').trim(),ts:Date.now()};
+  save(); renderTolerance(); toast('本周宽容总结已保存~');
+}
 // ===== settings / data =====
 function renderSettings(){
   document.getElementById('bgSel').value = S.bg;
@@ -5747,13 +5879,24 @@ function importData(input){
 // ===== modals =====
 function openMemo(){ haptic(); document.getElementById('memoModal').classList.add('on'); setMemoType(_memoType); setTimeout(function(){ const i=document.getElementById('memoInput'); if(i) i.focus(); },50); }
 function closeMemo(){ document.getElementById('memoModal').classList.remove('on'); }
+let _memoImg='';
+function attachMemoImg(input){
+  const f=input.files&&input.files[0]; if(!f) return;
+  compressImage(f, 900, function(data){ _memoImg=data; const pv=document.getElementById('memoImgPrev'); if(pv){ pv.src=data; pv.style.display='block'; } }, 0.7);
+  input.value='';
+}
+function clearMemoImg(){ _memoImg=''; const pv=document.getElementById('memoImgPrev'); if(pv){ pv.src=''; pv.style.display='none'; } }
 function saveMemo(){
   haptic();
   const t = document.getElementById('memoInput').value.trim();
   if(!t){ closeMemo(); return; }
-  const item={id:'m'+Date.now()+Math.random().toString(36).slice(2,7), date:todayStr(), ts:Date.now(), type:_memoType, text:t, cat:'', tags:[], summary:''};
+  const kwEl=document.getElementById('memoKw');
+  const kw3=(kwEl&&kwEl.value||'').split(/[,，]/).map(function(x){ return x.trim(); }).filter(Boolean).slice(0,3);
+  const item={id:'m'+Date.now()+Math.random().toString(36).slice(2,7), date:todayStr(), ts:Date.now(), type:_memoType, text:t, cat:'', tags:[], summary:'', kw3:kw3, img:_memoImg||''};
   pushMemoItem(item);
   closeMemo(); document.getElementById('memoInput').value='';
+  if(kwEl) kwEl.value='';
+  clearMemoImg();
   toast('随手记记下啦~');
 }
 const PRAISE_STK = ['s033','s055','s078','s109','s113','s117','s177','s179','s187','s185'];
