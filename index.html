@@ -1837,6 +1837,27 @@ function getByPath(o,p){
     return cur;
   }catch(e){ return null; }
 }
+// ===== 大图字段快照/恢复（同步时保留本机装饰图，避免远端空值覆盖）=====
+var BIG_IMAGE_KEYS = ['customBg','customAvatar','bgPhone','bgTablet','bgDesktop','customTheme'];
+function snapshotBigImages(state){
+  const snap={};
+  if(!state) return snap;
+  BIG_IMAGE_KEYS.forEach(function(k){ if(state[k] && typeof state[k]==='string' && state[k].indexOf('data:')===0) snap[k]=state[k]; });
+  if(state.decor && typeof state.decor==='object'){
+    if(state.decor.avatarAcc && typeof state.decor.avatarAcc==='string' && state.decor.avatarAcc.indexOf('data:')===0) snap['decor.avatarAcc']=state.decor.avatarAcc;
+    if(state.decor.cardBg && typeof state.decor.cardBg==='string' && state.decor.cardBg.indexOf('data:')===0) snap['decor.cardBg']=state.decor.cardBg;
+  }
+  return snap;
+}
+function restoreBigImages(target, snap){
+  if(!target || !snap) return;
+  BIG_IMAGE_KEYS.forEach(function(k){ if(snap[k]) target[k]=snap[k]; });
+  if(snap['decor.avatarAcc'] || snap['decor.cardBg']){
+    if(!target.decor || typeof target.decor!=='object') target.decor={};
+    if(snap['decor.avatarAcc']) target.decor.avatarAcc=snap['decor.avatarAcc'];
+    if(snap['decor.cardBg']) target.decor.cardBg=snap['decor.cardBg'];
+  }
+}
 function stripImagesForStorage(state){
   const jobs=[];
   const clone=JSON.parse(JSON.stringify(state));
@@ -2047,7 +2068,9 @@ function convergeToFullest(prefix){
       try{ const cur=localStorage.getItem('dajiuwan_v5'); if(cur) localStorage.setItem('dajiuwan_v5_backup',cur); }catch(e){}
       const curAuth=(S.sync&&S.sync.authLocal)||{};
       const curConfig=(S.sync&&S.sync.config)||'';
+      const bigSnap=snapshotBigImages(S);
       const merged=mergeStates(S,best.data);
+      restoreBigImages(merged,bigSnap);
       try{ ensureDefaults(); }catch(e){}
       if(!merged.sync) merged.sync={};
       if(curConfig) merged.sync.config=curConfig;
@@ -3390,9 +3413,9 @@ function pushToServer(){
   if(_syncBusy){ _syncQueued=true; return; }
   _syncBusy = true;
   try{
-    const payload = JSON.parse(JSON.stringify(S));
+    const payload = stripImagesForStorage(S).stripped;
     if(payload.sync) delete payload.sync._pendingAt;
-    resolveMarkersInPayload(payload).then(function(resolved){
+    Promise.resolve(payload).then(function(resolved){
       const sig = dataSig(resolved);
       if(sig===_lastPushSig){ updateSyncStatus('已同步'); _syncBusy=false; return; }
       if(resolved._meta) resolved._meta.updatedAt = firebase.database.ServerValue.TIMESTAMP;
@@ -3487,7 +3510,9 @@ function mergeRemoteData(remote){
       localStorage.setItem('dajiuwan_v5_backup', JSON.stringify(cur));
     }
   }catch(e){}
+  const localBigSnapshot = snapshotBigImages(S);
   const merged = mergeStates(S, remote);
+  restoreBigImages(merged, localBigSnapshot);
   applyTombstones(merged);
   if(!merged.sync) merged.sync={};
   merged.sync.config = S.sync.config;
@@ -6063,7 +6088,9 @@ function autoRecoverData(){
       try{ const cur=localStorage.getItem('dajiuwan_v5'); if(cur) localStorage.setItem('dajiuwan_v5_backup', cur); }catch(e){}
       const curAuth = (S.sync && S.sync.authLocal) || {};
       const curConfig = (S.sync && S.sync.config) || '';
+      const bigSnap2 = snapshotBigImages(S);
       S = mergeStates(S, best.data);
+      restoreBigImages(S, bigSnap2);
       try{ ensureDefaults(); }catch(e){}
       if(!S.sync) S.sync={};
       if(curConfig) S.sync.config = curConfig;
