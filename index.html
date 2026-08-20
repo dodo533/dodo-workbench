@@ -4189,6 +4189,7 @@ function lowHintDismiss(){
   ensureToday().lowHintShown = true; save(); renderLowHint();
 }
 function renderHomePlan(){
+  const _hp=document.getElementById('homePlan'); if(!_hp) return;
   const d = ensureToday();
   const basePlan = STATE_PLANS[d.state] || STATE_PLANS.normal;
   const pool = PLAN_POOL[d.state] || PLAN_POOL.normal;
@@ -4725,6 +4726,7 @@ function markCheckin(){
 
 // ===== courses =====
 function renderCourses(){
+  if(!document.getElementById('courseList')) return;
   const stats = document.getElementById('courseStats');
   const nb = document.getElementById('newCbranch');
   if(nb) nb.innerHTML = '<option value="">不关联</option>'+knowOptionsGrouped('');
@@ -4867,6 +4869,7 @@ function knowOptionsGrouped(selected){
   return opts;
 }
 function renderCoursePlanTable(){
+  if(!document.getElementById('coursePlanTable')) return;
   const total = S.courses.reduce((a,c)=>a+(c.total||0),0);
   const done = S.courses.reduce((a,c)=>a+(c.current||0),0);
   const remain = S.courses.reduce((a,c)=>a+(c.todo!=null?c.todo:Math.max(0,(c.total||0)-(c.current||0))),0);
@@ -5534,6 +5537,7 @@ function savePlanText(type){
 
 // ===== growth =====
 function renderGrowth(){
+  if(!document.getElementById('growthLv')) return;
   document.getElementById('growthLv').innerHTML = '<div class="lvbadge"><img class="lvimg" src="'+IMG.lvIcon+'"><div class="lvtxt"><span class="lvNum">Lv'+S.level+'</span><small class="lvTitle">'+lvTitle(S.level)+'</small><small class="lvStage">'+levelInfo(S.level).stage+'</small></div></div>';
   const xpPct = Math.max(0, Math.min(100, (S.xp||0)));
   document.getElementById('xpInfo').innerHTML = '经验 <span class="xpNum">'+S.xp+'</span> / 100 · 创作 +3 · 跟画 +5<div class="xp-bar"><i style="width:'+xpPct+'%"></i></div>';
@@ -5573,6 +5577,7 @@ function renderWeekReports(){
   }).join('');
 }
 function renderMilestones(){
+  if(!document.getElementById('msList')) return;
   const el = document.getElementById('msList'); if(!el) return;
   checkMilestones();
   const cats = ['日常生活','技能','创作'];
