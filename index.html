@@ -1074,7 +1074,20 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{opacity:0!important;}
 .tol-hist .th-d{color:var(--pink);font-weight:500;margin:7px 0 2px;font-size:12.5px;}
 .tol-hist .th-item{margin:4px 0;line-height:1.5;}
 .tol-hist .th-w{color:var(--pink);font-weight:500;}
-</style>
+/* v39 模块化学习地图 + 备忘录 */
+.mod-list{margin-top:4px;}
+.mod-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line);flex-wrap:wrap;}
+.mod-row:last-child{border-bottom:none;}
+.mod-main{flex:1;min-width:180px;}
+.mod-name{font-size:14px;font-weight:400;color:var(--text);}
+.mod-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.mod-st{font-size:12px;color:var(--sub);white-space:nowrap;}
+.mod-btns{display:flex;gap:5px;flex-wrap:wrap;}
+.hm-name{font-size:14px;font-weight:400;color:var(--text);}
+.hm-meta{font-size:12px;margin-top:2px;}
+.xp-log-row{display:flex;gap:10px;padding:5px 0;border-bottom:1px dashed var(--line);font-size:12px;flex-wrap:wrap;}
+.xp-log-row:last-child{border-bottom:none;}
+.freeze-days{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}</style>
 </head>
 <body>
 
@@ -1110,16 +1123,13 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{opacity:0!important;}
       <div class="nav-ghead">总览</div>
       <div class="nav-items">
         <div class="nav-item" data-page="home" onclick="go('home')"><span class="ni-ic"><img data-stk="s107" alt=""></span><span>首页</span></div>
-        <div class="nav-item" data-page="growth" onclick="go('growth')"><span class="ni-ic"><img data-stk="s105" alt=""></span><span>成长</span></div>
-        <div class="nav-item" data-page="fav" onclick="go('fav')"><span class="ni-ic"><img data-stk="s029" alt=""></span><span>素材合集</span></div>
+        <div class="nav-item" data-page="fav" onclick="go('fav')"><span class="ni-ic"><img data-stk="s029" alt=""></span><span>备忘录</span></div>
       </div>
     </div>
     <div class="nav-group">
       <div class="nav-ghead">练习</div>
       <div class="nav-items">
         <div class="nav-item" data-page="courses" onclick="go('courses')"><span class="ni-ic"><img data-stk="s058" alt=""></span><span>课程</span></div>
-        <div class="nav-item" data-page="micro" onclick="go('micro')"><span class="ni-ic"><img data-stk="s028" alt=""></span><span>微创作</span></div>
-        <div class="nav-item" data-page="know" onclick="go('know')"><span class="ni-ic"><img data-stk="s036" alt=""></span><span>知识树</span></div>
         <div class="nav-item" data-page="dance" onclick="go('dance')"><span class="ni-ic"><img data-stk="s062" alt=""></span><span>跳舞</span></div>
       </div>
     </div>
@@ -1181,146 +1191,35 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{opacity:0!important;}
           </div>
           <div class="quick-row">
             <button class="qbtn" onclick="openWakePicker()"><img id="qicWake" src="" alt="">起床打卡</button>
-            <button class="qbtn" onclick="go('growth')"><img id="qicGrowth" src="" alt="">成长</button>
             <button class="qbtn" onclick="go('courses')"><img id="qicCourse" src="" alt="">课程</button>
           </div>
         </div>
 
-        <div id="homeLowHint"></div>
-        <button class="btn sm ghost home-more-btn" id="homeMoreBtn" onclick="toggleHomeMore()" style="display:none;">更多功能 ▾</button>
-        <div class="card home-more-panel" id="homeMorePanel" style="display:none;">
-          <h3><img class="tic" data-stk="s032" alt="">首页显示</h3>
-          <div class="chk-row"><input type="checkbox" id="hcState" onchange="saveHomeCards()"><span>心情 · 状态罗盘</span></div>
-          <div class="chk-row"><input type="checkbox" id="hcTask" onchange="saveHomeCards()"><span>今日任务</span></div>
-          <div class="chk-row"><input type="checkbox" id="hcPlan" onchange="saveHomeCards()"><span>我的计划 · 课程进度</span></div>
-          <div class="chk-row"><input type="checkbox" id="hcCal" onchange="saveHomeCards()"><span>日历 · 星环</span></div>
-          <div class="chk-row"><input type="checkbox" id="hcMeds" onchange="saveHomeCards()"><span>今日用药</span></div>
-        </div>
+<div id="homeLowHint"></div>
         <div class="home-cols">
-          <div class="card mix-card" data-decor="homeStateTask">
-            <div class="mix-top" id="homeStateCard">
-              <h3><img class="tic" data-stk="s084" alt="">状态罗盘</h3>
-              <div class="mood-row" id="moodRow"></div>
-              <div class="compass" id="compass"></div>
-              <div id="medBox"></div>
-            </div>
-            <div class="dashed-sep"></div>
-            <div class="mix-bottom" id="homeTaskCard">
-              <h3><img class="tic" data-stk="s041" alt="">今日任务</h3>
-              <div id="homePlan"></div>
-            </div>
+          <div class="card mix-card" data-decor="homeState">
+            <h3><img class="tic" data-stk="s084" alt="">状态罗盘</h3>
+            <div class="mood-row" id="moodRow"></div>
+            <div class="compass" id="compass"></div>
+            <div id="medBox"></div>
           </div>
-          <div class="card mix-card" data-decor="homePlan" id="homePlanCard">
-            <div class="fold-bar" onclick="toggleFold('homePlanSec')"><h3><img class="tic" data-stk="s012" alt="">我的计划</h3><span class="fold-ch" data-foldch="homePlanSec">▾</span></div>
-            <div class="fold-body" data-fold="homePlanSec">
-              <div id="homePlanPreview"></div>
-            </div>
-            <div class="dashed-sep"></div>
-            <div class="fold-bar" onclick="toggleFold('homeCourseSec')"><h3><img class="tic" data-stk="s093" alt="">课程进度</h3><span class="fold-ch" data-foldch="homeCourseSec">▸</span></div>
-            <div class="fold-body" data-fold="homeCourseSec">
-              <div id="overviewTop"></div>
-              <div id="courseDonut"></div>
-            </div>
+          <div class="card mix-card" data-decor="homeModule">
+            <h3><img class="tic" data-stk="s093" alt="">当前模块</h3>
+            <div id="homeModuleProgress"></div>
           </div>
         </div>
 </section>
 
       <section class="panel" id="p-courses">
-        <div class="courses-grid">
-          <div class="card courses-left" data-decor="coursesLeft">
-            <div class="courses-block">
-              <h3><img class="tic" data-stk="s014" alt="">总课程计划表</h3>
-              <div id="coursePlanTable"></div>
-            </div>
-            <div class="dashed-sep"></div>
-            <div class="courses-block">
-              <div class="fold-bar" onclick="toggleFold('courseList')"><h3><img class="tic" data-stk="s072" alt="">课程合集</h3><span class="fold-ch" data-foldch="courseList">▸</span></div>
-              <div class="fold-body" data-fold="courseList">
-                <p class="muted">手动添加课程，点开可填写总节数 / 已完成 / 当前第几节 / 待补，以及每节知识点。</p>
-                <div class="row">
-                  <button class="btn" onclick="showCourseForm()">＋ 添加课程</button>
-                </div>
-                <div id="courseFormBox" style="display:none;margin-top:10px;padding:10px;background:var(--glass);border-radius:12px;">
-                  <div class="row">
-                    <div><input id="newCname" placeholder="课程名"></div>
-                    <div><input type="number" id="newCtotal" placeholder="总节数"></div>
-                  </div>
-                  <label>关联根基分支</label>
-                  <select id="newCbranch"><option value="">不关联</option></select>
-                  <button class="btn sm" onclick="addCourseFromForm()">添加</button>
-                </div>
-                <div id="courseStats" style="margin-top:12px;"></div>
-                <div id="courseList"></div>
-              </div>
-            </div>
-          </div>
-          <div class="card courses-right" data-decor="coursesRight">
-            <div class="courses-block">
-              <div class="fold-bar" onclick="toggleFold('futureCourse')"><h3><img class="tic" data-stk="s091" alt="">未来想报课程</h3><span class="fold-ch" data-foldch="futureCourse">▸</span></div>
-              <div class="fold-body" data-fold="futureCourse">
-                <p class="muted">想学但还没开始的，先收在这里~</p>
-                <div class="row">
-                  <input id="futureName" placeholder="课程名（如：角色设计进阶）">
-                  <button class="btn sm" onclick="addFutureCourse()">＋ 收下</button>
-                </div>
-                <div id="futureList"></div>
-              </div>
-            </div>
-            <div class="dashed-sep"></div>
-            <div class="courses-block release-section">
-              <div class="fold-bar" onclick="toggleFold('released')"><h3><img class="tic" data-stk="s018" alt="">已释怀 · 放生仪式</h3><span class="fold-ch" data-foldch="released">▸</span></div>
-              <div class="fold-body" data-fold="released">
-                <p class="muted">超过 7 天未完成的任务/课程/计划会温柔地提醒到这里。放生不扣分，反而获得 1 颗断舍离星尘；收进来随时可以「回归」，永不清除。</p>
-                <div class="dust-badge" id="dustBadge">✨ 断舍离星尘 0</div>
-                <div id="releasedList"></div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div id="courseMap"></div>
       </section>
       
 
-      <section class="panel" id="p-micro">
-        <div class="card" data-decor="microMain">
-          <div class="fold-bar" onclick="toggleFold('microMain')"><h3><img class="tic" data-stk="s022" alt="">微创作</h3><span class="fold-ch" data-foldch="microMain">▸</span></div>
-          <div class="fold-body" data-fold="microMain">
-            <div class="row">
-              <div><label>选择课程</label><select id="microCourse"></select></div>
-              <div style="flex:0 0 auto;display:flex;align-items:flex-end;gap:6px;flex-wrap:wrap;">
-                <button class="btn sm ghost" onclick="rollInspiration()"><img class="tic" data-stk="s023" alt="">灵感便签</button>
-                <button class="btn sm ghost" id="timer" data-sec="900" onclick="startTimer()">⏳ 15:00</button>
-                <button class="btn sm ghost" id="upTimer" onclick="startUpTimer()">⏱ 00:00</button>
-              </div>
-            </div>
-            <div id="inspResult" class="muted" style="margin-top:6px;"></div>
-            <div style="margin-top:12px;">
-              <label>完成你的创作（上传即 +3 经验）</label>
-              <div class="row" style="gap:6px;flex-wrap:wrap;">
-                <button class="btn" onclick="document.getElementById('creationInput').click()">＋ 上传作品</button>
-                <input type="file" accept="image/*" onchange="saveCreation(this)" id="creationInput" style="display:none;">
-                <button class="btn sm ghost" id="mosaicBtn" onclick="toggleMosaic()">马赛克：关</button>
-              </div>
-              <div class="creation-list" id="creationList"></div>
-              <div class="judge-note" id="judgeNote" style="display:none;"></div>
-            </div>
-          </div>
-        </div>
-        <div class="gallery-col" style="margin-top:10px;">
-          <h4><img class="tic" data-stk="s186" alt="">我的图库</h4>
-          <p class="muted">素材、创作图片统一存到图库新页面，点开即跳转。</p>
-          <a href="gallery.html" class="btn" style="text-decoration:none;text-align:center;">打开我的图库 →</a>
-        </div>
-      </section>
+      
 
       
 
-            <section class="panel" id="p-know">
-        <div class="card">
-          <h3><img class="tic" data-stk="s031" alt="">四大根基 · 像素树</h3>
-          <p class="muted">一棵小树 = 20 枝芽，每个根基最多 4 棵；根基累计 80 枝芽升级「展叶」、160 枝芽满级「开花」。没有毕业，只有不断生长~</p>
-          <div class="found-grid" id="foundGrid"></div>
-        </div>
-      </section>
+            
 
       <section class="panel" id="p-dance">
         <div class="card">
@@ -1337,53 +1236,7 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{opacity:0!important;}
 
       
 
-      <section class="panel" id="p-growth">
-        <div class="card" data-decor="growthMain">
-          <div class="fold-bar" onclick="toggleFold('growthMain')"><h3><img class="tic" data-stk="s132" alt="">成长记录</h3><span class="fold-ch" data-foldch="growthMain">▾</span></div>
-          <div class="fold-body" data-fold="growthMain">
-            <div class="level-top" id="growthLv"></div>
-            <div id="xpInfo" class="muted" style="margin:6px 0 10px;"></div>
-            <div id="monthBlocks"></div>
-
-          </div>
-        </div>
-        <div class="card" data-decor="tol">
-          <div class="fold-bar" onclick="toggleFold('tol')"><h3><img class="tic" data-stk="s052" alt="">每周宽容总结</h3><span class="fold-ch" data-foldch="tol">▾</span></div>
-          <div class="fold-body" data-fold="tol">
-            <p class="muted">每周日花 2 分钟勾一勾，长期复盘「情绪差是不是身体引起的」。手动填写，不会自动生成~</p>
-            <div class="tol-row"><b>眼睛状态</b><div class="tol-chips" id="tolEye"></div></div>
-            <div class="tol-row"><b>睡眠时长</b><div class="tol-chips" id="tolSleep"></div></div>
-            <div class="tol-row"><b>疲惫程度</b><div class="tol-chips" id="tolTired"></div></div>
-            <div class="tol-checks">
-              <label><input type="checkbox" id="tolC0"> 有几天坚持了哪怕 5 分钟速写</label>
-              <label><input type="checkbox" id="tolC1"> 身体不舒服时有没有主动休息（而不是硬撑）</label>
-              <label><input type="checkbox" id="tolC2"> 情绪低谷期有没有完成基础生理打卡</label>
-              <label><input type="checkbox" id="tolC3"> 有没有放生某门课减轻负担</label>
-            </div>
-            <input class="tol-prog" id="tolProg" placeholder="本周最小的一个画画进步：___">
-            <div class="row" style="margin-top:10px;"><button class="btn sm" onclick="saveTolerance()">保存本周总结</button></div>
-            <div id="tolHistory" class="tol-hist"></div>
-          </div>
-        </div>
-        <div class="growth-split">
-          <div class="card" data-decor="growthReport">
-            <div class="fold-bar" onclick="toggleFold('growthReport')"><h3><img class="tic" data-stk="s037" alt="">每周周报</h3><span class="fold-ch" data-foldch="growthReport">▸</span></div>
-            <div class="fold-body" data-fold="growthReport">
-              <p class="muted">每周自动生成小结，不用你写~</p>
-              <div class="row"><button class="btn sm" onclick="genWeekReport()"><img class="tic" data-stk="s038" alt="">生成本周周报</button></div>
-              <div id="weekReportBox" style="margin-top:8px;"></div>
-            </div>
-          </div>
-          <div class="card" data-decor="milestone">
-            <div class="fold-bar" onclick="toggleFold('milestone')"><h3><img class="tic" data-stk="s167" alt="">里程碑</h3><span class="fold-ch" data-foldch="milestone">▾</span></div>
-            <div class="fold-body" data-fold="milestone">
-              <p class="muted">达成条件后自动点亮，不用手动打卡~</p>
-              <div id="msList"></div>
-            </div>
-          </div>
-        </div>
-
-      </section>
+      
 
       
 
@@ -1398,49 +1251,7 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{opacity:0!important;}
       
 
       <section class="panel" id="p-fav">
-        <div class="card">
-          <div class="fold-bar" onclick="toggleFold('collectMain')"><h3><img class="tic" data-stk="s089" alt="">素材合集</h3><span class="fold-ch" data-foldch="collectMain">▸</span></div>
-          <div class="fold-body" data-fold="collectMain">
-            <p class="muted">收藏、随手记、灵感素材统一收纳在这里，AI 自动帮你分类，一个入口全找到~</p>
-            <div class="row" style="gap:8px;flex-wrap:wrap;">
-              <input id="favInput" placeholder="粘贴链接或写一句话…" style="flex:1;min-width:170px;">
-              <button class="btn sm" onclick="addFav()">＋ 添加</button>
-              <button class="btn sm ghost" onclick="document.getElementById('favImgIn').click()">＋ 图片</button>
-              <input type="file" id="favImgIn" accept="image/*" style="display:none;" onchange="addFavImage(this)">
-              <button class="btn sm ghost" onclick="aiClassifyAllFav()"><img class="tic" data-stk="s050" alt="">AI 全部归类</button>
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="row" style="gap:6px;flex-wrap:wrap;" id="collectSrcRow">
-            <button class="chip chip-on" data-src="all" onclick="setCollectSrc('all')">全部</button>
-            <button class="chip" data-src="fav" onclick="setCollectSrc('fav')">收藏</button>
-            <button class="chip" data-src="memo" onclick="setCollectSrc('memo')">随手记</button>
-            <button class="chip" data-src="inspo" onclick="setCollectSrc('inspo')">素材</button>
-          </div>
-          <div class="muted" style="font-size:12px;margin-top:6px;">拖住卡片左侧 ⠿ 到上方「收藏 / 随手记 / 素材」，即可移动分类</div>
-          <div class="fold-bar" style="margin-top:6px;" onclick="toggleFold('collectCat')"><span style="font-size:12px;color:var(--sub);" id="collectCatLabel">🏷 分类筛选</span><span class="fold-ch" data-foldch="collectCat">▸</span></div>
-          <div class="fold-body" data-fold="collectCat">
-            <div class="row" style="gap:6px;flex-wrap:wrap;margin-top:4px;" id="collectCatRow">
-              <button class="chip chip-on" data-cat="all" onclick="setCollectCat('all')">全部</button>
-            <button class="chip" data-cat="梦·氛围" onclick="setCollectCat('梦·氛围')">梦·氛围</button>
-            <button class="chip" data-cat="雪景" onclick="setCollectCat('雪景')">雪景</button>
-            <button class="chip" data-cat="画画参考" onclick="setCollectCat('画画参考')">画画参考</button>
-            <button class="chip" data-cat="穿搭" onclick="setCollectCat('穿搭')">穿搭</button>
-            <button class="chip" data-cat="旅行" onclick="setCollectCat('旅行')">旅行</button>
-            <button class="chip" data-cat="OC" onclick="setCollectCat('OC')">OC</button>
-            <button class="chip" data-cat="实物" onclick="setCollectCat('实物')">实物</button>
-            <button class="chip" data-cat="宠物" onclick="setCollectCat('宠物')">宠物</button>
-            <button class="chip" data-cat="未分类" onclick="setCollectCat('未分类')">未分类</button>
-          </div>
-          </div>
-          <div id="collectList" style="margin-top:10px;"></div>
-          <div class="gallery-col" style="margin-top:14px;">
-            <h4><img class="tic" data-stk="s186" alt="">我的图库</h4>
-            <p class="muted">所有素材、创作图片统一存到图库新页面，点开即跳转。</p>
-            <a href="gallery.html" class="btn" style="text-decoration:none;text-align:center;">打开我的图库 →</a>
-          </div>
-        </div>
+        <div id="memoBox"></div>
       </section>
       <section class="panel" id="p-mine">
         <div class="card">
@@ -1449,7 +1260,7 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{opacity:0!important;}
           <div class="mine-grid">
             <div class="mine-cell" onclick="go('body')"><img class="tic" data-stk="s020" alt=""><span>身体</span></div>
             <div class="mine-cell" onclick="go('mood')"><img class="tic" data-stk="s100" alt=""><span>情绪日记</span></div>
-            <div class="mine-cell" onclick="go('fav')"><img class="tic" data-stk="s029" alt=""><span>素材合集</span></div>
+            <div class="mine-cell" onclick="go('fav')"><img class="tic" data-stk="s029" alt=""><span>备忘录</span></div>
             <div class="mine-cell" onclick="go('settings')"><img class="tic" data-stk="s032" alt=""><span>设置</span></div>
           </div>
         </div>
@@ -1649,8 +1460,8 @@ body.cardBgBorder.hasCardImg .card.card-folded::before{opacity:0!important;}
     <nav class="bottom-nav" id="bottomNav">
       <div class="bn-item" data-bn="home" onclick="go('home')"><img data-stk="s107" alt=""><span>首页</span></div>
       <div class="bn-item" data-bn="courses" onclick="go('courses')"><img data-stk="s058" alt=""><span>课程</span></div>
-      <div class="bn-item" data-bn="micro" onclick="go('micro')"><img data-stk="s028" alt=""><span>微创作</span></div>
-      <div class="bn-item" data-bn="growth" onclick="go('growth')"><img data-stk="s105" alt=""><span>成长</span></div>
+      <div class="bn-item" data-bn="fav" onclick="go('fav')"><img data-stk="s029" alt=""><span>备忘录</span></div>
+      <div class="bn-item" data-bn="mood" onclick="go('mood')"><img data-stk="s100" alt=""><span>情绪</span></div>
       <div class="bn-item" data-bn="mine" onclick="go('mine')"><img data-stk="s032" alt=""><span>我的</span></div>
     </nav>
   </div>
@@ -2348,7 +2159,7 @@ function ensureDefaults(){
   if(!S.xp) S.xp=0;
   if(!S.homeNote) S.homeNote='今天也要对自己温柔一点~';
   if(!S.theme) S.theme='0';
-  if(!S.nightMode) S.nightMode='auto';
+  if(!S.nightMode) S.nightMode='off';
   if(typeof S.eyeCare!=='boolean') S.eyeCare=false;
   if(!S.decor||typeof S.decor!=='object'||Array.isArray(S.decor)) S.decor={};
   if(!S.folds||typeof S.folds!=='object'||Array.isArray(S.folds)) S.folds={};
@@ -3804,7 +3615,7 @@ function restoreBackup(){
 }
 
 // ===== navigation =====
-const PAGE_TITLES = {home:'首页',courses:'课程',micro:'微创作',know:'知识树',dance:'跳舞',body:'身体',mood:'情绪日记',growth:'成长',fav:'素材合集',settings:'设置',mine:'我的'};
+const PAGE_TITLES = {home:'首页',courses:'课程',dance:'跳舞',body:'身体',mood:'情绪日记',fav:'备忘录',settings:'设置',mine:'我的'};
 function go(page){
   haptic();
   if(!document.getElementById('p-'+page)) page='home'; // 已删除页面回退首页
@@ -3817,13 +3628,10 @@ function go(page){
   document.getElementById('ttl').textContent = '呆啾丸 · ' + (PAGE_TITLES[page]||'首页');
   try{
     if(page==='home') renderHome();
-    if(page==='courses'){ renderCourses(); renderCoursePlanTable(); }
-    if(page==='micro') renderMicro();
-    if(page==='know') renderKnow();
+    if(page==='courses') renderCourseMap();
     if(page==='dance') renderDance();
     if(page==='body') renderBody();
     if(page==='mood') renderMood();
-    if(page==='growth') renderGrowth();
     if(page==='fav') renderFav();
     if(page==='mine') renderMine();
   }catch(err){ showPageError(page, err); }
@@ -3831,7 +3639,7 @@ function go(page){
   try{ document.querySelectorAll('.card-tag').forEach(function(el){ el.remove(); }); }catch(e){}
   if(page==='settings') renderSettings();
   try{
-    const bnMap = {home:'home',courses:'courses',micro:'micro',growth:'growth',mine:'mine',body:'mine',mood:'mine',fav:'mine',settings:'mine'};
+    const bnMap = {home:'home',courses:'courses',mine:'mine',body:'mine',mood:'mood',fav:'fav',dance:'mine',settings:'mine'};
     document.querySelectorAll('.bn-item').forEach(function(n){ n.classList.toggle('on', n.dataset.bn===bnMap[page]); });
   }catch(e){}
   if(window.innerWidth <= 760){
@@ -4203,28 +4011,19 @@ function renderHome(){
   }
   document.getElementById('avImg').src = S.customAvatar || stk('s010');
   document.getElementById('statusIc').src = d.checkin ? stk('s002') : stk('s008');
-  const qw=document.getElementById('qicWake'), qg=document.getElementById('qicGrowth'), qc=document.getElementById('qicCourse');
-  if(qw){ qw.src = stk('s136'); const _wb=qw.closest('button'); const _wd=!!(S.wake&&S.wake.lastDate===todayStr()); if(_wb){ let _tn=null; for(let _i=_wb.childNodes.length-1;_i>=0;_i--){ if(_wb.childNodes[_i].nodeType===3){ _tn=_wb.childNodes[_i]; break; } } if(!_tn){ _tn=document.createTextNode(''); _wb.appendChild(_tn); } _tn.textContent = _wd? '已打卡 · '+(S.wake.time||'') : '起床打卡'; } } if(qg) qg.src = stk('s156'); if(qc) qc.src = stk('s165');
+  const qw=document.getElementById('qicWake'), qc=document.getElementById('qicCourse');
+  if(qw){ qw.src = stk('s136'); const _wb=qw.closest('button'); const _wd=!!(S.wake&&S.wake.lastDate===todayStr()); if(_wb){ let _tn=null; for(let _i=_wb.childNodes.length-1;_i>=0;_i--){ if(_wb.childNodes[_i].nodeType===3){ _tn=_wb.childNodes[_i]; break; } } if(!_tn){ _tn=document.createTextNode(''); _wb.appendChild(_tn); } _tn.textContent = _wd? '已打卡 · '+(S.wake.time||'') : '起床打卡'; } } if(qc) qc.src = stk('s165');
   showBubble(randomBubble());
   renderCompass();
-  renderHomePlan();
   renderMeds();
   renderMoodRow();
   renderCalendar();
   renderRing();
-  renderOverview();
-  renderCourseDonut();
-  renderHomePlanPreview();
+  renderHomeModule();
   updateLevelUI();
   renderLowHint();
-  applyHomeCards();
-  const hc2 = S.homeCards||{};
-  [['hcState','state'],['hcTask','task'],['hcPlan','plan'],['hcCal','cal'],['hcMeds','meds']].forEach(function(x){ const el=document.getElementById(x[0]); if(el) el.checked = hc2[x[1]]!==false; });
-  const hm = document.getElementById('homeMoreBtn');
-  if(hm){ hm.style.display = 'inline-block'; hm.textContent = S.homeMoreOpen ? '收起 ▴' : '更多功能 ▾'; }
-  const hp = document.getElementById('homeMorePanel');
-  if(hp) hp.style.display = S.homeMoreOpen ? 'block' : 'none';
 }
+
 function applyHomeCards(){
   const hc = S.homeCards||{};
   const show = function(id, v){ const el=document.getElementById(id); if(el) el.style.display = v? '':'none'; };
@@ -5592,16 +5391,7 @@ function renderBody(){
   });
   html += '<div class="row"><input id="newMed" placeholder="添加保健品"><button class="btn sm" onclick="addMed()">添加</button></div>';
   html += '</div>';
-  html += '<div class="card"><h3><img class="tic" src="'+stk('s040')+'" alt="">入睡 · 喝水</h3>';
-  html += '<div class="sw-cols">';
-  html += '<div class="sw-col"><span>昨晚入睡</span><input type="time" id="sleepTime" class="sw-time" value="'+(S.sleep.time||'')+'"></div>';
-  html += '<div class="sw-col"><span>今天喝水</span><div class="stepper"><button onclick="setWater(-1)">−</button><span id="waterCount">'+(S.water.cups||0)+'</span><button onclick="setWater(1)">+</button><span style="font-size:12px;color:var(--sub);">杯</span></div></div>';
-  html += '</div>';
-  html += '<button class="btn sm" style="margin-top:12px;" onclick="saveSleepWater()">✓ 记录今日（入睡 + 喝水）</button>';
-  html += '<div id="swLog" style="margin-top:10px;"></div>';
-  html += '</div>';
   document.getElementById('bodyBox').innerHTML = html;
-  renderSwLog();
 }
 
 function toggleMed(i){ haptic(); const d=ensureToday(); if(!d.meds||d.meds.length!==S.meds.length) d.meds=S.meds.map(()=>false); d.meds[i]=!d.meds[i]; save(); renderBody(); renderHome(); if(d.meds[i]) showPraise('med'); }
@@ -6223,6 +6013,7 @@ async function initAll(){
     localStorage.setItem('dajiuwan_ver', APP_VERSION);
   }catch(e){}
   ensureDefaults(); fillStk();
+  migrateV39();
   try{ setTimeout(migrateStoredImages, 1200); }catch(e){}
   try{ const lp = localStorage.getItem('dajiuwan_page'); if(lp && ['home','courses','micro','know','dance','body','mood','growth','fav','settings','mine'].indexOf(lp)>=0) S.page = lp; }catch(e){}
   try{ const qp=new URLSearchParams(location.search).get('p'); if(qp && ['home','courses','micro','know','dance','body','mood','growth','fav','settings','mine'].indexOf(qp)>=0) S.page = qp; }catch(e){}
@@ -6268,6 +6059,228 @@ async function initAll(){
   setInterval(checkReminders, 30000);
 }
 
+// ===== v39 模块化学习地图 + 备忘录 + 经验值 =====
+const DEFAULT_MODULES = [
+  {id:'M1', name:'素描色彩·上', range:'第15-35节', count:21, period:'2周', output:'1张色彩小稿', status:'active', started:false, lessonsDone:0, workDone:0},
+  {id:'M2', name:'素描色彩·中', range:'第36-55节', count:20, period:'2周', output:'1张色彩小稿', status:'locked', started:false, lessonsDone:0, workDone:0},
+  {id:'M3', name:'素描色彩·下', range:'第56-68节', count:13, period:'1-2周', output:'1张完整色彩作品', status:'locked', started:false, lessonsDone:0, workDone:0},
+  {id:'F1', name:'冻结期1', range:'休息/保温', count:0, period:'不定', output:'每天10秒碰画笔', status:'locked', freeze:true},
+  {id:'M4', name:'头像结构·上', range:'第2-20节', count:19, period:'2周', output:'5个头骨/肌肉练习', status:'locked', started:false, lessonsDone:0, workDone:0},
+  {id:'M5', name:'头像结构·中', range:'第21-40节', count:20, period:'2周', output:'5个不同角度头像', status:'locked', started:false, lessonsDone:0, workDone:0},
+  {id:'M6', name:'头像结构·下', range:'第41-60+节', count:20, period:'2周', output:'1个原创头像', status:'locked', started:false, lessonsDone:0, workDone:0},
+  {id:'F2', name:'冻结期2', range:'休息/保温', count:0, period:'不定', output:'每天10秒碰画笔', status:'locked', freeze:true},
+  {id:'M7', name:'人体速写·上', range:'第1-18节', count:18, period:'2周', output:'10个动态速写', status:'locked', started:false, lessonsDone:0, workDone:0},
+  {id:'M8', name:'人体速写·下', range:'第19-37节', count:19, period:'2周', output:'1个原创人体', status:'locked', started:false, lessonsDone:0, workDone:0},
+  {id:'F3', name:'冻结期3', range:'休息/保温', count:0, period:'不定', output:'每天10秒碰画笔', status:'locked', freeze:true},
+  {id:'M9', name:'透视·复习上', range:'第53-80节', count:28, period:'2-3周', output:'1张带透视场景', status:'locked', started:false, lessonsDone:0, workDone:0},
+  {id:'M10', name:'透视·复习下+厚涂', range:'第81-112节+厚涂课', count:32, period:'3周', output:'1张厚涂作品', status:'locked', started:false, lessonsDone:0, workDone:0}
+];
+function ensureModules(){
+  if(!Array.isArray(S.modules) || S.modules.length===0){ S.modules = JSON.parse(JSON.stringify(DEFAULT_MODULES)); S.freeze = {}; }
+  if(!S.freeze || typeof S.freeze!=='object') S.freeze = {};
+}
+function currentModule(){ ensureModules(); return S.modules.find(function(m){ return !m.freeze && m.status==='active'; }) || null; }
+function gainXp(action, amount){
+  addXp(amount);
+  if(!Array.isArray(S.xpLog)) S.xpLog = [];
+  const total = (S.level-1)*100 + S.xp;
+  S.xpLog.push({date: todayStr(), action: action, xp: amount, total: total});
+  save();
+}
+function renderXpLog(){
+  const box = document.getElementById('xpLogBox'); if(!box) return;
+  if(!Array.isArray(S.xpLog)) S.xpLog = [];
+  if(!S.xpLog.length){ box.innerHTML = '<div class="muted" style="font-size:12px;">还没有经验记录~</div>'; return; }
+  box.innerHTML = S.xpLog.slice().reverse().slice(0,60).map(function(l){
+    return '<div class="xp-log-row"><span class="muted">'+esc(l.date)+'</span><span>'+esc(l.action)+'</span><span style="color:var(--pink);">+'+l.xp+'</span><span class="muted">总计 '+l.total+'</span></div>';
+  }).join('');
+}
+function renderHomeModule(){
+  const box = document.getElementById('homeModuleProgress'); if(!box) return;
+  ensureModules();
+  const cur = currentModule();
+  if(!cur){ box.innerHTML = '<div class="muted" style="font-size:12px;">去课程页开启第一个模块吧~</div>'; return; }
+  const pct = cur.count ? Math.min(100, Math.round((cur.lessonsDone||0)/cur.count*100)) : 0;
+  box.innerHTML = '<div class="hm-name">'+esc(cur.name)+'</div>'+
+    '<div class="hm-meta muted">'+esc(cur.range||'')+' · '+esc(cur.output||'')+'</div>'+
+    '<div class="mini-prog big" style="margin-top:6px;"><i style="width:'+pct+'%"></i></div>'+
+    '<div class="hm-meta muted" style="margin-top:4px;">已看 '+(cur.lessonsDone||0)+' / '+(cur.count||0)+' 节</div>';
+}
+function renderCourseMap(){
+  ensureModules();
+  const box = document.getElementById('courseMap'); if(!box) return;
+  const cur = currentModule();
+  let h = '';
+  if(cur){
+    h += '<div class="card">';
+    h += '<h3>'+esc(cur.name)+' <span class="muted" style="font-size:12px;">'+esc(cur.range||'')+'</span></h3>';
+    h += '<p class="muted">周期 '+esc(cur.period||'')+' · 产出 '+esc(cur.output||'')+' · 已看 '+(cur.lessonsDone||0)+'/'+(cur.count||0)+' 节</p>';
+    h += '<div class="row" style="gap:6px;flex-wrap:wrap;">';
+    if(!cur.started){ h += '<button class="btn sm" onclick="startCurrentModule()">开始这个模块 +10</button>'; }
+    h += '<button class="btn sm" onclick="watchOneLesson()">今天看了一节 +2</button>';
+    h += '<button class="btn sm" onclick="finishOneWork()">完成一次作业 +5</button>';
+    h += '<button class="btn sm" onclick="graduateModule()">已结业 +20</button>';
+    h += '</div></div>';
+  }
+  h += '<div class="card">';
+  h += '<div class="fold-bar" onclick="toggleFold(\'modList\')"><h3>模块化学习地图</h3><span class="fold-ch" data-foldch="modList">▾</span></div>';
+  h += '<div class="fold-body" data-fold="modList">';
+  h += '<div class="mod-list">';
+  S.modules.forEach(function(m){
+    let st;
+    if(m.freeze) st = '🧊 冻结';
+    else if(m.status==='active') st = '🔴 进行中';
+    else if(m.status==='done') st = '✅ 已结业';
+    else st = '⚪ 锁定';
+    h += '<div class="mod-row">';
+    h += '<div class="mod-main"><div class="mod-name">'+esc(m.name)+'</div><div class="muted" style="font-size:12px;">'+esc(m.range||'')+' · '+esc(m.period||'')+' · '+esc(m.output||'')+'</div></div>';
+    h += '<div class="mod-right"><span class="mod-st">'+st+'</span><div class="mod-btns">';
+    if(!m.freeze && m.status!=='active') h += '<button class="btn sm" onclick="activateModule(\''+m.id+'\')">开启 +10</button>';
+    h += '<button class="btn sm ghost" onclick="editModule(\''+m.id+'\')">编辑</button>';
+    h += '<button class="btn sm ghost" onclick="delModule(\''+m.id+'\')">删</button>';
+    h += '</div></div></div>';
+  });
+  h += '</div>';
+  h += '<div class="row" style="margin-top:8px;"><button class="btn sm ghost" onclick="addModule()">＋ 添加模块</button></div>';
+  h += '</div></div>';
+  h += '<div class="card"><h3>冻结期保温</h3><div id="freezeBox"></div></div>';
+  h += '<div class="card"><h3>经验记录</h3><div id="xpLogBox"></div></div>';
+  box.innerHTML = h;
+  renderFreeze(); renderXpLog(); applyFolds();
+}
+function renderFreeze(){
+  const box = document.getElementById('freezeBox'); if(!box) return;
+  ensureModules();
+  const fz = S.modules.find(function(m){ return m.freeze && m.status==='active'; });
+  if(!fz){ box.innerHTML = '<div class="muted" style="font-size:12px;">没有进行中的冻结期~</div>'; return; }
+  if(!S.freeze[fz.id]) S.freeze[fz.id] = {days:{}, note:''};
+  const fr = S.freeze[fz.id];
+  const days = ['周一','周二','周三','周四','周五','周六','周日'];
+  let h = '<div class="muted" style="font-size:12px;">'+esc(fz.name)+' · 每天10秒碰画笔也算保温</div>';
+  h += '<div class="freeze-days">';
+  days.forEach(function(dn,i){
+    const on = fr.days[i] ? ' chip-on' : '';
+    h += '<button class="chip'+on+'" onclick="freezeCheckin(\''+fz.id+'\','+i+')">'+dn+'</button>';
+  });
+  h += '</div>';
+  h += '<label style="margin-top:8px;">本周底色（一句话）</label>';
+  h += '<input id="freezeNote" value="'+esc(fr.note||'')+'" onchange="saveFreezeNote(\''+fz.id+'\',this.value)">';
+  box.innerHTML = h;
+}
+function freezeCheckin(id, i){
+  ensureModules();
+  if(!S.freeze[id]) S.freeze[id] = {days:{}, note:''};
+  const fr = S.freeze[id];
+  if(!fr.days[i]){ fr.days[i] = true; gainXp('冻结期保温打卡', 1); }
+  else { fr.days[i] = false; }
+  save(); renderFreeze();
+}
+function saveFreezeNote(id, v){ if(!S.freeze[id]) S.freeze[id] = {days:{}, note:''}; S.freeze[id].note = v; save(); toast('已保存~'); }
+function startCurrentModule(){ const cur = currentModule(); if(!cur || cur.started) return; cur.started = true; gainXp('开启模块 '+cur.name, 10); renderCourseMap(); renderHomeModule(); }
+function watchOneLesson(){ const cur = currentModule(); if(!cur){ toast('先开启一个模块~'); return; } cur.lessonsDone = (cur.lessonsDone||0) + 1; gainXp('看完一节课程', 2); renderCourseMap(); renderHomeModule(); toast('看完一节 +2 经验~'); }
+function finishOneWork(){ const cur = currentModule(); if(!cur){ toast('先开启一个模块~'); return; } cur.workDone = (cur.workDone||0) + 1; gainXp('完成一个课程作业', 5); renderCourseMap(); toast('完成作业 +5 经验~'); }
+function graduateModule(){ const cur = currentModule(); if(!cur){ toast('先开启一个模块~'); return; } cur.status = 'done'; gainXp('模块结业', 20); renderCourseMap(); renderHomeModule(); toast('恭喜结业 +20 经验~'); }
+function activateModule(id){
+  ensureModules();
+  const m = S.modules.find(function(x){ return x.id===id; }); if(!m) return;
+  if(m.freeze){
+    S.modules.forEach(function(x){ if(!x.freeze) x.status='locked'; });
+    S.modules.forEach(function(x){ if(x.freeze && x.id!==id) x.status='locked'; });
+    m.status = 'active';
+  } else {
+    S.modules.forEach(function(x){ if(x.freeze) x.status='locked'; });
+    S.modules.forEach(function(x){ if(!x.freeze && x.id!==id && x.status==='active') x.status='locked'; });
+    m.status = 'active';
+    if(!m.started){ m.started = true; gainXp('开启模块 '+m.name, 10); }
+  }
+  save(); renderCourseMap(); renderHomeModule();
+}
+function addModule(){
+  const name = prompt('新模块名称：'); if(name===null) return;
+  const nm = name.trim(); if(!nm){ toast('写个名字~'); return; }
+  const range = prompt('课时范围（如 第1-20节）：') || '';
+  const count = parseInt(prompt('节数：')||'0',10) || 0;
+  const period = prompt('周期（如 2周）：') || '';
+  const output = prompt('结业产出：') || '';
+  S.modules.push({id:'M'+Date.now(), name:nm, range:range, count:count, period:period, output:output, status:'locked', started:false, lessonsDone:0, workDone:0});
+  save(); renderCourseMap();
+}
+function editModule(id){
+  const m = S.modules.find(function(x){ return x.id===id; }); if(!m) return;
+  const name = prompt('模块名称：', m.name); if(name===null) return;
+  m.name = name.trim() || m.name;
+  if(!m.freeze){
+    const range = prompt('课时范围：', m.range||''); if(range!==null) m.range = range.trim();
+    const count = prompt('节数：', m.count||''); if(count!==null) m.count = parseInt(count,10)||0;
+    const period = prompt('周期：', m.period||''); if(period!==null) m.period = period.trim();
+    const output = prompt('结业产出：', m.output||''); if(output!==null) m.output = output.trim();
+  }
+  save(); renderCourseMap();
+}
+function delModule(id){
+  const m = S.modules.find(function(x){ return x.id===id; }); if(!m) return;
+  if(!confirm('删除模块「'+m.name+'」？')) return;
+  S.modules = S.modules.filter(function(x){ return x.id!==id; });
+  save(); renderCourseMap();
+}
+// ===== 备忘录 =====
+let _memoCat = '碎碎念';
+function memoCatOf(m){ return (m && (m.cat==='新奇想法' || m.type===2)) ? '新奇想法' : '碎碎念'; }
+function setMemoCat(v){ _memoCat = v; document.querySelectorAll('#memoCatRow .chip').forEach(function(el){ el.classList.toggle('chip-on', el.getAttribute('data-cat')===v); }); renderMemoPage(); haptic(); }
+function renderMemoPage(){
+  const box = document.getElementById('memoBox'); if(!box) return;
+  if(!Array.isArray(S.memos)) S.memos = [];
+  let h = '<div class="card">';
+  h += '<h3>备忘录</h3>';
+  h += '<p class="muted">记一条碎碎念或新奇想法，+1 经验~</p>';
+  h += '<div class="row" style="gap:6px;flex-wrap:wrap;" id="memoCatRow">';
+  h += '<button class="chip'+( _memoCat==='碎碎念'?' chip-on':'')+'" data-cat="碎碎念" onclick="setMemoCat(\'碎碎念\')">碎碎念</button>';
+  h += '<button class="chip'+( _memoCat==='新奇想法'?' chip-on':'')+'" data-cat="新奇想法" onclick="setMemoCat(\'新奇想法\')">新奇想法</button>';
+  h += '</div>';
+  h += '<textarea id="memoNewText" rows="3" placeholder="写点什么…"></textarea>';
+  h += '<div class="row" style="margin-top:6px;"><button class="btn sm" onclick="addMemoNote()">＋ 记下</button></div>';
+  h += '</div>';
+  h += '<div class="card"><div id="memoPageList"></div></div>';
+  box.innerHTML = h;
+  renderMemoList();
+}
+function renderMemoList(){
+  const box = document.getElementById('memoPageList'); if(!box) return;
+  const arr = (S.memos||[]).filter(function(m){ return memoCatOf(m)===_memoCat; });
+  if(!arr.length){ box.innerHTML = '<div class="muted" style="font-size:12px;">还没有记录~</div>'; return; }
+  arr.sort(function(a,b){ return (b.ts||0)-(a.ts||0); });
+  box.innerHTML = arr.map(function(m){
+    return '<div class="memo-item" data-id="'+m.id+'"><div class="memo-h"><span class="memo-type">'+esc(m.date||'')+' · '+esc(memoCatOf(m))+'</span><button class="memo-edit-btn" onclick="editMemo(\''+m.id+'\')">✎</button><button class="memo-del" onclick="deleteMemo(\''+m.id+'\')">✕</button></div><div class="memo-text">'+escHtml(m.text)+'</div></div>';
+  }).join('');
+}
+function addMemoNote(){
+  const inp = document.getElementById('memoNewText'); if(!inp) return;
+  const t = inp.value.trim(); if(!t){ toast('先写点什么~'); return; }
+  const item = {id:'m'+Date.now()+Math.random().toString(36).slice(2,7), date:todayStr(), ts:Date.now(), type:(_memoCat==='新奇想法'?2:0), text:t, cat:_memoCat, summary:''};
+  S.memos.unshift(item);
+  gainXp('记录一条想法感受', 1);
+  inp.value='';
+  renderMemoList();
+  toast('记下啦 +1 经验~');
+}
+// ===== v39 数据迁移 =====
+function migrateV39(){
+  try{
+    if(localStorage.getItem('djw_migrated_v39')==='1') return;
+    try{ const cur = localStorage.getItem('dajiuwan_v5'); if(cur) localStorage.setItem('dajiuwan_v5_backup_pre_v39', cur); }catch(e){}
+    (S.memos||[]).forEach(function(m){ m.cat = (m.cat==='新奇想法' || m.type===2) ? '新奇想法' : '碎碎念'; });
+    ['favs','inspo','creations','archives','know','found','courses','futureCourses','reviews','weekReports','ms','tolerance','sleep','water','bodyLog','yearPlan','monthPlan','weekPlan','yearPlans','weekPlans','released','refs'].forEach(function(k){ try{ delete S[k]; }catch(e){} });
+    S.level = S.level||1; S.xp = S.xp||0;
+    ensureModules();
+    if(!Array.isArray(S.xpLog)) S.xpLog = [];
+    S.nightMode = 'off';
+    S.page = 'home';
+    try{ save(); }catch(e){}
+    try{ localStorage.setItem('djw_migrated_v39','1'); }catch(e){}
+  }catch(e){ try{ console.error('v39 migrate', e); }catch(_){} }
+}
+function renderFav(){ renderMemoPage(); }
+function renderMemo(){ renderMemoList(); }
 // ===== PWA 安装 =====
 let _deferredPrompt=null;
 window.addEventListener('beforeinstallprompt', function(e){
